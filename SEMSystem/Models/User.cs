@@ -35,5 +35,6 @@ namespace SEMSystem.Models
         public virtual Department Departments { get; set; }
         public string Domain { get; set; }
         public string CompanyAccess { get; set; }
+        public string UserType { get; set; }
     }
 }

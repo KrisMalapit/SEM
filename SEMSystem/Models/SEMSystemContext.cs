@@ -15,6 +15,7 @@ namespace SEMSystem.Models
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Area> Areas { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Log> Logs { get; set; }
       
@@ -22,7 +23,7 @@ namespace SEMSystem.Models
        
         public DbSet<Department> Departments { get; set; }
         public DbSet<Company> Companies { get; set; }
-      
+        public DbSet<FireExtinguisherHeader> FireExtinguisherHeaderS { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

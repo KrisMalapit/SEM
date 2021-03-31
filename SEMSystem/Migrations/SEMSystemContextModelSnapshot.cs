@@ -19,6 +19,30 @@ namespace SEMSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("SEMSystem.Models.Area", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
+                    b.Property<int>("CompanyId");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Status");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Areas");
+                });
+
             modelBuilder.Entity("SEMSystem.Models.Company", b =>
                 {
                     b.Property<int>("ID")
@@ -158,6 +182,8 @@ namespace SEMSystem.Migrations
 
                     b.Property<string>("Status");
 
+                    b.Property<string>("UserType");
+
                     b.Property<string>("Username")
                         .HasColumnType("VARCHAR(50)");
 
@@ -176,6 +202,14 @@ namespace SEMSystem.Migrations
                     b.HasData(
                         new { Id = 1, CompanyAccess = "1", DepartmentId = 1, Domain = "SMCDACON", Email = "kcmalapit@semirarampc.com", FirstName = "Kristoffer", LastName = "Malapit", Name = "Kristoffer Malapit", Password = "", RoleId = 1, Status = "1", Username = "kcmalapit" }
                     );
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.Area", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Company", "Companies")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SEMSystem.Models.Department", b =>
