@@ -46,7 +46,7 @@
 
     <form asp-action="Edit" id="frmLocation">
         @*Fire Extinguisher*@
-        <div class="col-lg-12" id="divFE" style="padding:0px!important;">
+        <div class="col-lg-12 parentDiv" id="divFE" style="padding:0px!important;">
             <div class="ibox float-e-margins border-bottom">
                 <div class="ibox-title">
                     <h5>Fire Extinguisher <small></small></h5>
@@ -55,16 +55,14 @@
                             <i class="fa fa-chevron-down"></i>
                         </a>
 
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+                      
                     </div>
                 </div>
                 <div class="ibox-content" style="display:none;">
                     <div class="form-group">
                         <script id="FEtemplate" type="text/template">
                             <td>
-                                <input type="hidden" name="detail_id[]" />
+                                <input value="0" type="hidden" name="detail_id[]" />
                                 <input class="form-control" type="text" placeholder="Location" name="location[]" required />
                             </td>
                             <td><input class="total form-control" type="text" placeholder="Code" name="code[]" required /></td>
@@ -89,7 +87,7 @@
                                 <tr>
                                     <td>1</td>
                                     <td>
-                                        <input type="hidden" name="detail_id[]" />
+                                        <input type="hidden" type="hidden" name="detail_id[]" />
                                         <input class="form-control" type="text" placeholder="Location" name="location[]" required />
                                     </td>
                                     <td><input class="total form-control" type="text" placeholder="Code" name="code[]" required /></td>
@@ -103,7 +101,7 @@
 
                     <p>
 
-                        <a href="#" onclick="saveGatePass('FE');">
+                        <a href="#" onclick="saveLocation(this);">
                             <i class="fa fa-check"></i>
                             <span class="email-text">&nbsp;Save</span>
                         </a> <text> |&nbsp; </text>
@@ -127,186 +125,276 @@
                 </div>
             </div>
         </div>
+
+
+        @*Emergency Lights*@
+        <div class="col-lg-12 parentDiv" id="divEL" style="padding:0px!important;">
+            <div class="ibox float-e-margins border-bottom">
+                <div class="ibox-title">
+                    <h5>Emergency Lights <small></small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+
+                        
+                    </div>
+                </div>
+                <div class="ibox-content" style="display:none;">
+                    <div class="form-group">
+                        <script id="ELtemplate" type="text/template">
+                            <td>
+                                <input value="0" type="hidden" name="detail_id[]" />
+                                <input class="form-control" type="text" placeholder="Location" name="location[]" required />
+                            </td>
+                            <td><input class="total form-control" type="text" placeholder="Code" name="code[]" required /></td>
+                            <td>
+                                <a class="remEL btn btn-danger btn-xs"><span title="Delete" class="glyphicon glyphicon-remove"></span></a>
+                            </td>
+                        </script>
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="5%">#</th>
+                                    <th>Location</th>
+                                    <th width="40%">Code</th>
+                                    <th width="5%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="p_EL">
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <input type="hidden" name="detail_id[]" />
+                                        <input class="form-control" type="text" placeholder="Location" name="location[]" required />
+                                    </td>
+                                    <td><input class="total form-control" type="text" placeholder="Code" name="code[]" required /></td>
+                                    <td><button class="addEL btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        <a href="#" onclick="saveLocation(this);">
+                            <i class="fa fa-check"></i>
+                            <span class="email-text">&nbsp;Save</span>
+                        </a> <text> |&nbsp; </text>
+                        <a href="#" onclick="printGatePass();">
+                            <i class="fa fa-print"></i>
+                            <span class="print">&nbsp;Print</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+
     </form>
 
-        @*<div class="col-lg-12" id="divFireHydrant" style="padding:0px!important;">
-                <div class="ibox float-e-margins border-bottom">
-                    <div class="ibox-title">
-                        <h5>Fire Hydrant <small></small></h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="#">Config option 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="display:none;">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" id="divEmergencyLight" style="padding:0px!important;">
-                <div class="ibox float-e-margins border-bottom">
-                    <div class="ibox-title">
-                        <h5>Emergency Light <small></small></h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="#">Config option 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="display:none;">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" id="divInergenSystem" style="padding:0px!important;">
-                <div class="ibox float-e-margins border-bottom">
-                    <div class="ibox-title">
-                        <h5>Inergen System <small></small></h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="#">Config option 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="display:none;">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" id="divBicycle" style="padding:0px!important;">
-                <div class="ibox float-e-margins border-bottom">
-                    <div class="ibox-title">
-                        <h5>Bicycle <small></small></h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="#">Config option 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="display:none;">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" id="divEPREquipment" style="padding:0px!important;">
-                <div class="ibox float-e-margins border-bottom">
-                    <div class="ibox-title">
-                        <h5>EPR Equipment <small></small></h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li>
-                                    <a href="#">Config option 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="display:none;">
-                    </div>
-                </div>
-            </div>*@
-        <a asp-action="Index">Back to List</a>
+    @*<div class="col-lg-12" id="divFireHydrant" style="padding:0px!important;">
+             <div class="ibox float-e-margins border-bottom">
+                 <div class="ibox-title">
+                     <h5>Emergency Lights <small></small></h5>
+                     <div class="ibox-tools">
+                         <a class="collapse-link">
+                             <i class="fa fa-chevron-down"></i>
+                         </a>
+                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                             <i class="fa fa-wrench"></i>
+                         </a>
+                         <ul class="dropdown-menu dropdown-user">
+                             <li>
+                                 <a href="#">Config option 1</a>
+                             </li>
+                             <li>
+                                 <a href="#">Config option 2</a>
+                             </li>
+                         </ul>
+                         <a class="close-link">
+                             <i class="fa fa-times"></i>
+                         </a>
+                     </div>
+                 </div>
+                 <div class="ibox-content" style="display:none;">
+                 </div>
+             </div>
+         </div>
+        <div class="col-lg-12" id="divEmergencyLight" style="padding:0px!important;">
+                 <div class="ibox float-e-margins border-bottom">
+                     <div class="ibox-title">
+                         <h5>Emergency Light <small></small></h5>
+                         <div class="ibox-tools">
+                             <a class="collapse-link">
+                                 <i class="fa fa-chevron-down"></i>
+                             </a>
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                 <i class="fa fa-wrench"></i>
+                             </a>
+                             <ul class="dropdown-menu dropdown-user">
+                                 <li>
+                                     <a href="#">Config option 1</a>
+                                 </li>
+                                 <li>
+                                     <a href="#">Config option 2</a>
+                                 </li>
+                             </ul>
+                             <a class="close-link">
+                                 <i class="fa fa-times"></i>
+                             </a>
+                         </div>
+                     </div>
+                     <div class="ibox-content" style="display:none;">
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-12" id="divInergenSystem" style="padding:0px!important;">
+                 <div class="ibox float-e-margins border-bottom">
+                     <div class="ibox-title">
+                         <h5>Inergen System <small></small></h5>
+                         <div class="ibox-tools">
+                             <a class="collapse-link">
+                                 <i class="fa fa-chevron-down"></i>
+                             </a>
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                 <i class="fa fa-wrench"></i>
+                             </a>
+                             <ul class="dropdown-menu dropdown-user">
+                                 <li>
+                                     <a href="#">Config option 1</a>
+                                 </li>
+                                 <li>
+                                     <a href="#">Config option 2</a>
+                                 </li>
+                             </ul>
+                             <a class="close-link">
+                                 <i class="fa fa-times"></i>
+                             </a>
+                         </div>
+                     </div>
+                     <div class="ibox-content" style="display:none;">
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-12" id="divBicycle" style="padding:0px!important;">
+                 <div class="ibox float-e-margins border-bottom">
+                     <div class="ibox-title">
+                         <h5>Bicycle <small></small></h5>
+                         <div class="ibox-tools">
+                             <a class="collapse-link">
+                                 <i class="fa fa-chevron-down"></i>
+                             </a>
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                 <i class="fa fa-wrench"></i>
+                             </a>
+                             <ul class="dropdown-menu dropdown-user">
+                                 <li>
+                                     <a href="#">Config option 1</a>
+                                 </li>
+                                 <li>
+                                     <a href="#">Config option 2</a>
+                                 </li>
+                             </ul>
+                             <a class="close-link">
+                                 <i class="fa fa-times"></i>
+                             </a>
+                         </div>
+                     </div>
+                     <div class="ibox-content" style="display:none;">
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-12" id="divEPREquipment" style="padding:0px!important;">
+                 <div class="ibox float-e-margins border-bottom">
+                     <div class="ibox-title">
+                         <h5>EPR Equipment <small></small></h5>
+                         <div class="ibox-tools">
+                             <a class="collapse-link">
+                                 <i class="fa fa-chevron-down"></i>
+                             </a>
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                 <i class="fa fa-wrench"></i>
+                             </a>
+                             <ul class="dropdown-menu dropdown-user">
+                                 <li>
+                                     <a href="#">Config option 1</a>
+                                 </li>
+                                 <li>
+                                     <a href="#">Config option 2</a>
+                                 </li>
+                             </ul>
+                             <a class="close-link">
+                                 <i class="fa fa-times"></i>
+                             </a>
+                         </div>
+                     </div>
+                     <div class="ibox-content" style="display:none;">
+                     </div>
+                 </div>
+             </div>*@
+    <a asp-action="Index">Back to List</a>
 </div>
 
 
 <script>
-     $("input[type=text]").keyup(function () {
+    $(function () {
+        loadLocation(@Model.ID);
+    })
+
+    $("input[type=text]").keyup(function () {
         $(this).val($(this).val().toUpperCase());
     });
 
-    var FEDiv = $('#p_FE');
 
+    //Fire Extinguisher
+    var FEDiv = $('#p_FE');
     $(document).on('click', '.addFE', function () {
         var i = $('#p_FE tr').length + 1;
         var $tr = $('<tr>').append('<td>' + i + '</td>' + $('#FEtemplate').html());
         FEDiv.append($tr);
     })
-    $(document).on('click', '.remFE', function () {
 
+    $(document).on('click', '.remFE', function () {
         var i = $('#p_FE tr').length;
         if (i > 1) {
             $(this).closest('tr').remove();
         }
         return false;
     });
+    //End Fire Extinguisher
 
-    function saveGatePass($type) {
+
+    //Emergency Light
+    var ELDiv = $('#p_EL');
+    $(document).on('click', '.addEL', function () {
+        var i = $('#p_EL tr').length + 1;
+        var $tr = $('<tr>').append('<td>' + i + '</td>' + $('#ELtemplate').html());
+        ELDiv.append($tr);
+    })
+
+    $(document).on('click', '.remEL', function () {
+        var i = $('#p_EL tr').length;
+        if (i > 1) {
+            $(this).closest('tr').remove();
+        }
+        return false;
+    });
+    //End Emergency Light
+
+
+
+
+    function saveLocation($type) {
         var cnt = 0;
-
-        $('form').find('input').each(function () {
+        var divLocation = $($type).closest('div .parentDiv').prop('id');
+        $('form').find('#' + divLocation + ' input').each(function () {
             if ($(this).prop('required')) {
-
                 if (!$(this).val()) {
                     cnt = 1;
                     $(this).addClass("error-input");
                 } else {
                     $(this).removeClass("error-input");
                 }
-
             }
         });
 
@@ -319,12 +407,15 @@
             return false;
         }
 
-        var data = $("#frmLocation").serializeArray();
-        data.push({ name: 'Equipment', value: $type });
+        
+        
+        var data = $("#" + divLocation + " :input").serializeArray();
+        data.push({ name: 'Equipment', value: divLocation });
         data.push({ name: 'AreaId', value: @Model.ID });
 
-        //console.log(data);
-        //return false;
+     
+       
+      
         $.ajax({
             url: "@Url.Action("SaveLocation")"
             , method: "POST"
@@ -349,6 +440,153 @@
         })
 
 
+    }
+    function loadLocation(id) {
+        $.ajax({
+            url: "@Url.Action("getDataLocation")"
+            , method: "POST"
+            , data: { AreaId : @Model.ID}
+            , dataType: 'json'
+             , success: function (responsedata) {
+                 console.log(responsedata);
+                 if (responsedata.status == "success") {
+
+                     //fire extinguisher
+                     $rowsfe = responsedata.locationfe.length
+                     $('#p_FE > tr:nth-child(1)').remove();
+                     if ($rowsfe === 0 ) {
+                         $trr =
+                             '<tr>' +
+                             '<td>1</td>' +
+                             '<td>' +
+                             '<input value="0"  type="hidden" name="detail_id[]" />' +
+                             '<input class="form-control" type="text" placeholder="Location" name="location[]" required />' +
+                             '</td >' +
+                             '<td><input class="form-control" type="text" placeholder="Code" name="code[]" required /></td>' +
+                             '<td><input class="form-control" type="text" placeholder="Type" name="type[]" required /></td>' +
+                             '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>' +
+                             '<td><button class="addFE btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>' +
+                             '</tr>'
+                         var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);
+                         FEDiv.append($tr);
+                     } else {
+
+                     }
+                     for (var j = 0; j < $rowsfe; j++) {
+                         
+
+                         var $trr = '';
+                         if (j===0) {
+                             
+                             $trr =
+                                 '<tr>' +
+                                 '<td>1</td>'+
+                                 '<td>'+
+                                 '<input value="' + responsedata.locationfe[j].id + '"  type="hidden" name="detail_id[]" />'+
+                                 '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationfe[j].location + '" required />'+
+                                 '</td >'+
+                                 '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationfe[j].code + '"required /></td>'+
+                                 '<td><input class="form-control" type="text" placeholder="Type" name="type[]" value="' + responsedata.locationfe[j].type + '"required /></td>'+
+                                 '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationfe[j].capacity + '" required /></td>'+
+                                 '<td><button class="addFE btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>' +
+                                 '</tr>'
+
+
+                         } else {
+                             var i = $('#p_FE tr').length + 1;
+                            
+                             $trr =
+                                 
+                          
+                                 '<td>' +
+                                 '<input value="' + responsedata.locationfe[j].id + '"  type="hidden" name="detail_id[]" />' +
+                                 '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationfe[j].location + '" required />' +
+                                 '</td >' +
+                                 '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationfe[j].code + '"required /></td>' +
+                                 '<td><input class="form-control" type="text" placeholder="Type" name="type[]" value="' + responsedata.locationfe[j].type + '"required /></td>' +
+                                 '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationfe[j].capacity + '" required /></td>' +
+                                 '<td><a class="remFE btn btn-danger btn-xs"><span title="Delete" class="glyphicon glyphicon-remove"></span></a></td>' 
+                                 
+                         }
+                         var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);
+                         FEDiv.append($tr);
+
+
+
+                     }
+
+                     //emergency lights
+                   
+                     $rowsel = responsedata.locationel.length
+                     $('#p_EL > tr:nth-child(1)').remove();
+                     if ($rowsel === 0) {
+                         $trr =
+                             '<tr>' +
+                             '<td>1</td>' +
+                             '<td>' +
+                             '<input value="0"  type="hidden" name="detail_id[]" />' +
+                             '<input class="form-control" type="text" placeholder="Location" name="location[]" required />' +
+                             '</td >' +
+                             '<td><input class="form-control" type="text" placeholder="Code" name="code[]" required /></td>' +
+
+                             '<td><button class="addEL btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>' +
+                             '</tr>'
+                         var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);
+                         ELDiv.append($tr);
+                     } else {
+
+                     }
+                     for (var j = 0; j < $rowsel; j++) {
+
+
+                         var $trr = '';
+                         if (j === 0) {
+
+                             $trr =
+                                 '<tr>' +
+                                 '<td>1</td>' +
+                                 '<td>' +
+                                 '<input value="' + responsedata.locationel[j].id + '"  type="hidden" name="detail_id[]" />' +
+                                 '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationel[j].location + '" required />' +
+                                 '</td >' +
+                                 '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationel[j].code + '"required /></td>' +
+
+                                 '<td><button class="addEL btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>' +
+                                 '</tr>'
+
+
+                         } else {
+                             var i = $('#p_EL tr').length + 1;
+
+                             $trr =
+                                 '<td>' +
+                                 '<input value="' + responsedata.locationel[j].id + '"  type="hidden" name="detail_id[]" />' +
+                                 '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationel[j].location + '" required />' +
+                                 '</td >' +
+                                 '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationel[j].code + '"required /></td>' +
+      
+                                 '<td><a class="remEL btn btn-danger btn-xs"><span title="Delete" class="glyphicon glyphicon-remove"></span></a></td>'
+
+                         }
+                         var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);
+                         ELDiv.append($tr);
+
+
+
+                     }
+
+
+
+                 } else {
+
+                    toastr["error"](responsedata.message)
+                    toastr.options = {
+                        "closeButton": true,
+                        "showDuration": "3000",
+                    }
+                }
+            }
+        })
     }
 </script>
 

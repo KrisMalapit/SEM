@@ -23,13 +23,23 @@ namespace SEMSystem.Models
        
         public DbSet<Department> Departments { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<FireExtinguisherHeader> FireExtinguisherHeaderS { get; set; }
+        public DbSet<FireExtinguisherHeader> FireExtinguisherHeaders { get; set; }
+        public DbSet<LocationFireExtinguisher> LocationFireExtinguishers { get; set; }
+        public DbSet<LocationEmergencyLight> LocationEmergencyLights { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
                .HasIndex(p => new { p.Username, p.Status })
                .IsUnique();
-          
+
+            modelBuilder.Entity<LocationFireExtinguisher>()
+              .HasIndex(p => new { p.AreaId, p.Code, p.Status })
+              .IsUnique();
+
+            modelBuilder.Entity<LocationEmergencyLight>()
+             .HasIndex(p => new { p.AreaId, p.Code, p.Status })
+             .IsUnique();
 
             modelBuilder.Entity<Company>().HasData(
                new { ID = 1, Code = "SLPGC", Name = "Southwest Luzon Power Gen Corporation", Status = "Active" },

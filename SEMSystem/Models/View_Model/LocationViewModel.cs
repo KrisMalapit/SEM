@@ -14,6 +14,8 @@ namespace SEMSystem.Models.View_Model
         public string[] code { get; set; }
         public string[] type { get; set; }
         public string[] capacity { get; set; }
+        public string[] serial { get; set; }
+        public string[] area { get; set; }
 
 
     }

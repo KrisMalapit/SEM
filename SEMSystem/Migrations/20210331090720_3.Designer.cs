@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEMSystem.Models;
 
 namespace SEMSystem.Migrations
 {
     [DbContext(typeof(SEMSystemContext))]
-    partial class SEMSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210331090720_3")]
+    partial class _3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,29 +119,6 @@ namespace SEMSystem.Migrations
                     b.ToTable("FireExtinguisherHeaders");
                 });
 
-            modelBuilder.Entity("SEMSystem.Models.LocationEmergencyLight", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AreaId");
-
-                    b.Property<string>("Code");
-
-                    b.Property<string>("Location");
-
-                    b.Property<string>("Status");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AreaId", "Code", "Status")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL AND [Status] IS NOT NULL");
-
-                    b.ToTable("LocationEmergencyLights");
-                });
-
             modelBuilder.Entity("SEMSystem.Models.LocationFireExtinguisher", b =>
                 {
                     b.Property<int>("Id")
@@ -160,9 +139,7 @@ namespace SEMSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AreaId", "Code", "Status")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL AND [Status] IS NOT NULL");
+                    b.HasIndex("AreaId");
 
                     b.ToTable("LocationFireExtinguishers");
                 });
@@ -296,14 +273,6 @@ namespace SEMSystem.Migrations
                     b.HasOne("SEMSystem.Models.Company", "Companies")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SEMSystem.Models.LocationEmergencyLight", b =>
-                {
-                    b.HasOne("SEMSystem.Models.Area", "Areas")
-                        .WithMany()
-                        .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
