@@ -43,6 +43,134 @@ namespace SEMSystem.Migrations
                     b.ToTable("Areas");
                 });
 
+            modelBuilder.Entity("SEMSystem.Models.Bicycle", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BrandName")
+                        .IsRequired();
+
+                    b.Property<string>("ContactNo");
+
+                    b.Property<int>("DepartmentID");
+
+                    b.Property<string>("IdentificationNo")
+                        .IsRequired();
+
+                    b.Property<string>("NameOwner")
+                        .IsRequired();
+
+                    b.Property<string>("Status");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DepartmentID");
+
+                    b.HasIndex("IdentificationNo", "Status")
+                        .IsUnique()
+                        .HasFilter("[Status] IS NOT NULL");
+
+                    b.ToTable("Bicycles");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.BicycleEntryDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BicycleEntryHeaderId");
+
+                    b.Property<string>("BrakeRemarks");
+
+                    b.Property<int>("BrakeSafe");
+
+                    b.Property<int>("BrakeUnSafe");
+
+                    b.Property<string>("ChainRemarks");
+
+                    b.Property<int>("ChainSafe");
+
+                    b.Property<int>("ChainUnSafe");
+
+                    b.Property<string>("CrankChainRemarks");
+
+                    b.Property<int>("CrankChainSafe");
+
+                    b.Property<int>("CrankChainUnSafe");
+
+                    b.Property<string>("FrameRemarks");
+
+                    b.Property<int>("FrameSafe");
+
+                    b.Property<int>("FrameUnSafe");
+
+                    b.Property<string>("FrontForkRemarks");
+
+                    b.Property<int>("FrontForkSafe");
+
+                    b.Property<int>("FrontForkUnSafe");
+
+                    b.Property<string>("FrontRearRemarks");
+
+                    b.Property<int>("FrontRearSafe");
+
+                    b.Property<int>("FrontRearUnSafe");
+
+                    b.Property<string>("HandlebarRemarks");
+
+                    b.Property<int>("HandlebarSafe");
+
+                    b.Property<int>("HandlebarUnSafe");
+
+                    b.Property<string>("InspectedBy");
+
+                    b.Property<string>("NotedBy");
+
+                    b.Property<string>("SeatRemarks");
+
+                    b.Property<int>("SeatSafe");
+
+                    b.Property<int>("SeatUnSafe");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BicycleEntryHeaderId");
+
+                    b.ToTable("BicycleEntryDetails");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.BicycleEntryHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BicycleId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BicycleId", "CreatedAt", "Status")
+                        .IsUnique()
+                        .HasFilter("[Status] IS NOT NULL");
+
+                    b.ToTable("BicycleEntryHeaders");
+                });
+
             modelBuilder.Entity("SEMSystem.Models.Company", b =>
                 {
                     b.Property<int>("ID")
@@ -96,6 +224,109 @@ namespace SEMSystem.Migrations
                     );
                 });
 
+            modelBuilder.Entity("SEMSystem.Models.EmergencyLightDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Battery");
+
+                    b.Property<int>("Bulb");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("EmergencyLightHeaderId");
+
+                    b.Property<string>("InspectedBy");
+
+                    b.Property<int>("LocationEmergencyLightId");
+
+                    b.Property<string>("NotedBy");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("ReviewedBy");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<int>("Usable");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmergencyLightHeaderId");
+
+                    b.ToTable("EmergencyLightDetails");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.EmergencyLightHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId", "CreatedAt", "Status")
+                        .IsUnique()
+                        .HasFilter("[Status] IS NOT NULL");
+
+                    b.ToTable("EmergencyLightHeaders");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.FireExtinguisherDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("Cylinder");
+
+                    b.Property<int>("FireExtinguisherHeaderId");
+
+                    b.Property<int>("Gauge");
+
+                    b.Property<int>("Hose");
+
+                    b.Property<string>("InspectedBy");
+
+                    b.Property<int>("Lever");
+
+                    b.Property<int>("LocationFireExtinguisherId");
+
+                    b.Property<string>("NotedBy");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("ReviewedBy");
+
+                    b.Property<int>("SafetySeal");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FireExtinguisherHeaderId");
+
+                    b.ToTable("FireExtinguisherDetails");
+                });
+
             modelBuilder.Entity("SEMSystem.Models.FireExtinguisherHeader", b =>
                 {
                     b.Property<int>("Id")
@@ -104,17 +335,206 @@ namespace SEMSystem.Migrations
 
                     b.Property<int>("AreaId");
 
-                    b.Property<int>("CompanyId");
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId", "CreatedAt", "Status")
+                        .IsUnique()
+                        .HasFilter("[Status] IS NOT NULL");
+
+                    b.ToTable("FireExtinguisherHeaders");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.FireHydrantDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("FireHydrantHeaderId");
+
+                    b.Property<int>("GlassCabinet");
+
+                    b.Property<int>("Hanger");
+
+                    b.Property<int>("Hose15");
+
+                    b.Property<int>("Hose25");
+
+                    b.Property<string>("InspectedBy");
+
+                    b.Property<int>("LocationFireHydrantId");
+
+                    b.Property<string>("NotedBy");
+
+                    b.Property<int>("Nozzle15");
+
+                    b.Property<int>("Nozzle25");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("ReviewedBy");
+
+                    b.Property<int>("SpecialTools");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FireHydrantHeaderId");
+
+                    b.ToTable("FireHydrantDetails");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.FireHydrantHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AreaId");
 
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
 
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UpdatedBy");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("AreaId");
 
-                    b.ToTable("FireExtinguisherHeaders");
+                    b.ToTable("FireHydrantHeaders");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.InergenTankDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("Cylinder");
+
+                    b.Property<int>("Gauge");
+
+                    b.Property<int>("Hose");
+
+                    b.Property<int>("InergenTankHeaderId");
+
+                    b.Property<string>("InspectedBy");
+
+                    b.Property<int>("LocationInergenTankId");
+
+                    b.Property<string>("NotedBy");
+
+                    b.Property<int>("Pressure");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("ReviewedBy");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InergenTankHeaderId");
+
+                    b.ToTable("InergenTankDetails");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.InergenTankHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.ToTable("InergenTankHeaders");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code");
+
+                    b.Property<DateTime?>("DatePurchased");
+
+                    b.Property<string>("EquipmentType");
+
+                    b.Property<string>("ItemStatus");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("SerialNo");
+
+                    b.Property<string>("Status");
+
+                    b.Property<int?>("Warranty");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.ItemLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("ItemId");
+
+                    b.Property<string>("Module");
+
+                    b.Property<string>("NewStatus");
+
+                    b.Property<string>("OldStatus");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("ItemLogs");
                 });
 
             modelBuilder.Entity("SEMSystem.Models.LocationEmergencyLight", b =>
@@ -165,6 +585,81 @@ namespace SEMSystem.Migrations
                         .HasFilter("[Code] IS NOT NULL AND [Status] IS NOT NULL");
 
                     b.ToTable("LocationFireExtinguishers");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.LocationFireHydrant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("Location");
+
+                    b.Property<string>("Status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId", "Code", "Status")
+                        .IsUnique()
+                        .HasFilter("[Code] IS NOT NULL AND [Status] IS NOT NULL");
+
+                    b.ToTable("LocationFireHydrants");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.LocationInergenTank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Area");
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<string>("Capacity");
+
+                    b.Property<string>("Serial");
+
+                    b.Property<string>("Status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.ToTable("LocationInergenTanks");
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.LocationItemDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("Equipment");
+
+                    b.Property<int>("HeaderId");
+
+                    b.Property<int>("ItemId");
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId", "Status")
+                        .IsUnique()
+                        .HasFilter("[Status] IS NOT NULL");
+
+                    b.ToTable("LocationItemDetails");
                 });
 
             modelBuilder.Entity("SEMSystem.Models.Log", b =>
@@ -283,6 +778,30 @@ namespace SEMSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SEMSystem.Models.Bicycle", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Department", "Departments")
+                        .WithMany()
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.BicycleEntryDetail", b =>
+                {
+                    b.HasOne("SEMSystem.Models.BicycleEntryHeader", "BicycleHeaders")
+                        .WithMany()
+                        .HasForeignKey("BicycleEntryHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.BicycleEntryHeader", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Bicycle", "Bicycles")
+                        .WithMany()
+                        .HasForeignKey("BicycleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SEMSystem.Models.Department", b =>
                 {
                     b.HasOne("SEMSystem.Models.Company", "Companies")
@@ -291,11 +810,75 @@ namespace SEMSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SEMSystem.Models.EmergencyLightDetail", b =>
+                {
+                    b.HasOne("SEMSystem.Models.EmergencyLightHeader", "EmergencyLightHeaders")
+                        .WithMany()
+                        .HasForeignKey("EmergencyLightHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.EmergencyLightHeader", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Area", "Areas")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.FireExtinguisherDetail", b =>
+                {
+                    b.HasOne("SEMSystem.Models.FireExtinguisherHeader", "FireExtinguisherHeaders")
+                        .WithMany()
+                        .HasForeignKey("FireExtinguisherHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SEMSystem.Models.FireExtinguisherHeader", b =>
                 {
-                    b.HasOne("SEMSystem.Models.Company", "Companies")
+                    b.HasOne("SEMSystem.Models.Area", "Areas")
                         .WithMany()
-                        .HasForeignKey("CompanyId")
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.FireHydrantDetail", b =>
+                {
+                    b.HasOne("SEMSystem.Models.FireHydrantHeader", "FireHydrantHeaders")
+                        .WithMany()
+                        .HasForeignKey("FireHydrantHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.FireHydrantHeader", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Area", "Areas")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.InergenTankDetail", b =>
+                {
+                    b.HasOne("SEMSystem.Models.InergenTankHeader", "InergenTankHeaders")
+                        .WithMany()
+                        .HasForeignKey("InergenTankHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.InergenTankHeader", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Area", "Areas")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.ItemLog", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Item", "Items")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -312,6 +895,30 @@ namespace SEMSystem.Migrations
                     b.HasOne("SEMSystem.Models.Area", "Areas")
                         .WithMany()
                         .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.LocationFireHydrant", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Area", "Areas")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.LocationInergenTank", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Area", "Areas")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.LocationItemDetail", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Item", "Items")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

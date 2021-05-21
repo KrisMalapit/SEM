@@ -12,7 +12,7 @@ namespace SEMSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Location { get; set; }
+        //public string Location { get; set; }
         public string Capacity { get; set; }
         public string Serial { get; set; }
         public string Area { get; set; }

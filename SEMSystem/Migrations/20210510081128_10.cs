@@ -2,21 +2,21 @@
 
 namespace SEMSystem.Migrations
 {
-    public partial class _1 : Migration
+    public partial class _10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "UserType",
-                table: "Users",
+                name: "EquipmentType",
+                table: "Items",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UserType",
-                table: "Users");
+                name: "EquipmentType",
+                table: "Items");
         }
     }
 }
