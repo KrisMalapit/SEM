@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SEMSystem.Models;
 using DNTBreadCrumb.Core;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SEMSystem.Controllers
 {
@@ -30,6 +30,18 @@ namespace SEMSystem.Controllers
         [BreadCrumb(Title = "Index", Order = 1, IgnoreAjaxRequests = true)]
         public IActionResult Index()
         {
+
+            ViewData["ID"] = 0;
+            ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name");
+            ViewData["BicycleId"] = new SelectList(_context.Bicycles, "ID", "IdentificationNo");
+            ViewData["CreatedAt"] = DateTime.Now.Date.ToString("MM-dd-yyyy");
+
+            ViewData["ReferenceIdFE"] = 0;
+            ViewData["ReferenceIdEL"] = 0;
+            ViewData["ReferenceIdIT"] = 0;
+            ViewData["ReferenceIdFH"] = 0;
+            ViewData["ReferenceIdB"] = 0;
+            
 
 
 

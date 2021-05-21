@@ -28,6 +28,28 @@ namespace SEMSystem.Controllers
 
             return View();
         }
+        public JsonResult SearchArea(string q)
+        {
+            
+
+            var model = _context
+                .Areas.Where(a => a.Status == "Active")
+                .Where( a=>a.Name.ToUpper().Contains(q.ToUpper()))
+                .Select(b => new
+            {
+                id = b.ID,
+                text = b.Name,
+
+            });
+
+            var modelItem = new
+            {
+                total_count = model.Count(),
+                incomplete_results = false,
+                items = model.ToList(),
+            };
+            return Json(modelItem);
+        }
         public IActionResult getData()
         {
             string status = "";
@@ -262,7 +284,7 @@ namespace SEMSystem.Controllers
 
             try
             {
-                int dcnt = locdetail.location.Count();
+                int dcnt = locdetail.detail_id.Count();
                 switch (locdetail.Equipment)
                 {
                     case "divFE":
@@ -337,7 +359,7 @@ namespace SEMSystem.Controllers
                         {
                             try
                             {
-                                for (int i = 0; i < locdetail.location.Count(); i++)
+                                for (int i = 0; i < dcnt; i++)
                                 {
                                     var loc = new LocationEmergencyLight
                                     {
@@ -411,6 +433,165 @@ namespace SEMSystem.Controllers
 
 
                         break;
+
+                    case "divFH":
+                        var locFH = _context.LocationFireHydrants.Where(a => a.AreaId == locdetail.AreaId).ToList();
+                        if (locFH.Count() == 0)
+                        {
+                            try
+                            {
+                                for (int i = 0; i < dcnt; i++)
+                                {
+                                    var loc = new LocationFireHydrant
+                                    {
+
+                                        AreaId = locdetail.AreaId,
+                                        Code = locdetail.code[i],
+                                        Location = locdetail.location[i],
+
+                                        Status = "Active"
+                                    };
+                                    _context.Add(loc);
+                                }
+
+                                _context.SaveChanges();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                message = ex.Message;
+                                status = "failed";
+                            }
+                        }
+                        else
+                        {
+
+                            locFH.ForEach(x => x.Status = "Deleted_" + DateTime.Now.Ticks.ToString());  //set all record to deleted
+
+                            for (int i = 0; i < dcnt; i++)
+                            {
+                                try
+                                {
+                                    var _location = _context.LocationFireHydrants.Find(locdetail.detail_id[i]);
+                                    if (_location == null)
+                                    {
+                                        var loc = new LocationFireHydrant
+                                        {
+                                            Id = locdetail.detail_id[i],
+
+                                            AreaId = locdetail.AreaId,
+                                            Code = locdetail.code[i],
+                                            Location = locdetail.location[i],
+
+                                            Status = "Active"
+                                        };
+                                        _context.Add(loc);
+                                    }
+                                    else
+                                    {
+
+                                        _location.AreaId = locdetail.AreaId;
+                                        _location.Code = locdetail.code[i];
+                                        _location.Location = locdetail.location[i];
+
+                                        _location.Status = "Active";
+                                        _context.Update(_location);
+                                    }
+                                    _context.SaveChanges();
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    message = ex.Message;
+                                    status = "failed";
+                                }
+
+                            }
+                        }
+
+
+
+
+
+                        break;
+                    case "divIT":
+                        var locIT = _context.LocationInergenTanks.Where(a => a.AreaId == locdetail.AreaId).ToList();
+                        if (locIT.Count() == 0)
+                        {
+                            try
+                            {
+                                for (int i = 0; i < dcnt; i++)
+                                {
+                                    var loc = new LocationInergenTank
+                                    {
+
+                                        AreaId = locdetail.AreaId,
+                                        Serial = locdetail.serial[i],
+                                        Capacity = locdetail.capacity[i],
+                                        //Location = locdetail.location[i],
+                                        Area = locdetail.area[i],
+
+                                        Status = "Active"
+                                    };
+                                    _context.Add(loc);
+                                }
+
+                                _context.SaveChanges();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                message = ex.Message;
+                                status = "failed";
+                            }
+                        }
+                        else
+                        {
+
+                            locIT.ForEach(x => x.Status = "Deleted_" + DateTime.Now.Ticks.ToString());  //set all record to deleted
+
+                            for (int i = 0; i < dcnt; i++)
+                            {
+                                try
+                                {
+                                    var _location = _context.LocationInergenTanks.Find(locdetail.detail_id[i]);
+                                    if (_location == null)
+                                    {
+                                        var loc = new LocationInergenTank
+                                        {
+                                           
+                                            Serial = locdetail.serial[i],
+                                            Capacity = locdetail.capacity[i],
+                                            AreaId = locdetail.AreaId,
+                                            Area = locdetail.area[i],
+                                            //Location = locdetail.location[i],
+                                            Status = "Active"
+                                        };
+                                        _context.Add(loc);
+                                    }
+                                    else
+                                    {
+                                        _location.AreaId = locdetail.AreaId;
+                                        _location.Serial = locdetail.serial[i];
+                                        _location.Capacity = locdetail.capacity[i];
+                                        //_location.Location = locdetail.location[i];
+                                        _location.Area = locdetail.area[i];
+                                        _location.Status = "Active";
+                                        _context.Update(_location);
+                                    }
+                                    _context.SaveChanges();
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    message = ex.Message;
+                                    status = "failed";
+                                }
+
+                            }
+                        }
+
+                        break;
                     default:
                         break;
                 }
@@ -472,6 +653,34 @@ namespace SEMSystem.Controllers
 
 
                });
+            var vFH =
+
+               _context.LocationFireHydrants.Where(a => a.Status == "Active").Where(a => a.AreaId == AreaId).Select(a => new {
+
+
+
+                   a.Code,
+                   a.Location,
+
+                   a.Id
+
+
+               });
+            var vIT =
+
+              _context.LocationInergenTanks.Where(a => a.Status == "Active").Where(a => a.AreaId == AreaId).Select(a => new {
+
+
+
+                  a.Serial,
+                  a.Capacity,
+                  //a.Location,
+                  a.Area,
+
+                  a.Id
+
+
+              });
             status = "success";
 
 
@@ -487,6 +696,10 @@ namespace SEMSystem.Controllers
                 locationfe = vFE.ToList()
                 ,
                 locationel = vEL.ToList()
+                ,
+                locationfh = vFH.ToList()
+                ,
+                locationit = vIT.ToList()
 
             };
             return Json(model);
