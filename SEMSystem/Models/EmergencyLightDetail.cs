@@ -9,7 +9,9 @@ namespace SEMSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int LocationEmergencyLightId { get; set; }
+        //public int LocationEmergencyLightId { get; set; }
+        public int ItemId { get; set; }
+        public virtual Item Items { get; set; }
         public int Battery { get; set; }
         public int Bulb { get; set; }
         public int Usable { get; set; }

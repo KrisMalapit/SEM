@@ -12,9 +12,8 @@ namespace SEMSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int LocationFireExtinguisherId { get; set; }
-
-
+        public int ItemId { get; set; }
+        public virtual Item Items { get; set; }
         public int Cylinder { get; set; }
         public int Lever { get; set; }
         public int Gauge { get; set; }
@@ -26,7 +25,6 @@ namespace SEMSystem.Models
         public string UpdatedBy { get; set; }
         public int FireExtinguisherHeaderId { get; set; }
         public virtual FireExtinguisherHeader FireExtinguisherHeaders { get; set; }
-
         public string InspectedBy { get; set; }
         public string ReviewedBy { get; set; }
         public string NotedBy { get; set; }

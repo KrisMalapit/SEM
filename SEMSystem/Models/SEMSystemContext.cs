@@ -80,13 +80,20 @@ namespace SEMSystem.Models
               .IsUnique();
 
             modelBuilder.Entity<FireExtinguisherHeader>()
-             .HasIndex(p => new { p.AreaId, p.CreatedAt, p.Status })
+             .HasIndex(p => new { p.LocationFireExtinguisherId, p.CreatedAt, p.Status })
              .IsUnique();
 
             modelBuilder.Entity<EmergencyLightHeader>()
-             .HasIndex(p => new { p.AreaId, p.CreatedAt, p.Status })
+             .HasIndex(p => new { p.LocationEmergencyLightId, p.CreatedAt, p.Status })
              .IsUnique();
 
+            modelBuilder.Entity<InergenTankHeader>()
+            .HasIndex(p => new { p.LocationInergenTankId, p.CreatedAt, p.Status })
+            .IsUnique();
+
+            modelBuilder.Entity<FireHydrantHeader>()
+           .HasIndex(p => new { p.LocationFireHydrantId, p.CreatedAt, p.Status })
+           .IsUnique();
 
             modelBuilder.Entity<LocationItemDetail>()
              .HasIndex(p => new { p.ItemId, p.Status })

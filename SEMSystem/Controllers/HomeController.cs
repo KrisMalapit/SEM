@@ -32,7 +32,7 @@ namespace SEMSystem.Controllers
         {
 
             ViewData["ID"] = 0;
-            ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name");
+            //ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name");
             ViewData["BicycleId"] = new SelectList(_context.Bicycles, "ID", "IdentificationNo");
             ViewData["CreatedAt"] = DateTime.Now.Date.ToString("MM-dd-yyyy");
 

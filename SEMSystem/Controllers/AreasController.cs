@@ -84,6 +84,53 @@ namespace SEMSystem.Controllers
             };
             return Json(model);
         }
+        public IActionResult getLocation(int areaid)
+        {
+            string company = _context.Areas.Include(a=>a.Companies).Where(a=>a.ID == areaid).FirstOrDefault().Companies.Name;
+            string status = "";
+            var fe =
+
+                _context.LocationFireExtinguishers.Where(a => a.Status == "Active").Where(a=>a.AreaId == areaid).Select(a => new {
+                    a.Id,
+                    a.Location
+                });
+            var el =
+
+                _context.LocationEmergencyLights.Where(a => a.Status == "Active").Where(a => a.AreaId == areaid).Select(a => new {
+                    a.Id,
+                    a.Location
+                });
+            var fh =
+
+                _context.LocationFireHydrants.Where(a => a.Status == "Active").Where(a => a.AreaId == areaid).Select(a => new {
+                    a.Id,
+                    a.Location
+                });
+            var it =
+
+                _context.LocationInergenTanks.Where(a => a.Status == "Active").Where(a => a.AreaId == areaid).Select(a => new {
+                    a.Id,
+                    a.Area
+                });
+            status = "success";
+
+
+
+
+
+
+            var model = new
+            {
+                status
+                ,
+                datafe = fe,
+                datael = el,
+                datafh = fh,
+                datait = it,
+                company
+            };
+            return Json(model);
+        }
         // GET: Areas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -624,6 +671,381 @@ namespace SEMSystem.Controllers
         {
             return _context.Areas.Any(e => e.ID == id);
         }
+
+
+
+        public IActionResult getDataPerLocation(string LocationType, int LocationId, DateTime dateTime)
+        {
+            string status = "";
+
+           
+
+            if (LocationType == "LocationIDFE")
+            {
+                var v =
+                _context.LocationFireExtinguishers
+                .Where(a => a.Id == LocationId)
+                .Where(a => a.Status == "Active") // A
+                .GroupJoin(
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "FE"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    )
+                    .SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                             B.Id,
+                              ItemName = B.Items.Name,
+                              B.Items.Code,
+                              A.i.Type,
+                              A.i.Capacity,
+                              CompanyName = A.i.Areas.Companies.Name,
+
+                          }
+                    );
+
+                var detail = _context.FireExtinguisherDetails
+                    .Where(a => a.FireExtinguisherHeaders.Status == "Active")
+                    .Where(a => a.FireExtinguisherHeaders.LocationFireExtinguisherId == LocationId)
+                    .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
+                    .GroupJoin(
+                            _context.LocationFireExtinguishers // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.FireExtinguisherHeaders.LocationFireExtinguisherId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                 {
+
+                                     id = A.i.ItemId,
+                                     ItemName = A.i.Items.Name,
+                                     A.i.Cylinder,
+                                     A.i.Lever,
+                                     A.i.Gauge,
+                                     A.i.SafetySeal,
+                                     A.i.Hose,
+                                     A.i.Remarks,
+                                     B.Code,
+                                     B.Type,
+                                     B.Capacity,
+                                     A.i.InspectedBy,
+                                     A.i.ReviewedBy,
+                                     A.i.NotedBy,
+                                     CompanyName = B.Areas.Companies.Name,
+                                     HeaderId = A.i.FireExtinguisherHeaderId
+                                 }
+                            );
+                status = "success";
+
+                var model = new
+                {
+                    status
+                    ,
+
+                    datadetail = detail
+
+                    ,
+                    data = v
+
+                };
+                return Json(model);
+            }else if (LocationType == "LocationIDEL") {
+                var v =
+                _context.LocationEmergencyLights
+                .Where(a => a.Id == LocationId)
+                .Where(a => a.Status == "Active") // A
+                .GroupJoin(
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "EL"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    )
+                    .SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              B.Id,
+                              ItemName = B.Items.Name,
+                              B.Items.Code,
+                           
+
+
+                          }
+                    );
+
+                var detail = _context.EmergencyLightDetails
+                    .Where(a => a.EmergencyLightHeaders.Status == "Active")
+                    .Where(a => a.EmergencyLightHeaders.LocationEmergencyLightId == LocationId)
+                    .Where(a => a.EmergencyLightHeaders.CreatedAt == dateTime) //A
+                    .GroupJoin(
+                            _context.LocationEmergencyLights // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.EmergencyLightHeaders.LocationEmergencyLightId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                 {
+
+                                     id = A.i.ItemId,
+                                     ItemName = A.i.Items.Name,
+                                     A.i.Battery,
+                                     A.i.Bulb,
+                                     A.i.Usable,
+                                     A.i.Remarks,
+                                     A.i.Items.Code,
+                                     A.i.InspectedBy,
+                                     A.i.ReviewedBy,
+                                     A.i.NotedBy,
+                                     CompanyName = B.Areas.Companies.Name,
+                                     HeaderId = A.i.EmergencyLightHeaderId
+                                 }
+                            );
+                status = "success";
+
+                var model = new
+                {
+                    status
+                    ,
+
+                    datadetail = detail
+
+                    ,
+                    data = v
+
+                };
+                return Json(model);
+            } else if (LocationType == "LocationIDFH") {
+                var v =
+                    _context.LocationFireHydrants
+                    .Where(a => a.Id == LocationId)
+                    .Where(a => a.Status == "Active") // A
+                    .GroupJoin(
+                           _context.LocationItemDetails // B
+                           .Where(a => a.Status == "Active")
+                           .Where(a => a.Equipment == "FH"),
+                           i => i.Id, //A key
+                           p => p.HeaderId,//B key
+                           (i, g) =>
+                              new
+                              {
+                                  i, //holds A data
+                                  g  //holds B data
+                              }
+                        )
+                        .SelectMany(
+                           temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                           (A, B) =>
+                              new
+                              {
+                                  B.Id,
+                                  ItemName = B.Items.Name,
+                                  B.Items.Code,
+                           
+
+
+                              }
+                        );
+
+
+                var xx = v.ToList();
+                    var detail = _context.FireHydrantDetails
+                        .Where(a => a.FireHydrantHeaders.Status == "Active")
+                        .Where(a => a.FireHydrantHeaders.LocationFireHydrantId == LocationId)
+                        .Where(a => a.FireHydrantHeaders.CreatedAt == dateTime) //A
+                        .GroupJoin(
+                                _context.LocationFireHydrants // B
+                                .Where(a => a.Status == "Active"),
+                                i => i.FireHydrantHeaders.LocationFireHydrantId, //A key
+                                p => p.Id,//B key
+                                (i, g) =>
+                                    new
+                                    {
+                                        i, //holds A data
+                                        g  //holds B data
+                                    }
+                                )
+                                .SelectMany(
+                                temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                                (A, B) =>
+                                     new
+                                     {
+                                         Id = A.i.ItemId,
+                                         ItemName = A.i.Items.Name,
+                                         A.i.Items.Code,
+                                         A.i.GlassCabinet,
+                                         A.i.Hanger,
+                                         A.i.Hose15,
+                                         A.i.Nozzle15,
+                                         A.i.Hose25,
+                                         A.i.Nozzle25,
+                                         A.i.SpecialTools,
+                                         A.i.InspectedBy,
+                                         A.i.ReviewedBy,
+                                         A.i.NotedBy,
+                                         A.i.Remarks,
+                                         CompanyName = B.Areas.Companies.Name,
+                                         HeaderId = A.i.FireHydrantHeaderId
+                                     }
+                                );
+                status = "success";
+                var xy = detail.ToList();
+                var model = new
+                {
+                    status
+                    ,
+
+                    datadetail = detail
+
+                    ,
+                    data = v
+
+                };
+                return Json(model);
+            } else if (LocationType == "LocationIDIT")
+            {
+                var v =
+                _context.LocationInergenTanks
+                .Where(a => a.Id == LocationId)
+                .Where(a => a.Status == "Active") // A
+                .GroupJoin(
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "IT"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    )
+                    .SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              B.Id,
+                              ItemName = B.Items.Name,
+                              B.Items.Code,
+                              A.i.Serial,
+                              A.i.Capacity,
+                              CompanyName = A.i.Areas.Companies.Name,
+
+                          }
+                    );
+                //var xx = v.ToList();
+
+
+                var detail = _context.InergenTankDetails
+                    .Where(a => a.InergenTankHeaders.Status == "Active")
+                    .Where(a => a.InergenTankHeaders.LocationInergenTankId == LocationId)
+                    .Where(a => a.InergenTankHeaders.CreatedAt == dateTime) //A
+                    .GroupJoin(
+                            _context.LocationInergenTanks // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.InergenTankHeaders.LocationInergenTankId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                 {
+
+                                     id = A.i.ItemId,
+                                     ItemName = A.i.Items.Name,
+                                     A.i.Items.Code,
+                                     A.i.Cylinder,
+                                 
+                                     A.i.Gauge,
+                                     A.i.Pressure,
+                                     A.i.Hose,
+                                     A.i.Remarks,
+                                   
+                                     B.Serial,
+                                     B.Capacity,
+                                     A.i.InspectedBy,
+                                     A.i.ReviewedBy,
+                                     A.i.NotedBy,
+                                     CompanyName = B.Areas.Companies.Name,
+                                     HeaderId = A.i.InergenTankHeaderId
+                                 }
+                            );
+               // var xy = detail.ToList();
+
+                status = "success";
+
+                var model = new
+                {
+                    status
+                    ,
+
+                    datadetail = detail
+
+                    ,
+                    data = v
+
+                };
+                return Json(model);
+            }
+            else
+            {
+                return null;
+            }
+           
+
+
+  
+
+                    
+        }
+
+
+
+
         public IActionResult getDataLocation(int AreaId)
         {
             string status = "";
