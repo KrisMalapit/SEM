@@ -168,47 +168,47 @@ namespace SEMSystem.Controllers
                 var v =
                        _context.Items
                        .GroupJoin(
-                                      _context.LocationItemDetails // B
-                                      .Where(a => a.Status == "Active"),
-                                      i => i.Id, //A key
-                                      p => p.ItemId,//B key
-                                      (i, g) =>
-                                         new
-                                         {
-                                             i, //holds A data
-                                             g  //holds B data
-                                         }
-                                   )
-                                   .SelectMany(
-                                      temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                                      (A, B) =>
-                                         new
-                                         {
-                                             A.i.Code,
-                                             ItemName = A.i.Name,
-                                             A.i.SerialNo,
-                                             DatePurchased = A.i.DatePurchased == null ? dt : A.i.DatePurchased,
+                            _context.LocationItemDetails // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.Id, //A key
+                            p => p.ItemId,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                        )
+                        .SelectMany(
+                            temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                new
+                                {
+                                    A.i.Code,
+                                    ItemName = A.i.Name,
+                                    A.i.SerialNo,
+                                    DatePurchased = A.i.DatePurchased == null ? dt : A.i.DatePurchased,
 
-                                             A.i.ItemStatus,
-                                             A.i.EquipmentType,
-                                             Location = A.i.EquipmentType == "Fire Extinguisher" ? _context.LocationFireExtinguishers.Where(b => b.Id == B.HeaderId).FirstOrDefault().Location :
-                                                         A.i.EquipmentType == "Emergency Light" ? _context.LocationEmergencyLights.Where(b => b.Id == B.HeaderId).FirstOrDefault().Location :
-                                                         A.i.EquipmentType == "Fire Hydrant" ? _context.LocationFireHydrants.Where(b => b.Id == B.HeaderId).FirstOrDefault().Location :
-                                                         A.i.EquipmentType == "Inergen Tank" ? _context.LocationInergenTanks.Where(b => b.Id == B.HeaderId).FirstOrDefault().Area :
-                                                        "",
-                                             Area = A.i.EquipmentType == "Fire Extinguisher" ? _context.LocationFireExtinguishers.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationFireExtinguishers.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
-                                                         A.i.EquipmentType == "Emergency Light" ? _context.LocationEmergencyLights.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationEmergencyLights.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
-                                                         A.i.EquipmentType == "Fire Hydrant" ? _context.LocationFireHydrants.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationFireHydrants.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
-                                                         A.i.EquipmentType == "Inergen Tank" ? _context.LocationInergenTanks.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationInergenTanks.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
-                                                        0,
+                                    A.i.ItemStatus,
+                                    A.i.EquipmentType,
+                                    Location = A.i.EquipmentType == "Fire Extinguisher" ? _context.LocationFireExtinguishers.Where(b => b.Id == B.HeaderId).FirstOrDefault().Location :
+                                                A.i.EquipmentType == "Emergency Light" ? _context.LocationEmergencyLights.Where(b => b.Id == B.HeaderId).FirstOrDefault().Location :
+                                                A.i.EquipmentType == "Fire Hydrant" ? _context.LocationFireHydrants.Where(b => b.Id == B.HeaderId).FirstOrDefault().Location :
+                                                A.i.EquipmentType == "Inergen Tank" ? _context.LocationInergenTanks.Where(b => b.Id == B.HeaderId).FirstOrDefault().Area :
+                                            "",
+                                    Area = A.i.EquipmentType == "Fire Extinguisher" ? _context.LocationFireExtinguishers.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationFireExtinguishers.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
+                                                A.i.EquipmentType == "Emergency Light" ? _context.LocationEmergencyLights.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationEmergencyLights.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
+                                                A.i.EquipmentType == "Fire Hydrant" ? _context.LocationFireHydrants.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationFireHydrants.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
+                                                A.i.EquipmentType == "Inergen Tank" ? _context.LocationInergenTanks.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId == null ? 0 : _context.LocationInergenTanks.Where(b => b.Id == B.HeaderId).FirstOrDefault().AreaId :
+                                            0,
 
-                                            A.i.Warranty
+                                A.i.Warranty
                                             
 
 
 
-                                         }
-                                   );
+                                }
+                        );
 
 
 
