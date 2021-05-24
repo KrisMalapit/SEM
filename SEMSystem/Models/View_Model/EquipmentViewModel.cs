@@ -18,6 +18,7 @@ namespace SEMSystem.Models.View_Model
         public string Remarks { get; set; }
         public string Pressure { get; set; }
         public int AreaId { get; set; }
+        public int ItemId { get; set; }
         public int ID { get; set; }
         public string Safe { get; set; }
         public string UnSafe { get; set; }
@@ -40,7 +41,7 @@ namespace SEMSystem.Models.View_Model
         public string Battery { get; set; }
         public string Bulb { get; set; }
         public string Usable { get; set; }
-       
+        public int ItemId { get; set; }
         public string Remarks { get; set; }
         public int AreaId { get; set; }
         public int ID { get; set; }
@@ -53,7 +54,7 @@ namespace SEMSystem.Models.View_Model
     public class FireHydrantViewModel
     {
         public int LocationFireHydrantId { get; set; }
-
+        public int ItemId { get; set; }
         public string GlassCabinet { get; set; }
         public string Hanger { get; set; }
         public string Hose15 { get; set; }

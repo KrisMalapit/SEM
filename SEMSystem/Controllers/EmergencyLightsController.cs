@@ -55,7 +55,7 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
-            ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name", model.AreaId);
+            ViewData["LocationId"] = new SelectList(_context.LocationEmergencyLights, "Id", "Name", model.LocationEmergencyLightId);
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
 
@@ -117,8 +117,8 @@ namespace SEMSystem.Controllers
                      .Select(a => new
                      {
                          a.CreatedAt,
-                         CompanyName = a.Areas.Companies.Name,
-                         AreaName = a.Areas.Name
+                         CompanyName = a.Locations.Areas.Companies.Name,
+                         AreaName = a.Locations.Areas.Name
                          ,
                          a.Status
                      })
@@ -139,8 +139,8 @@ namespace SEMSystem.Controllers
 
 
                    a.CreatedAt,
-                   CompanyName = a.Areas.Companies.Name,
-                   AreaName = a.Areas.Name
+                   CompanyName = a.Locations.Areas.Companies.Name,
+                   AreaName = a.Locations.Areas.Name
                   ,
                    a.Id
                    ,
@@ -174,64 +174,131 @@ namespace SEMSystem.Controllers
                 return NotFound(ex.Message);
             }
         }
-        public IActionResult getDataPerArea(int AreaId, DateTime dateTime)
+        public IActionResult getDataPerArea(int LocationId, DateTime dateTime)
         {
             string status = "";
             int headerid = 0;
+            //var v =
+
+            //    _context.LocationEmergencyLights
+            //    .Where(a => a.Status == "Active")
+            //    .Where(a => a.AreaId == AreaId)
+            //    .Select(a => new {
+            //        a.Location,
+
+            //        a.Code,
+            //        a.Id,
+            //        CompanyName = a.Areas.Companies.Name
+            //    });
+
+
+
+            //var detail = _context.EmergencyLightDetails
+            //     .Where(a => a.EmergencyLightHeaders.Status == "Active")
+            //        .Where(a => a.EmergencyLightHeaders.AreaId == AreaId)
+            //        .Where(a => a.EmergencyLightHeaders.CreatedAt == dateTime) //A
+            //    //.Where(a => a.EmergencyLightHeaderId == id) //A
+            //                   .GroupJoin(
+            //                      _context.LocationEmergencyLights // B
+            //                      .Where(a => a.Status == "Active"),
+            //                      i => i.LocationEmergencyLightId, //A key
+            //                      p => p.Id,//B key
+            //                      (i, g) =>
+            //                         new
+            //                         {
+            //                             i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //                   )
+            //                   .SelectMany(
+            //                      temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //                      (A, B) =>
+            //                         new
+            //                         {
+
+            //                             Id = A.i.LocationEmergencyLightId,
+            //                             A.i.Battery,
+            //                             A.i.Bulb,
+            //                             A.i.Usable,
+
+            //                             A.i.Remarks,
+            //                             B.Location,
+            //                             B.Code,
+            //                             A.i.InspectedBy,
+            //                             A.i.ReviewedBy,
+            //                             A.i.NotedBy,
+
+            //                             CompanyName = B.Areas.Companies.Name,
+            //                             HeaderId = A.i.EmergencyLightHeaderId
+            //                         }
+            //                   );
+
             var v =
 
-                _context.LocationEmergencyLights
-                .Where(a => a.Status == "Active")
-                .Where(a => a.AreaId == AreaId)
-                .Select(a => new {
-                    a.Location,
-                   
-                    a.Code,
-                    a.Id,
-                    CompanyName = a.Areas.Companies.Name
-                });
-
-
-
-            var detail = _context.EmergencyLightDetails
-                 .Where(a => a.EmergencyLightHeaders.Status == "Active")
-                    .Where(a => a.EmergencyLightHeaders.AreaId == AreaId)
-                    .Where(a => a.EmergencyLightHeaders.CreatedAt == dateTime) //A
-                //.Where(a => a.EmergencyLightHeaderId == id) //A
-                               .GroupJoin(
-                                  _context.LocationEmergencyLights // B
-                                  .Where(a => a.Status == "Active"),
-                                  i => i.LocationEmergencyLightId, //A key
-                                  p => p.Id,//B key
-                                  (i, g) =>
-                                     new
-                                     {
-                                         i, //holds A data
+               _context.LocationEmergencyLights
+                    .Where(a => a.Id == LocationId)
+                    .Where(a => a.Status == "Status") //A
+                    .GroupJoin(
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "EL"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
                               g  //holds B data
                           }
-                               )
-                               .SelectMany(
-                                  temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                                  (A, B) =>
-                                     new
-                                     {
+                    )
+                    .SelectMany(
+                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              //A.i.Location,
+                              B.Items.Code,
+                              ItemName = B.Items.Name,
+                              CompanyName = A.i.Areas.Companies.Name,
+                          }
+                    );
 
-                                         Id = A.i.LocationEmergencyLightId,
-                                         A.i.Battery,
-                                         A.i.Bulb,
-                                         A.i.Usable,
+            var detail = _context.EmergencyLightDetails
+                    .Where(a => a.EmergencyLightHeaders.Status == "Active")
+                    .Where(a => a.EmergencyLightHeaders.LocationEmergencyLightId == LocationId)
+                    .Where(a => a.EmergencyLightHeaders.CreatedAt == dateTime) //A
+                    .GroupJoin(
+                            _context.LocationEmergencyLights // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.EmergencyLightHeaders.LocationEmergencyLightId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                 {
 
-                                         A.i.Remarks,
-                                         B.Location,
-                                         B.Code,
-                                         A.i.InspectedBy,
-                                         A.i.ReviewedBy,
-                                         A.i.NotedBy,
-
-                                         CompanyName = B.Areas.Companies.Name,
-                                         HeaderId = A.i.EmergencyLightHeaderId
-                                     }
-                               );
+                                     A.i.ItemId,
+                                     A.i.Battery,
+                                     A.i.Bulb,
+                                     A.i.Usable,
+                                     A.i.Remarks,
+                                     B.Code,
+                                  
+                                     A.i.InspectedBy,
+                                     A.i.ReviewedBy,
+                                     A.i.NotedBy,
+                                     //CompanyName = B.Areas.Companies.Name,
+                                     HeaderId = A.i.EmergencyLightHeaderId
+                                 }
+                            );
 
 
             status = "success";
@@ -255,14 +322,17 @@ namespace SEMSystem.Controllers
             string message = "";
             try
             {
-                var _header = _context.EmergencyLightHeaders.Where(a => a.Status == "Active")
-                    .Where(a => a.AreaId == item[0].AreaId)
+                var _header = _context.EmergencyLightHeaders
+                    .Where(a => a.Status == "Active")
+                     //.Where(a => a.AreaId == item[0].AreaId)
+                     .Where(a => a.LocationEmergencyLightId == item[0].LocationEmergencyLightId)
                     .Where(a => a.CreatedAt == DateTime.Now.Date);
 
                 if (_header.Count() == 0)
                 {
                     EmergencyLightHeader header = new EmergencyLightHeader();
-                    header.AreaId = item[0].AreaId;
+                    //header.AreaId = item[0].AreaId;
+                    header.LocationEmergencyLightId = item[0].LocationEmergencyLightId;
                     header.CreatedAt = DateTime.Now.Date;
                     header.CreatedBy = User.Identity.GetUserName();
                     _context.Add(header);
@@ -273,7 +343,7 @@ namespace SEMSystem.Controllers
                     {
                         var _detail = new EmergencyLightDetail
                         {
-                            LocationEmergencyLightId = detail.LocationEmergencyLightId,
+                            ItemId = detail.ItemId,
                             Battery = detail.Battery == "true" ? 1 : 0,
                             Bulb = detail.Bulb == "true" ? 1 : 0,
                             Usable = detail.Usable == "true" ? 1 : 0,
@@ -301,7 +371,8 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.EmergencyLightDetails
                             .Where(a => a.EmergencyLightHeaderId == headerId)
-                            .Where(a => a.LocationEmergencyLightId == detail.LocationEmergencyLightId)
+                            //.Where(a => a.LocationEmergencyLightId == detail.LocationEmergencyLightId)
+                            .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
                         if (d == null)
@@ -309,7 +380,8 @@ namespace SEMSystem.Controllers
 
                             var _detail = new EmergencyLightDetail
                             {
-                                LocationEmergencyLightId = detail.LocationEmergencyLightId,
+                                //LocationEmergencyLightId = detail.LocationEmergencyLightId,
+                                ItemId = detail.ItemId,
                                 Battery = detail.Battery == "true" ? 1 : 0,
                                 Bulb = detail.Bulb == "true" ? 1 : 0,
                                 Usable = detail.Usable == "true" ? 1 : 0,
@@ -420,41 +492,75 @@ namespace SEMSystem.Controllers
         public ActionResult getDataDetails(int id)
         {
             string status = "";
-            var v = _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaderId == id) //A
-                    .GroupJoin(
-                       _context.LocationEmergencyLights // B
-                       .Where(a => a.Status == "Active"),
-                       i => i.LocationEmergencyLightId, //A key
-                       p => p.Id,//B key
-                       (i, g) =>
-                          new
-                          {
-                              i, //holds A data
-                              g  //holds B data
-                          }
-                    )
-                    .SelectMany(
-                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                       (A, B) =>
-                          new
-                          {
+            //var v = _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaderId == id) //A
+            //        .GroupJoin(
+            //           _context.LocationEmergencyLights // B
+            //           .Where(a => a.Status == "Active"),
+            //           i => i.LocationEmergencyLightId, //A key
+            //           p => p.Id,//B key
+            //           (i, g) =>
+            //              new
+            //              {
+            //                  i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //        )
+            //        .SelectMany(
+            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //           (A, B) =>
+            //              new
+            //              {
 
-                              Id = A.i.LocationEmergencyLightId,
-                              A.i.Battery,
-                              A.i.Bulb,
-                              A.i.Usable,
-                             
-                              A.i.Remarks,
-                              B.Location,
-                              B.Code,
-                              A.i.InspectedBy,
-                              A.i.ReviewedBy,
-                              A.i.NotedBy,
+            //                  Id = A.i.LocationEmergencyLightId,
+            //                  A.i.Battery,
+            //                  A.i.Bulb,
+            //                  A.i.Usable,
 
-                              CompanyName = B.Areas.Companies.Name
-                          }
-                    );
+            //                  A.i.Remarks,
+            //                  B.Location,
+            //                  B.Code,
+            //                  A.i.InspectedBy,
+            //                  A.i.ReviewedBy,
+            //                  A.i.NotedBy,
 
+            //                  CompanyName = B.Areas.Companies.Name
+            //              }
+            //        );
+
+            var v = _context.EmergencyLightDetails
+                  .Where(a => a.EmergencyLightHeaders.Status == "Active")
+                  .Where(a => a.EmergencyLightHeaderId == id) //A
+                  .GroupJoin(
+                          _context.LocationEmergencyLights // B
+                          .Where(a => a.Status == "Active"),
+                          i => i.EmergencyLightHeaders.LocationEmergencyLightId, //A key
+                          p => p.Id,//B key
+                          (i, g) =>
+                              new
+                              {
+                                  i, //holds A data
+                                   g  //holds B data
+                               }
+                          )
+                          .SelectMany(
+                          temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                          (A, B) =>
+                               new
+                               {
+
+                                   A.i.ItemId,
+                                   A.i.Battery,
+                                   A.i.Bulb,
+                                   A.i.Usable,
+                                   A.i.Remarks,
+                                   B.Code,
+                                   A.i.InspectedBy,
+                                   A.i.ReviewedBy,
+                                   A.i.NotedBy,
+                                   CompanyName = B.Areas.Companies.Name,
+                                   HeaderId = A.i.EmergencyLightHeaderId
+                               }
+                          );
             status = "success";
 
             var model = new

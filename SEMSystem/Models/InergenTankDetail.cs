@@ -9,8 +9,9 @@ namespace SEMSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int LocationInergenTankId { get; set; }
-
+        //public int LocationInergenTankId { get; set; }
+        public int ItemId { get; set; }
+        public virtual Item Items { get; set; }
         public int Cylinder { get; set; }
         public int Gauge { get; set; }
         public int Hose { get; set; }

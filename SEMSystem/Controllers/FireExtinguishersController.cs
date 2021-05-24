@@ -55,7 +55,7 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
-            ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name",model.AreaId);
+            ViewData["LocationId"] = new SelectList(_context.LocationFireExtinguishers, "Id", "Name",model.LocationFireExtinguisherId);
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
 
@@ -117,8 +117,8 @@ namespace SEMSystem.Controllers
                      .Select(a => new
                      {
                          a.CreatedAt,
-                         CompanyName = a.Areas.Companies.Name,
-                         AreaName = a.Areas.Name
+                         CompanyName = a.Locations.Areas.Companies.Name,
+                         AreaName = a.Locations.Areas.Name
                          ,a.Status
                      })
                     .Where(a => a.Status == "Active")
@@ -138,8 +138,8 @@ namespace SEMSystem.Controllers
 
 
                    a.CreatedAt,
-                   CompanyName = a.Areas.Companies.Name,
-                   AreaName = a.Areas.Name
+                   CompanyName = a.Locations.Areas.Companies.Name,
+                   AreaName = a.Locations.Areas.Name
                   ,
                    a.Id
                    ,a.Status
@@ -172,39 +172,85 @@ namespace SEMSystem.Controllers
                 return NotFound(ex.Message);
             }
         }
-        public IActionResult getDataPerArea(int AreaId, DateTime dateTime)
+        public IActionResult getDataPerArea(int LocationId, DateTime dateTime)
         {
             string status = "";
             int headerid = 0;
+
+            //var v =
+
+            //    _context.LocationFireExtinguishers
+            //    .Where(a => a.Status == "Active")
+            //    .Where(a=>a.AreaId == AreaId)
+            //    .Select(a => new {
+            //        a.Location,
+            //        a.Type,
+            //        a.Capacity,
+            //        a.Code,
+            //        a.Id,
+            //        CompanyName = a.Areas.Companies.Name
+            //    });
+
+            //status = "success";
+
+
+
+
+
+            //var detail = _context.FireExtinguisherDetails
+            //        .Where(a => a.FireExtinguisherHeaders.Status == "Active")
+            //        .Where(a => a.FireExtinguisherHeaders.AreaId == AreaId)
+            //        .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
+            //        .GroupJoin(
+            //           _context.LocationFireExtinguishers // B
+            //           .Where(a => a.Status == "Active"),
+            //           i => i.LocationFireExtinguisherId, //A key
+            //           p => p.Id,//B key
+            //           (i, g) =>
+            //              new
+            //              {
+            //                  i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //        )
+            //        .SelectMany(
+            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //           (A, B) =>
+            //              new
+            //              {
+
+            //                  Id = A.i.LocationFireExtinguisherId,
+            //                  A.i.Cylinder,
+            //                  A.i.Lever,
+            //                  A.i.Gauge,
+            //                  A.i.SafetySeal,
+            //                  A.i.Hose,
+            //                  A.i.Remarks,
+            //                  B.Location,
+            //                  B.Code,
+            //                  B.Type,
+            //                  B.Capacity,
+            //                  A.i.InspectedBy,
+            //                  A.i.ReviewedBy,
+            //                  A.i.NotedBy,
+            //                  CompanyName = B.Areas.Companies.Name,
+            //                  HeaderId = A.i.FireExtinguisherHeaderId
+            //              }
+            //        );
+
+
+
             var v =
 
-                _context.LocationFireExtinguishers
-                .Where(a => a.Status == "Active")
-                .Where(a=>a.AreaId == AreaId)
-                .Select(a => new {
-                    a.Location,
-                    a.Type,
-                    a.Capacity,
-                    a.Code,
-                    a.Id,
-                    CompanyName = a.Areas.Companies.Name
-                });
-         
-            status = "success";
-
-
-           
-
-
-            var detail = _context.FireExtinguisherDetails
-                    .Where(a => a.FireExtinguisherHeaders.Status == "Active")
-                    .Where(a => a.FireExtinguisherHeaders.AreaId == AreaId)
-                    .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
+               _context.LocationFireExtinguishers
+                    .Where(a => a.Id == LocationId)
+                    .Where(a => a.Status == "Status") //A
                     .GroupJoin(
-                       _context.LocationFireExtinguishers // B
-                       .Where(a => a.Status == "Active"),
-                       i => i.LocationFireExtinguisherId, //A key
-                       p => p.Id,//B key
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "FE"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
                        (i, g) =>
                           new
                           {
@@ -213,32 +259,59 @@ namespace SEMSystem.Controllers
                           }
                     )
                     .SelectMany(
-                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
                        (A, B) =>
                           new
                           {
-
-                              Id = A.i.LocationFireExtinguisherId,
-                              A.i.Cylinder,
-                              A.i.Lever,
-                              A.i.Gauge,
-                              A.i.SafetySeal,
-                              A.i.Hose,
-                              A.i.Remarks,
-                              B.Location,
-                              B.Code,
-                              B.Type,
-                              B.Capacity,
-                              A.i.InspectedBy,
-                              A.i.ReviewedBy,
-                              A.i.NotedBy,
-                              CompanyName = B.Areas.Companies.Name,
-                              HeaderId = A.i.FireExtinguisherHeaderId
+                              //A.i.Location,
+                              A.i.Type,
+                              A.i.Capacity,
+                              B.Items.Code,
+                              ItemName = B.Items.Name,
+                              CompanyName = A.i.Areas.Companies.Name,   
                           }
                     );
 
+            var detail = _context.FireExtinguisherDetails
+                    .Where(a => a.FireExtinguisherHeaders.Status == "Active")
+                    .Where(a => a.FireExtinguisherHeaders.LocationFireExtinguisherId == LocationId)
+                    .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
+                    .GroupJoin(
+                            _context.LocationFireExtinguishers // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.FireExtinguisherHeaders.LocationFireExtinguisherId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                  {
 
-           
+                                      A.i.ItemId,
+                                      A.i.Cylinder,
+                                      A.i.Lever,
+                                      A.i.Gauge,
+                                      A.i.SafetySeal,
+                                      A.i.Hose,
+                                      A.i.Remarks,
+                                      B.Code,
+                                      B.Type,
+                                      B.Capacity,
+                                      A.i.InspectedBy,
+                                      A.i.ReviewedBy,
+                                      A.i.NotedBy,
+                                      CompanyName = B.Areas.Companies.Name,
+                                      HeaderId = A.i.FireExtinguisherHeaderId
+                                  }
+                            );
+            status = "success";
 
             var model = new
             {
@@ -262,7 +335,7 @@ namespace SEMSystem.Controllers
             {
                 var _header = _context.FireExtinguisherHeaders
                     .Where(a => a.Status == "Active")
-                    .Where(a => a.AreaId == item[0].AreaId)
+                    .Where(a => a.LocationFireExtinguisherId == item[0].LocationFireExtinguisherId)
                     .Where(a => a.CreatedAt == DateTime.Now.Date);
 
                 if (_header.Count() == 0)
@@ -270,7 +343,7 @@ namespace SEMSystem.Controllers
 
                     FireExtinguisherHeader header = new FireExtinguisherHeader
                     {
-                        AreaId = item[0].AreaId,
+                        LocationFireExtinguisherId = item[0].LocationFireExtinguisherId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
                     };
@@ -283,7 +356,7 @@ namespace SEMSystem.Controllers
                     {
                         var _detail = new FireExtinguisherDetail
                         {
-                            LocationFireExtinguisherId = detail.LocationFireExtinguisherId,
+                            ItemId = detail.ItemId,
                             Cylinder = detail.Cylinder == "true" ? 1 : 0,
                             Lever = detail.Lever == "true" ? 1 : 0,
                             Gauge = detail.Gauge == "true" ? 1 : 0,
@@ -311,7 +384,7 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.FireExtinguisherDetails
                             .Where(a => a.FireExtinguisherHeaderId == headerId)
-                            .Where(a => a.LocationFireExtinguisherId == detail.LocationFireExtinguisherId)
+                            .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
                         if (d == null)
@@ -319,7 +392,7 @@ namespace SEMSystem.Controllers
 
                             var _detail = new FireExtinguisherDetail
                             {
-                                LocationFireExtinguisherId = detail.LocationFireExtinguisherId,
+                                ItemId = detail.ItemId,
                                 Cylinder = detail.Cylinder == "true" ? 1 : 0,
                                 Lever = detail.Lever == "true" ? 1 : 0,
                                 Gauge = detail.Gauge == "true" ? 1 : 0,
@@ -429,43 +502,80 @@ namespace SEMSystem.Controllers
         public ActionResult getDataDetails(int id)
         {
             string status = "";
-            var v = _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaderId == id) //A
-                    .GroupJoin(
-                       _context.LocationFireExtinguishers // B
-                       .Where(a => a.Status == "Active"),
-                       i => i.LocationFireExtinguisherId, //A key
-                       p => p.Id,//B key
-                       (i, g) =>
-                          new
-                          {
-                              i, //holds A data
-                              g  //holds B data
-                          }
-                    )
-                    .SelectMany(
-                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                       (A, B) =>
-                          new
-                          {
-                              
-                              Id = A.i.LocationFireExtinguisherId,
-                              A.i.Cylinder,
-                              A.i.Lever,
-                              A.i.Gauge,
-                              A.i.SafetySeal,
-                              A.i.Hose,
-                              A.i.Remarks,
-                              B.Location,
-                              B.Code,
-                              B.Type,
-                              B.Capacity,
-                              A.i.InspectedBy,
-                              A.i.ReviewedBy,
-                              A.i.NotedBy,
-                              CompanyName = B.Areas.Companies.Name
-                          }
-                    );
+            //var v = _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaderId == id) //A
+            //        .GroupJoin(
+            //           _context.LocationFireExtinguishers // B
+            //           .Where(a => a.Status == "Active"),
+            //           i => i.LocationFireExtinguisherId, //A key
+            //           p => p.Id,//B key
+            //           (i, g) =>
+            //              new
+            //              {
+            //                  i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //        )
+            //        .SelectMany(
+            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //           (A, B) =>
+            //              new
+            //              {
 
+            //                  Id = A.i.LocationFireExtinguisherId,
+            //                  A.i.Cylinder,
+            //                  A.i.Lever,
+            //                  A.i.Gauge,
+            //                  A.i.SafetySeal,
+            //                  A.i.Hose,
+            //                  A.i.Remarks,
+            //                  B.Location,
+            //                  B.Code,
+            //                  B.Type,
+            //                  B.Capacity,
+            //                  A.i.InspectedBy,
+            //                  A.i.ReviewedBy,
+            //                  A.i.NotedBy,
+            //                  CompanyName = B.Areas.Companies.Name
+            //              }
+            //        );
+            var v = _context.FireExtinguisherDetails
+                   .Where(a => a.FireExtinguisherHeaders.Status == "Active")
+                   .Where(a => a.FireExtinguisherHeaderId == id) //A
+                   .GroupJoin(
+                           _context.LocationFireExtinguishers // B
+                           .Where(a => a.Status == "Active"),
+                           i => i.FireExtinguisherHeaders.LocationFireExtinguisherId, //A key
+                           p => p.Id,//B key
+                           (i, g) =>
+                               new
+                               {
+                                   i, //holds A data
+                                    g  //holds B data
+                                }
+                           )
+                           .SelectMany(
+                           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                           (A, B) =>
+                                new
+                                {
+
+                                    A.i.ItemId,
+                                    A.i.Cylinder,
+                                    A.i.Lever,
+                                    A.i.Gauge,
+                                    A.i.SafetySeal,
+                                    A.i.Hose,
+                                    A.i.Remarks,
+                                    B.Code,
+                                    B.Type,
+                                    B.Capacity,
+                                    A.i.InspectedBy,
+                                    A.i.ReviewedBy,
+                                    A.i.NotedBy,
+                                    CompanyName = B.Areas.Companies.Name,
+                                    HeaderId = A.i.FireExtinguisherHeaderId
+                                }
+                           );
             status = "success";
 
             var model = new

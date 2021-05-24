@@ -55,7 +55,8 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
-            ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name", model.AreaId);
+            //ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name", model.AreaId);
+            ViewData["LocationId"] = new SelectList(_context.LocationInergenTanks, "Id", "Name", model.LocationInergenTankId);
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
 
@@ -117,8 +118,8 @@ namespace SEMSystem.Controllers
                      .Select(a => new
                      {
                          a.CreatedAt,
-                         CompanyName = a.Areas.Companies.Name,
-                         AreaName = a.Areas.Name
+                         CompanyName = a.Locations.Areas.Companies.Name,
+                         AreaName = a.Locations.Areas.Name
                          , a.Status
                      })
                     .Where(a => a.Status == "Active")
@@ -138,8 +139,8 @@ namespace SEMSystem.Controllers
 
 
                    a.CreatedAt,
-                   CompanyName = a.Areas.Companies.Name,
-                   AreaName = a.Areas.Name
+                   CompanyName = a.Locations.Areas.Companies.Name,
+                   AreaName = a.Locations.Areas.Name
                   ,
                    a.Id
                    ,
@@ -170,34 +171,80 @@ namespace SEMSystem.Controllers
             }
         }
 
-        public IActionResult getDataPerArea(int AreaId, DateTime dateTime)
+        public IActionResult getDataPerArea(int LocationId, DateTime dateTime)
         {
             string status = "";
             int headerid = 0;
+            //var v =
+
+            //    _context.LocationInergenTanks
+            //    .Where(a => a.Status == "Active")
+            //    .Where(a => a.AreaId == AreaId)
+            //    .Select(a => new {
+            //        Location = a.Areas.Name,
+            //        a.Areas.Code,
+            //        a.Id,
+            //        CompanyName = a.Areas.Companies.Name
+            //    });
+
+
+
+            //var detail = _context.InergenTankDetails
+            //    .Where(a => a.InergenTankHeaders.Status == "Active")
+            //        .Where(a => a.InergenTankHeaders.AreaId == AreaId)
+            //        .Where(a => a.InergenTankHeaders.CreatedAt == dateTime) //A
+            //    //.Where(a => a.InergenTankHeaderId == id) //A
+            //        .GroupJoin(
+            //           _context.LocationInergenTanks // B
+            //           .Where(a => a.Status == "Active"),
+            //           i => i.LocationInergenTankId, //A key
+            //           p => p.Id,//B key
+            //           (i, g) =>
+            //              new
+            //              {
+            //                  i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //        )
+            //        .SelectMany(
+            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //           (A, B) =>
+            //              new
+            //              {
+
+            //                  Id = A.i.LocationInergenTankId,
+            //                  A.i.Cylinder,
+            //                  A.i.Gauge,
+            //                  A.i.Hose,
+            //                  A.i.Pressure,
+            //                  A.i.Remarks,
+            //                  //B.Location,
+            //                  //B.Code,
+            //                  A.i.InspectedBy,
+            //                  A.i.ReviewedBy,
+            //                  A.i.NotedBy,
+
+            //                  Location = B.Areas.Name,
+
+            //                  Code = B.Areas.Code,
+
+
+            //                  CompanyName = B.Areas.Companies.Name,
+            //                  HeaderId = A.i.InergenTankHeaderId
+            //              }
+            //        );
+
             var v =
 
-                _context.LocationInergenTanks
-                .Where(a => a.Status == "Active")
-                .Where(a => a.AreaId == AreaId)
-                .Select(a => new {
-                    Location = a.Areas.Name,
-                    a.Areas.Code,
-                    a.Id,
-                    CompanyName = a.Areas.Companies.Name
-                });
-
-
-
-            var detail = _context.InergenTankDetails
-                .Where(a => a.InergenTankHeaders.Status == "Active")
-                    .Where(a => a.InergenTankHeaders.AreaId == AreaId)
-                    .Where(a => a.InergenTankHeaders.CreatedAt == dateTime) //A
-                //.Where(a => a.InergenTankHeaderId == id) //A
+               _context.LocationInergenTanks
+                    .Where(a => a.Id == LocationId)
+                    .Where(a => a.Status == "Status") //A
                     .GroupJoin(
-                       _context.LocationInergenTanks // B
-                       .Where(a => a.Status == "Active"),
-                       i => i.LocationInergenTankId, //A key
-                       p => p.Id,//B key
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "IT"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
                        (i, g) =>
                           new
                           {
@@ -206,34 +253,61 @@ namespace SEMSystem.Controllers
                           }
                     )
                     .SelectMany(
-                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
                        (A, B) =>
                           new
                           {
-
-                              Id = A.i.LocationInergenTankId,
-                              A.i.Cylinder,
-                              A.i.Gauge,
-                              A.i.Hose,
-                              A.i.Pressure,
-                              A.i.Remarks,
-                              //B.Location,
-                              //B.Code,
-                              A.i.InspectedBy,
-                              A.i.ReviewedBy,
-                              A.i.NotedBy,
-
-                              Location = B.Areas.Name,
-
-                              Code = B.Areas.Code,
-
-
-                              CompanyName = B.Areas.Companies.Name,
-                              HeaderId = A.i.InergenTankHeaderId
+                              //A.i.Location,
+                            
+                              A.i.Capacity,
+                              A.i.Serial,
+                              B.Items.Code,
+                              ItemName = B.Items.Name,
+                              CompanyName = A.i.Areas.Companies.Name,
                           }
                     );
 
+            var detail = _context.InergenTankDetails
+                    .Where(a => a.InergenTankHeaders.Status == "Active")
+                    .Where(a => a.InergenTankHeaders.LocationInergenTankId == LocationId)
+                    .Where(a => a.InergenTankHeaders.CreatedAt == dateTime) //A
+                    .GroupJoin(
+                            _context.LocationInergenTanks // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.InergenTankHeaders.LocationInergenTankId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                 {
 
+                                     A.i.ItemId,
+
+                                     A.i.Cylinder,
+                                     A.i.Gauge,
+                                     A.i.Pressure,
+                                     A.i.Hose,
+
+                                     A.i.Remarks,
+
+                                     B.Serial,
+                                     B.Capacity,
+
+                                     A.i.InspectedBy,
+                                     A.i.ReviewedBy,
+                                     A.i.NotedBy,
+                                     CompanyName = B.Areas.Companies.Name,
+                                     HeaderId = A.i.InergenTankHeaderId
+                                 }
+                            );
 
             status = "success";
 
@@ -257,13 +331,15 @@ namespace SEMSystem.Controllers
             try
             {
                 var _header = _context.InergenTankHeaders.Where(a => a.Status == "Active")
-                    .Where(a => a.AreaId == item[0].AreaId)
+                      //.Where(a => a.AreaId == item[0].AreaId)
+                    .Where(a => a.LocationInergenTankId == item[0].LocationInergenTankId)
                     .Where(a => a.CreatedAt == DateTime.Now.Date);
 
                 if (_header.Count() == 0)
                 {
                     InergenTankHeader header = new InergenTankHeader();
-                    header.AreaId = item[0].AreaId;
+                    //header.AreaId = item[0].AreaId;
+                    header.LocationInergenTankId = item[0].LocationInergenTankId;
                     header.CreatedAt = DateTime.Now.Date;
                     header.CreatedBy = User.Identity.GetUserName();
                     _context.Add(header);
@@ -274,7 +350,8 @@ namespace SEMSystem.Controllers
                     {
                         var _detail = new InergenTankDetail
                         {
-                            LocationInergenTankId = detail.LocationInergenTankId,
+                            //LocationInergenTankId = detail.LocationInergenTankId,
+                            ItemId = detail.ItemId,
 
                             Cylinder = detail.Cylinder == "true" ? 1 : 0,
                             Gauge = detail.Gauge == "true" ? 1 : 0,
@@ -285,7 +362,7 @@ namespace SEMSystem.Controllers
                             UpdatedAt = DateTime.Now.Date,
                             InergenTankHeaderId = headerId,
                             Remarks = detail.Remarks,
-                              InspectedBy = detail.InspectedBy,
+                            InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
                             NotedBy = detail.NotedBy
 
@@ -302,7 +379,8 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.InergenTankDetails
                             .Where(a => a.InergenTankHeaderId == headerId)
-                            .Where(a => a.LocationInergenTankId == detail.LocationInergenTankId)
+                            //.Where(a => a.LocationInergenTankId == detail.LocationInergenTankId)
+                            .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
                         if (d == null)
@@ -310,8 +388,8 @@ namespace SEMSystem.Controllers
 
                             var _detail = new InergenTankDetail
                             {
-                                LocationInergenTankId = detail.LocationInergenTankId,
-
+                                //LocationInergenTankId = detail.LocationInergenTankId,
+                                ItemId = detail.ItemId,
                                 Cylinder = detail.Cylinder == "true" ? 1 : 0,
                                 Gauge = detail.Gauge == "true" ? 1 : 0,
                                 Hose = detail.Hose == "true" ? 1 : 0,
@@ -321,7 +399,7 @@ namespace SEMSystem.Controllers
                                 UpdatedAt = DateTime.Now,
                                 InergenTankHeaderId = headerId,
                                 Remarks = detail.Remarks,
-                                  InspectedBy = detail.InspectedBy,
+                                InspectedBy = detail.InspectedBy,
                                 ReviewedBy = detail.ReviewedBy,
                                 NotedBy = detail.NotedBy
                             };
@@ -422,46 +500,83 @@ namespace SEMSystem.Controllers
         public ActionResult getDataDetails(int id)
         {
             string status = "";
-            var v = _context.InergenTankDetails.Where(a => a.InergenTankHeaderId == id) //A
-                    .GroupJoin(
-                       _context.LocationInergenTanks // B
-                       .Where(a => a.Status == "Active"),
-                       i => i.LocationInergenTankId, //A key
-                       p => p.Id,//B key
-                       (i, g) =>
-                          new
-                          {
-                              i, //holds A data
-                              g  //holds B data
-                          }
-                    )
-                    .SelectMany(
-                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                       (A, B) =>
-                          new
-                          {
+            //var v = _context.InergenTankDetails.Where(a => a.InergenTankHeaderId == id) //A
+            //        .GroupJoin(
+            //           _context.LocationInergenTanks // B
+            //           .Where(a => a.Status == "Active"),
+            //           i => i.LocationInergenTankId, //A key
+            //           p => p.Id,//B key
+            //           (i, g) =>
+            //              new
+            //              {
+            //                  i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //        )
+            //        .SelectMany(
+            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //           (A, B) =>
+            //              new
+            //              {
 
-                              Id = A.i.LocationInergenTankId,
-                              A.i.Cylinder,
-                              A.i.Gauge,
-                              A.i.Hose,
-                              A.i.Pressure,
-                              A.i.Remarks,
-                              //B.Location,
-                              //B.Code,
+            //                  Id = A.i.LocationInergenTankId,
+            //                  A.i.Cylinder,
+            //                  A.i.Gauge,
+            //                  A.i.Hose,
+            //                  A.i.Pressure,
+            //                  A.i.Remarks,
+            //                  //B.Location,
+            //                  //B.Code,
 
-                              A.i.InspectedBy,
-                              A.i.ReviewedBy,
-                              A.i.NotedBy,
-                              Location = B.Areas.Name,
+            //                  A.i.InspectedBy,
+            //                  A.i.ReviewedBy,
+            //                  A.i.NotedBy,
+            //                  Location = B.Areas.Name,
 
-                              Code = B.Areas.Code,
+            //                  Code = B.Areas.Code,
 
 
-                              CompanyName = B.Areas.Companies.Name
-                          }
-                    );
+            //                  CompanyName = B.Areas.Companies.Name
+            //              }
+            //        );
+            var v = _context.InergenTankDetails
+                  .Where(a => a.InergenTankHeaders.Status == "Active")
+                  .Where(a => a.InergenTankHeaderId == id) //A
+                  .GroupJoin(
+                          _context.LocationInergenTanks // B
+                          .Where(a => a.Status == "Active"),
+                          i => i.InergenTankHeaders.LocationInergenTankId, //A key
+                          p => p.Id,//B key
+                          (i, g) =>
+                              new
+                              {
+                                  i, //holds A data
+                                   g  //holds B data
+                               }
+                          )
+                          .SelectMany(
+                          temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                          (A, B) =>
+                               new
+                               {
 
+                                   A.i.ItemId,
+                                   A.i.Cylinder,
+                                 
+                                   A.i.Gauge,
+                                   A.i.Pressure,
+                                   A.i.Hose,
+                                   A.i.Remarks,
+                                   B.Serial,
+                                  
+                                   B.Capacity,
+                                   A.i.InspectedBy,
+                                   A.i.ReviewedBy,
+                                   A.i.NotedBy,
+                                   CompanyName = B.Areas.Companies.Name,
+                                   HeaderId = A.i.InergenTankHeaderId
+                               }
+                          );
             status = "success";
 
             var model = new

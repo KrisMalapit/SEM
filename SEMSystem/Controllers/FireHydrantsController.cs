@@ -55,7 +55,7 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
-            ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name", model.AreaId);
+            ViewData["AreaId"] = new SelectList(_context.LocationFireHydrants, "ID", "Name", model.LocationFireHydrantId);
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
 
@@ -117,8 +117,8 @@ namespace SEMSystem.Controllers
                      .Select(a => new
                      {
                          a.CreatedAt,
-                         CompanyName = a.Areas.Companies.Name,
-                         AreaName = a.Areas.Name
+                         CompanyName = a.Locations.Areas.Companies.Name,
+                         AreaName = a.Locations.Areas.Name
                          ,
                          a.Status
                      })
@@ -139,8 +139,8 @@ namespace SEMSystem.Controllers
 
 
                    a.CreatedAt,
-                   CompanyName = a.Areas.Companies.Name,
-                   AreaName = a.Areas.Name
+                   CompanyName = a.Locations.Areas.Companies.Name,
+                   AreaName = a.Locations.Areas.Name
                   ,
                    a.Id
                    ,
@@ -174,69 +174,138 @@ namespace SEMSystem.Controllers
                 return NotFound(ex.Message);
             }
         }
-        public IActionResult getDataPerArea(int AreaId, DateTime dateTime)
+        public IActionResult getDataPerArea(int LocationId, DateTime dateTime)
         {
             string status = "";
             int headerid = 0;
+            //var v =
+
+            //    _context.LocationFireHydrants
+            //    .Where(a => a.Status == "Active")
+            //    .Where(a => a.AreaId == AreaId)
+            //    .Select(a => new {
+            //        a.Location,
+
+            //        a.Code,
+            //        a.Id,
+            //        CompanyName = a.Areas.Companies.Name
+            //    });
+
+
+
+            //var detail = _context.FireHydrantDetails
+            //        .Where(a => a.FireHydrantHeaders.Status == "Active")
+            //        .Where(a => a.FireHydrantHeaders.AreaId == AreaId)
+            //        .Where(a => a.FireHydrantHeaders.CreatedAt == dateTime) //A
+            //                                                                   //.Where(a => a.FireHydrantHeaderId == id) //A
+            //                   .GroupJoin(
+            //                      _context.LocationFireHydrants // B
+            //                      .Where(a => a.Status == "Active"),
+            //                      i => i.LocationFireHydrantId, //A key
+            //                      p => p.Id,//B key
+            //                      (i, g) =>
+            //                         new
+            //                         {
+            //                             i, //holds A data
+            //                             g  //holds B data
+            //                         }
+            //                   )
+            //                   .SelectMany(
+            //                      temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //                      (A, B) =>
+            //                         new
+            //                         {
+
+            //                             Id = A.i.LocationFireHydrantId,
+
+            //                             A.i.GlassCabinet,
+            //                             A.i.Hanger,
+            //                             A.i.Hose15,
+            //                             A.i.Nozzle15,
+            //                             A.i.Hose25,
+            //                             A.i.Nozzle25,
+            //                             A.i.SpecialTools,
+
+            //                             A.i.Remarks,
+            //                             B.Location,
+            //                             B.Code,
+            //                             A.i.InspectedBy,
+            //                             A.i.ReviewedBy,
+            //                             A.i.NotedBy,
+
+            //                             CompanyName = B.Areas.Companies.Name,
+            //                             HeaderId = A.i.FireHydrantHeaderId
+            //                         }
+            //                   );
             var v =
 
-                _context.LocationFireHydrants
-                .Where(a => a.Status == "Active")
-                .Where(a => a.AreaId == AreaId)
-                .Select(a => new {
-                    a.Location,
-
-                    a.Code,
-                    a.Id,
-                    CompanyName = a.Areas.Companies.Name
-                });
-
-
+               _context.LocationFireHydrants
+                    .Where(a => a.Id == LocationId)
+                    .Where(a => a.Status == "Status") //A
+                    .GroupJoin(
+                       _context.LocationItemDetails // B
+                       .Where(a => a.Status == "Active")
+                       .Where(a => a.Equipment == "EL"),
+                       i => i.Id, //A key
+                       p => p.HeaderId,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    )
+                    .SelectMany(
+                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              //A.i.Location,
+                            
+                              B.Items.Code,
+                              ItemName = B.Items.Name,
+                              CompanyName = A.i.Areas.Companies.Name,
+                          }
+                    );
 
             var detail = _context.FireHydrantDetails
                     .Where(a => a.FireHydrantHeaders.Status == "Active")
-                    .Where(a => a.FireHydrantHeaders.AreaId == AreaId)
+                    .Where(a => a.FireHydrantHeaders.LocationFireHydrantId == LocationId)
                     .Where(a => a.FireHydrantHeaders.CreatedAt == dateTime) //A
-                                                                               //.Where(a => a.FireHydrantHeaderId == id) //A
-                               .GroupJoin(
-                                  _context.LocationFireHydrants // B
-                                  .Where(a => a.Status == "Active"),
-                                  i => i.LocationFireHydrantId, //A key
-                                  p => p.Id,//B key
-                                  (i, g) =>
-                                     new
-                                     {
-                                         i, //holds A data
-                                         g  //holds B data
-                                     }
-                               )
-                               .SelectMany(
-                                  temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                                  (A, B) =>
-                                     new
-                                     {
+                    .GroupJoin(
+                            _context.LocationFireHydrants // B
+                            .Where(a => a.Status == "Active"),
+                            i => i.FireHydrantHeaders.LocationFireHydrantId, //A key
+                            p => p.Id,//B key
+                            (i, g) =>
+                                new
+                                {
+                                    i, //holds A data
+                                    g  //holds B data
+                                }
+                            )
+                            .SelectMany(
+                            temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                            (A, B) =>
+                                 new
+                                 {
 
-                                         Id = A.i.LocationFireHydrantId,
+                                     A.i.ItemId,
+                                     A.i.GlassCabinet,
+                                     A.i.Hanger,
+                                     A.i.Hose15,
+                                     A.i.Nozzle15,
+                                     A.i.Hose25,
+                                     A.i.Nozzle25,
+                                     A.i.SpecialTools,
+                                     A.i.InspectedBy,
+                                     A.i.ReviewedBy,
+                                     A.i.NotedBy,
+                                     CompanyName = B.Areas.Companies.Name,
+                                     HeaderId = A.i.FireHydrantHeaderId
+                                 }
+                            );
 
-                                         A.i.GlassCabinet,
-                                         A.i.Hanger,
-                                         A.i.Hose15,
-                                         A.i.Nozzle15,
-                                         A.i.Hose25,
-                                         A.i.Nozzle25,
-                                         A.i.SpecialTools,
-
-                                         A.i.Remarks,
-                                         B.Location,
-                                         B.Code,
-                                         A.i.InspectedBy,
-                                         A.i.ReviewedBy,
-                                         A.i.NotedBy,
-
-                                         CompanyName = B.Areas.Companies.Name,
-                                         HeaderId = A.i.FireHydrantHeaderId
-                                     }
-                               );
 
 
             status = "success";
@@ -261,13 +330,15 @@ namespace SEMSystem.Controllers
             try
             {
                 var _header = _context.FireHydrantHeaders.Where(a => a.Status == "Active")
-                    .Where(a => a.AreaId == item[0].AreaId)
-                    .Where(a => a.CreatedAt == DateTime.Now.Date);
+                // .Where(a => a.AreaId == item[0].AreaId)
+                .Where(a => a.LocationFireHydrantId == item[0].LocationFireHydrantId)
+                .Where(a => a.CreatedAt == DateTime.Now.Date);
 
                 if (_header.Count() == 0)
                 {
                     FireHydrantHeader header = new FireHydrantHeader();
-                    header.AreaId = item[0].AreaId;
+                    //header.AreaId = item[0].AreaId;
+                    header.LocationFireHydrantId = item[0].LocationFireHydrantId;
                     header.CreatedAt = DateTime.Now.Date;
                     header.CreatedBy = User.Identity.GetUserName();
                     _context.Add(header);
@@ -278,7 +349,8 @@ namespace SEMSystem.Controllers
                     {
                         var _detail = new FireHydrantDetail
                         {
-                            LocationFireHydrantId = detail.LocationFireHydrantId,
+                            //LocationFireHydrantId = detail.LocationFireHydrantId,
+                            ItemId = detail.ItemId,
                             GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0,
                             Hanger = detail.Hanger == "true" ? 1 : 0,
                             Hose15 = detail.Hose15 == "true" ? 1 : 0,
@@ -286,18 +358,9 @@ namespace SEMSystem.Controllers
                             Hose25 = detail.Hose25 == "true" ? 1 : 0,
                             Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0,
                             SpecialTools = detail.SpecialTools == "true" ? 1 : 0,
-
-
                             InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
                             NotedBy = detail.NotedBy,
-
-
-
-
-
-
-
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now.Date,
                             FireHydrantHeaderId = headerId,
@@ -317,7 +380,8 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.FireHydrantDetails
                             .Where(a => a.FireHydrantHeaderId == headerId)
-                            .Where(a => a.LocationFireHydrantId == detail.LocationFireHydrantId)
+                            //.Where(a => a.LocationFireHydrantId == detail.LocationFireHydrantId)
+                            .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
                         if (d == null)
@@ -325,8 +389,8 @@ namespace SEMSystem.Controllers
 
                             var _detail = new FireHydrantDetail
                             {
-                                LocationFireHydrantId = detail.LocationFireHydrantId,
-                           
+                                //LocationFireHydrantId = detail.LocationFireHydrantId,
+                                ItemId = detail.ItemId,
 
 
                                 GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0,
@@ -459,47 +523,86 @@ namespace SEMSystem.Controllers
         public ActionResult getDataDetails(int id)
         {
             string status = "";
-            var v = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaderId == id) //A
-                    .GroupJoin(
-                       _context.LocationFireHydrants // B
-                       .Where(a => a.Status == "Active"),
-                       i => i.LocationFireHydrantId, //A key
-                       p => p.Id,//B key
-                       (i, g) =>
-                          new
-                          {
-                              i, //holds A data
-                              g  //holds B data
-                          }
-                    )
-                    .SelectMany(
-                       temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-                       (A, B) =>
-                          new
-                          {
+            //var v = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaderId == id) //A
+            //        .GroupJoin(
+            //           _context.LocationFireHydrants // B
+            //           .Where(a => a.Status == "Active"),
+            //           i => i.LocationFireHydrantId, //A key
+            //           p => p.Id,//B key
+            //           (i, g) =>
+            //              new
+            //              {
+            //                  i, //holds A data
+            //                  g  //holds B data
+            //              }
+            //        )
+            //        .SelectMany(
+            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+            //           (A, B) =>
+            //              new
+            //              {
 
-                              Id = A.i.LocationFireHydrantId,
-                              A.i.GlassCabinet,
-                              A.i.Hanger,
-                              A.i.Hose15,
-                              A.i.Nozzle15,
-                              A.i.Hose25,
-                              A.i.Nozzle25,
-                              A.i.SpecialTools,
+            //                  Id = A.i.LocationFireHydrantId,
+            //                  A.i.GlassCabinet,
+            //                  A.i.Hanger,
+            //                  A.i.Hose15,
+            //                  A.i.Nozzle15,
+            //                  A.i.Hose25,
+            //                  A.i.Nozzle25,
+            //                  A.i.SpecialTools,
 
 
 
-                              A.i.Remarks,
-                              B.Location,
-                              B.Code,
-                              A.i.InspectedBy,
-                              A.i.ReviewedBy,
-                              A.i.NotedBy,
+            //                  A.i.Remarks,
+            //                  B.Location,
+            //                  B.Code,
+            //                  A.i.InspectedBy,
+            //                  A.i.ReviewedBy,
+            //                  A.i.NotedBy,
 
-                              CompanyName = B.Areas.Companies.Name
-                          }
-                    );
+            //                  CompanyName = B.Areas.Companies.Name
+            //              }
+            //        );
 
+            var v = _context.FireHydrantDetails
+                   .Where(a => a.FireHydrantHeaders.Status == "Active")
+                   .Where(a => a.FireHydrantHeaderId == id) //A
+                   .GroupJoin(
+                           _context.LocationFireHydrants // B
+                           .Where(a => a.Status == "Active"),
+                           i => i.FireHydrantHeaders.LocationFireHydrantId, //A key
+                           p => p.Id,//B key
+                           (i, g) =>
+                               new
+                               {
+                                   i, //holds A data
+                                   g  //holds B data
+                               }
+                           )
+                           .SelectMany(
+                           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
+                           (A, B) =>
+                                new
+                                {
+
+                                    A.i.ItemId,
+                                    A.i.GlassCabinet,
+                                    A.i.Hanger,
+                                    A.i.Hose15,
+                                    A.i.Nozzle15,
+                                    A.i.Hose25,
+                                    A.i.Nozzle25,
+                                    A.i.SpecialTools,
+                                    A.i.Remarks,
+                                    B.Code,
+                                   
+                                    A.i.InspectedBy,
+                                    A.i.ReviewedBy,
+                                    A.i.NotedBy,
+                                    CompanyName = B.Areas.Companies.Name,
+                                    HeaderId = A.i.FireHydrantHeaderId
+                                }
+                           );
             status = "success";
 
             var model = new

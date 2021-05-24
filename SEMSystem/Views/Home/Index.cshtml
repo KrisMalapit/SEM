@@ -61,7 +61,7 @@
 
                             <label class="col-md-2 col-form-label" style="padding-top:5px; "> Area</label>
                             <div class="col-md-4">
-                                <select id="AreaId" name="AreaId" class="form-control" asp-items="ViewBag.AreaId"></select>
+                                <select id="AreaId" name="AreaId" class="form-control" ></select>
 
                             </div>
 
@@ -71,6 +71,9 @@
                             </div>
                         </div>
                         <div class="row">
+
+                           
+
 
                             <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                             <div class="col-md-4">
@@ -101,12 +104,18 @@
                             <div id="tab-3" class="tab-pane active">
                                 <div class="_panel-body">
                                     <br />
+                                    <div class="col-md-12 row">
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Location</label>
+                                        <div class="col-md-4">
+                                            <select id="LocationIDFE"  name="AreaId" class="form-control LocationID"></select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <table id="tblFireExtinguisher" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th width="20%">Location</th>
+                                                    <th width="20%">Item</th>
                                                     <th width="15%">Code</th>
                                                     <th width="15%">Type</th>
                                                     <th>Capacity</th>
@@ -125,7 +134,7 @@
                                     <div class="row col-md-12" id="divApproversFE">
                                         <div class="form-group col-md-4">
                                             <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-12 inpIns"   name="InspectedBy" />
+                                            <input class="form-control col-md-12 inpIns" name="InspectedBy" />
                                             <label>Safety Inspector</label>
                                         </div>
                                         <div class="form-group col-md-4">
@@ -156,13 +165,19 @@
                             <div id="tab-4" class="tab-pane">
                                 <div class="_panel-body">
                                     <br />
+                                    <div class="col-md-12 row">
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Location</label>
+                                        <div class="col-md-4">
+                                            <select id="LocationIDEL" name="AreaId" class="form-control LocationID" style="width:100%"></select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <table id="tblEmergencyLight" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
 
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th width="20%">Location</th>
+                                                    <th width="20%">Item</th>
                                                     <th width="15%">Code</th>
 
                                                     <th>Battery</th>
@@ -211,13 +226,19 @@
                             <div id="tab-5" class="tab-pane">
                                 <div class="_panel-body">
                                     <br />
+                                    <div class="col-md-12 row">
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px;">Location</label>
+                                        <div class="col-md-4">
+                                            <select id="LocationIDIT" name="AreaId" class="form-control LocationID"  style="width:100%"></select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <table id="tblInergenTank" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
 
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th width="20%">Location</th>
+                                                    <th width="20%">Item</th>
                                                     <th width="15%">Code</th>
 
                                                     <th>Cylinder</th>
@@ -266,13 +287,19 @@
                             <div id="tab-6" class="tab-pane">
                                 <div class="_panel-body">
                                     <br />
+                                    <div class="col-md-12 row">
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px;">Location</label>
+                                        <div class="col-md-4">
+                                            <select id="LocationIDFH" name="AreaId" class="form-control LocationID"  style="width:100%"></select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <table id="tblFireHydrant" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
 
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th width="20%">Location</th>
+                                                    <th width="20%">Item</th>
                                                     <th width="15%">Code</th>
 
                                                     <th>GlassCabinet</th>
@@ -749,30 +776,7 @@
         window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid+ '&Report=' + $rpt + '&rptType=PDF');
     }
 
-    $("#AreaId").select2({
-        width: '100%',
-        theme: 'bootstrap',
-            ajax: {
-                url: "@Url.Action("SearchArea", "Areas")",
-                dataType: 'json',
-                delay: 2000,
-                data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, page) {
-                    return {
-                        results: data.items,
-
-                    };
-                },
-
-                cache: false
-        },
-        minimumInputLength: 2,
-    });
+   
     $(function () {
         $(".inpIns").val("@User.Identity.GetFullName()");
         $(".inpRev").val("GBARROYO/ECCUETO");
@@ -783,28 +787,904 @@
         $("#NotedBy").val("HBLUCY");
 
 
-        //$("#AreaId").select2();
-        loadDatatableFireExtinguisher($("#AreaId").val());
-        loadDatatableEmergencyLight($("#AreaId").val())
-        loadDatatableInergenTank($("#AreaId").val());
-        loadDatatableBicycle($("#BicycleId").val())
-        loadDatatableFireHydrant($("#AreaId").val())
+        $("#AreaId").select2({
+            width: '100%',
+                ajax: {
+                    url: "@Url.Action("SearchArea", "Areas")",
+                    dataType: 'json',
+                    delay: 2000,
+                    data: function (params) {
+                        return {
+                            q: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, page) {
+                        return {
+                            results: data.items,
+
+                        };
+                    },
+
+                    cache: false
+            },
+            minimumInputLength: 2,
+        });
+
+
+        $(".LocationID").select2();
+        //loadDatatableFireExtinguisher($("#AreaId").val());
+        //loadDatatableEmergencyLight($("#AreaId").val())
+        //loadDatatableInergenTank($("#AreaId").val());
+        //loadDatatableBicycle($("#BicycleId").val())
+        //loadDatatableFireHydrant($("#AreaId").val())
+
+       
     })
     $("#AreaId").change(function () {
-        loadDatatableFireExtinguisher(this.value);
-        loadDatatableEmergencyLight(this.value)
-        loadDatatableInergenTank(this.value)
-        loadDatatableFireHydrant(this.value)
+        loadlocations(this.value)
+        //loadDatatableFireExtinguisher(this.value);
+        //loadDatatableEmergencyLight(this.value)
+        //loadDatatableInergenTank(this.value)
+        //loadDatatableFireHydrant(this.value)
     })
-     $("#BicycleId").change(function () {
+
+    $(".LocationID").change(function () {
+        //console.log($(this).prop('id'));
+        //console.log(this.value);
+        getDataPerLocation($(this).prop('id'), this.value);
+    })
+    
+    function getDataPerLocation(_locationtype, _locationid) {
+        
+        //FIRE EXTINNGUISHER -- LocationIDFE
+        if (_locationtype == "LocationIDFE") {
+            dataClearFireExtinguisherData();
+            var data = [];
+                $.ajax({
+                            url: "@Url.Action("getDataPerLocation", "Areas")"
+                                , method: "POST"
+                                , dataType: 'json'
+                                , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
+                                , success: function (responsedata) {
+                                    console.log(responsedata);
+                            
+
+                                    if (responsedata.status == "success" && responsedata.data.length > 0) {
+                                   
+                                        if (responsedata.datadetail.length == 0) {
+                                            for (var i = 0; i < responsedata.data.length; i++) {
+
+                                                var $id = responsedata.data[i].id;
+                                                var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
+                                                var _cylinder = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Cylinder" >' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                var _lever = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Lever" >' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                var _gauge = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Gauge" >' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                var _safetyseal = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="SafetySeal" >' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                var _hose = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" >' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                data.push([
+                                                    responsedata.data[i].id
+                                                    , responsedata.data[i].itemName
+                                                    , responsedata.data[i].code
+                                                    , responsedata.data[i].type
+                                                    , responsedata.data[i].capacity
+                                                    , _cylinder
+                                                    , _lever
+                                                    , _gauge
+                                                    , _safetyseal
+                                                    , _hose
+                                                    , _remarks
+                                                ]);
+
+                                            }
+
+                                        } else {
+
+                                            var $obj = $("#tblFireExtinguisher").closest('.tab-pane').find('.aClick');
+                                            $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptFireExtinguisher')");
+
+                                            var $div = $("#tblFireExtinguisher").closest('.tab-pane');
+                                            $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
+                                            $($div.find('.inpRev')).prop('value', responsedata.datadetail[0].reviewedBy)
+                                            $($div.find('.inpNot')).prop('value', responsedata.datadetail[0].notedBy)
 
 
+                                            for (var i = 0; i < responsedata.datadetail.length; i++) {
+
+                                                $checkedValue = "";
+
+                                                if (responsedata.datadetail[i].cylinder == 1) {
+                                                    $checkedValue = 'checked';
+                                                }
+
+                                                var _cylinder =
+                                                    '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type = "checkbox" value = "" name = "Cylinder" ' + $checkedValue + '>' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                $checkedValue = "";
+                                                if (responsedata.datadetail[i].lever == 1) {
+                                                    $checkedValue = 'checked';
+                                                }
+
+                                                var _lever = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Lever" ' + $checkedValue + '>' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                $checkedValue = "";
+                                                if (responsedata.datadetail[i].gauge == 1) {
+                                                    $checkedValue = 'checked';
+                                                }
+
+                                                var _gauge = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Gauge" ' + $checkedValue + '>' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                $checkedValue = "";
+                                                if (responsedata.datadetail[i].safetySeal == 1) {
+                                                    $checkedValue = 'checked';
+                                                }
+
+                                                var _safetyseal = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="SafetySeal" ' + $checkedValue + '>' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                $checkedValue = "";
+                                                if (responsedata.datadetail[i].hose == 1) {
+                                                    $checkedValue = 'checked';
+                                                }
+
+                                                var _hose = '<div class="form-check">' +
+                                                    '<label class="form-check-label">' +
+                                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                    '</label>' +
+                                                    '</div>';
+
+                                                var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
+                                                var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "' data-id='" + $id + "'>";
+                                           
+                                                data.push([
+                                                    responsedata.datadetail[i].id
+                                                    , responsedata.datadetail[i].itemName
+                                                    , responsedata.datadetail[i].code
+                                                    , responsedata.datadetail[i].type
+                                                    , responsedata.datadetail[i].capacity
+                                                    , _cylinder
+                                                    , _lever
+                                                    , _gauge
+                                                    , _safetyseal
+                                                    , _hose
+                                                    , _remarks
+                                                ]);
+
+                                            }
+                                        }
+                                        if ($.fn.DataTable.isDataTable('#tblFireExtinguisher')) {
+                                            $('#tblFireExtinguisher').DataTable().destroy();
+                                        }
+                                        $('#tblFireExtinguisher').DataTable({
+                                            "data": data,
+                                            "responsive": true,
+                                            "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                        
+                                        });
+                                    } else {
+                                        if (responsedata.data.length < 1) {
+                                            if ($.fn.DataTable.isDataTable('#tblFireExtinguisher')) {
+                                                $('#tblFireExtinguisher').DataTable().destroy();
+                                            }
+                                            $('#tblFireExtinguisher').DataTable({
+                                                "data": data,
+                                                "responsive": true,
+                                                "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                           
+                                            });
+
+                                        }
+
+                                    }
+
+                    }
+                    , error: function () {
+
+                        if ($.fn.DataTable.isDataTable('#tblFireExtinguisher')) {
+                            $('#tblFireExtinguisher').DataTable().destroy();
+                        }
+                        $('#tblFireExtinguisher').DataTable({
+                            "data": data,
+                            "responsive": true,
+                            "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+
+                        });
+                    }
+                });
+        }
+
+        //EMERGENCY LIGHTS -- LocationIDEL
+        if (_locationtype == "LocationIDEL") {
+             dataClearEmergencyLightData();
+             var data = [];
+
+             $.ajax({
+                        url: "@Url.Action("getDataPerLocation", "Areas")"
+                        , method: "POST"
+                        , dataType: 'json'
+                        , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
+                        , success: function (responsedata) {
+                                if (responsedata.status == "success" && responsedata.data.length > 0) {
+                                    if (responsedata.datadetail.length == 0) {
+                                        for (var i = 0; i < responsedata.data.length; i++) {
+                                            var $id = responsedata.data[i].id;
+                                            var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
+                                            var _battery = '<div class="form-check">' +
+                                                '<label class="form-check-label">' +
+                                                '<input class="form-check-input" type="checkbox" value="" name="Battery" >' +
+                                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                '</label>' +
+                                                '</div>';
+                                            var _bulb = '<div class="form-check">' +
+                                                '<label class="form-check-label">' +
+                                                '<input class="form-check-input" type="checkbox" value="" name="Bulb" >' +
+                                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                '</label>' +
+                                                '</div>';
+                                            var _usable = '<div class="form-check">' +
+                                                '<label class="form-check-label">' +
+                                                '<input class="form-check-input" type="checkbox" value="" name="Usable" >' +
+                                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                '</label>' +
+                                                '</div>';
+                                            data.push([
+                                                responsedata.data[i].id
+                                                , responsedata.data[i].itemName
+                                                , responsedata.data[i].code
+
+                                                , _battery
+                                                , _bulb
+                                                , _usable
+
+                                                , _remarks
+                                            ]);
+
+                                        }
+                                    } else {
+                                        var $obj = $("#tblEmergencyLight").closest('.tab-pane').find('.aClick');
+                                        $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptEmergencyLight')");
+
+                                        var $div = $("#tblEmergencyLight").closest('.tab-pane');
+                                        $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
+                                        $($div.find('.inpRev')).prop('value', responsedata.datadetail[0].reviewedBy)
+                                        $($div.find('.inpNot')).prop('value', responsedata.datadetail[0].notedBy)
+
+                                        for (var i = 0; i < responsedata.datadetail.length; i++) {
+                                            var $id = responsedata.datadetail[i].id;
+
+                                            $checkedValue = "";
+
+                                            if (responsedata.datadetail[i].battery == 1) {
+                                                $checkedValue = 'checked';
+                                            }
+
+                                            var _battery =
+                                                '<div class="form-check">' +
+                                                '<label class="form-check-label">' +
+                                                '<input class="form-check-input" type = "checkbox" value = "" name = "Battery" ' + $checkedValue + '>' +
+                                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                '</label>' +
+                                                '</div>';
+
+                                            $checkedValue = "";
+                                            if (responsedata.datadetail[i].bulb == 1) {
+                                                $checkedValue = 'checked';
+                                            }
+
+                                            var _bulb = '<div class="form-check">' +
+                                                '<label class="form-check-label">' +
+                                                '<input class="form-check-input" type="checkbox" value="" name="Bulb" ' + $checkedValue + '>' +
+                                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                '</label>' +
+                                                '</div>';
+
+                                            $checkedValue = "";
+                                            if (responsedata.datadetail[i].usable == 1) {
+                                                $checkedValue = 'checked';
+                                            }
+
+                                            var _usable = '<div class="form-check">' +
+                                                '<label class="form-check-label">' +
+                                                '<input class="form-check-input" type="checkbox" value="" name="Usable" ' + $checkedValue + '>' +
+                                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                                '</label>' +
+                                                '</div>';
+
+
+                                            var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
+                                            var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+
+                                            data.push([
+                                                responsedata.datadetail[i].id
+                                                , responsedata.datadetail[i].itemName
+                                                , responsedata.datadetail[i].code
+
+                                                , _battery
+                                                , _bulb
+                                                , _usable
+
+                                                , _remarks
+                                            ]);
+
+                                        }
+                                    }
+
+                                    if ($.fn.DataTable.isDataTable('#tblEmergencyLight')) {
+                                        $('#tblEmergencyLight').DataTable().destroy();
+                                    }
+                                    $('#tblEmergencyLight').DataTable({
+                                        "data": data,
+                                        "responsive": true,
+                                        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                        
+                                    });
+                                } else {
+                                    if (responsedata.data.length < 1) {
+
+
+
+                                        if ($.fn.DataTable.isDataTable('#tblEmergencyLight')) {
+                                            $('#tblEmergencyLight').DataTable().destroy();
+                                        }
+                                        $('#tblEmergencyLight').DataTable({
+                                            "data": data,
+                                            "responsive": true,
+                                            "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                           
+                                        });
+
+                                    }
+
+                                }
+
+                 }
+                 , error: function () {
+
+                     if ($.fn.DataTable.isDataTable('#tblEmergencyLight')) {
+                         $('#tblEmergencyLight').DataTable().destroy();
+                     }
+                     $('#tblEmergencyLight').DataTable({
+                         "data": data,
+                         "responsive": true,
+                         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+
+                     });
+                 }
+            });
+        }
+        //INERGEN TANK -- LocationIDIT
+        if (_locationtype == "LocationIDIT") {
+            dataClearInergenTankData();
+            var data = [];
+
+            $.ajax({
+                url: "@Url.Action("getDataPerLocation", "Areas")"
+                , method: "POST"
+                , dataType: 'json'
+                , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
+                , success: function (responsedata) {
+
+                    if (responsedata.status == "success" && responsedata.data.length > 0) {
+
+                        if (responsedata.datadetail.length == 0) {
+                        for (var i = 0; i < responsedata.data.length; i++) {
+
+                            var $id = responsedata.data[i].id;
+
+
+
+                            var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
+
+
+
+                            var _cylinder = '<div class="form-check">' +
+                                '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" value="" name="Cylinder" >' +
+                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                '</label>' +
+                                '</div>';
+
+                            var _gauge = '<div class="form-check">' +
+                                '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" value="" name="Gauge" >' +
+                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                '</label>' +
+                                '</div>';
+
+                            var _hose = '<div class="form-check">' +
+                                '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" value="" name="Hose" >' +
+                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                '</label>' +
+                                '</div>';
+
+                            var _pressure = '<div class="form-check">' +
+                                '<label class="form-check-label">' +
+                                '<input class="form-check-input" type="checkbox" value="" name="Pressure" >' +
+                                '<span class="form-check-sign"><span class="check"></span></span>' +
+                                '</label>' +
+                                '</div>';
+
+                            data.push([
+                                responsedata.data[i].id
+                                , responsedata.data[i].itemName
+                                , responsedata.data[i].code
+
+                                , _cylinder
+                                , _gauge
+                                , _hose
+                                , _pressure
+
+                                , _remarks
+                                ]);
+
+                            }
+                        } else {
+                            var $obj = $("#tblInergenTank").closest('.tab-pane').find('.aClick');
+                            $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptInergenTank')");
+
+                            var $div = $("#tblInergenTank").closest('.tab-pane');
+                            $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
+                            $($div.find('.inpRev')).prop('value', responsedata.datadetail[0].reviewedBy)
+                            $($div.find('.inpNot')).prop('value', responsedata.datadetail[0].notedBy)
+
+                            for (var i = 0; i < responsedata.datadetail.length; i++) {
+                                var $id = responsedata.datadetail[i].id;
+
+                                $checkedValue = "";
+
+                                if (responsedata.datadetail[i].cylinder == 1) {
+                                    $checkedValue = 'checked';
+                                }
+
+                                var _cylinder =
+                                    '<div class="form-check">' +
+                                    '<label class="form-check-label">' +
+                                    '<input class="form-check-input" type = "checkbox" value = "" name = "Cylinder" ' + $checkedValue + '>' +
+                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                    '</label>' +
+                                    '</div>';
+
+                                $checkedValue = "";
+                                if (responsedata.datadetail[i].gauge == 1) {
+                                    $checkedValue = 'checked';
+                                }
+
+                                var _gauge = '<div class="form-check">' +
+                                    '<label class="form-check-label">' +
+                                    '<input class="form-check-input" type="checkbox" value="" name="Gauge" ' + $checkedValue + '>' +
+                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                    '</label>' +
+                                    '</div>';
+
+                                $checkedValue = "";
+                                if (responsedata.datadetail[i].hose == 1) {
+                                    $checkedValue = 'checked';
+                                }
+
+                                var _hose = '<div class="form-check">' +
+                                    '<label class="form-check-label">' +
+                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                    '</label>' +
+                                    '</div>';
+
+                                $checkedValue = "";
+                                if (responsedata.datadetail[i].pressure == 1) {
+                                    $checkedValue = 'checked';
+                                }
+                                var _pressure = '<div class="form-check">' +
+                                    '<label class="form-check-label">' +
+                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                    '<span class="form-check-sign"><span class="check"></span></span>' +
+                                    '</label>' +
+                                    '</div>';
+
+                                var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
+                                var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+
+                                data.push([
+                                    responsedata.datadetail[i].id
+                                    , responsedata.datadetail[i].itemName
+                                    , responsedata.datadetail[i].code
+
+                                    , _cylinder
+                                    , _gauge
+                                    , _hose
+                                    , _pressure
+
+                                    , _remarks
+                                ]);
+
+                            }
+
+                        }
+                        if ($.fn.DataTable.isDataTable('#tblInergenTank')) {
+                            $('#tblInergenTank').DataTable().destroy();
+                        }
+                        $('#tblInergenTank').DataTable({
+                            "data": data,
+                            "responsive": true,
+                            "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                            //"columnDefs": [
+                            //    {
+                            //        visible: false,
+                            //        targets: [0]
+                            //    },
+                            //],
+                        });
+                    } else {
+                        if (responsedata.data.length < 1) {
+
+
+
+                            if ($.fn.DataTable.isDataTable('#tblInergenTank')) {
+                                $('#tblInergenTank').DataTable().destroy();
+                            }
+                            $('#tblInergenTank').DataTable({
+                                "data": data,
+                                "responsive": true,
+                                "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                //"columnDefs": [
+                                //    {
+                                //        visible: false,
+                                //        targets: [0]
+                                //    },
+                                //],
+                            });
+
+                        }
+
+                    }
+
+                }, error: function () {
+                    console.log("erro");
+                    if ($.fn.DataTable.isDataTable('#tblInergenTank')) {
+                        $('#tblInergenTank').DataTable().destroy();
+                    }
+                    $('#tblInergenTank').DataTable({
+                        "data": data,
+                        "responsive": true,
+                        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+
+                    });
+                }
+            });
+        }
+        //FIRE HYDRANT -- LocationIDFH
+        if (_locationtype == "LocationIDFH") {
+
+            dataClearFireHydrantData();
+            var data = [];
+             $.ajax({
+                    url: "@Url.Action("getDataPerLocation", "Areas")"
+                    , method: "POST"
+                    , dataType: 'json'
+                    , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
+                    , success: function (responsedata) {
+
+                        if (responsedata.status == "success" && responsedata.data.length > 0) {
+
+                           // $("#Plant").val(responsedata.data[0].companyName);
+                            if (responsedata.datadetail.length == 0) {
+                                for (var i = 0; i < responsedata.data.length; i++) {
+                                    var $id = responsedata.data[i].id;
+                                    var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
+                                    var _glassCabinet = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="GlassCabinet" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    var _hanger = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Hanger" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    var _hose15 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Hose15" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+                                    var _nozzle15 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Nozzle15" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    var _hose25 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Hose25" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    var _nozzle25 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Nozzle25" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    var _specialTools = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="SpecialTools" >' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+
+                                    data.push([
+                                        responsedata.data[i].id
+                                        , responsedata.data[i].itemName
+                                        , responsedata.data[i].code
+
+                                        , _glassCabinet
+                                        , _hanger
+                                        , _hose15
+                                        , _nozzle15
+                                        , _hose25
+                                        , _nozzle25
+                                        , _specialTools
+
+                                        , _remarks
+                                    ]);
+
+                                }
+                            } else {
+                                
+                                var $obj = $("#tblFireHydrant").closest('.tab-pane').find('.aClick');
+                                $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptFireHydrant')");
+
+                                var $div = $("#tblFireHydrant").closest('.tab-pane');
+                                $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
+                                $($div.find('.inpRev')).prop('value', responsedata.datadetail[0].reviewedBy)
+                                $($div.find('.inpNot')).prop('value', responsedata.datadetail[0].notedBy)
+
+
+                                for (var i = 0; i < responsedata.datadetail.length; i++) {
+
+
+                                    var $id = responsedata.datadetail[i].id;
+                                    $checkedValue = "";
+
+                                    if (responsedata.datadetail[i].glassCabinet == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _glassCabinet =
+                                        '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type = "checkbox" value = "" name = "GlassCabinet" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    $checkedValue = "";
+                                    if (responsedata.datadetail[i].hanger == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _hanger = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Hanger" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    $checkedValue = "";
+                                    if (responsedata.datadetail[i].hose15 == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _hose15 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Hose15" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+
+                                    $checkedValue = "";
+                                    if (responsedata.datadetail[i].nozzle15 == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _nozzle15 =
+                                        '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type = "checkbox" value = "" name = "Nozzle15" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    $checkedValue = "";
+                                    if (responsedata.datadetail[i].hose25 == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _hose25 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Hose25" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    $checkedValue = "";
+                                    if (responsedata.datadetail[i].nozzle25 == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _nozzle25 = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="Nozzle25" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+                                    $checkedValue = "";
+                                    if (responsedata.datadetail[i].specialTools == 1) {
+                                        $checkedValue = 'checked';
+                                    }
+
+                                    var _specialTools = '<div class="form-check">' +
+                                        '<label class="form-check-label">' +
+                                        '<input class="form-check-input" type="checkbox" value="" name="SpecialTools" ' + $checkedValue + '>' +
+                                        '<span class="form-check-sign"><span class="check"></span></span>' +
+                                        '</label>' +
+                                        '</div>';
+
+
+
+
+                                    var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
+
+                                    var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+
+
+                                    data.push([
+                                          responsedata.datadetail[i].id
+                                        , responsedata.datadetail[i].itemName
+                                        , responsedata.datadetail[i].code
+
+                                        , _glassCabinet
+                                        , _hanger
+                                        , _hose15
+                                        , _nozzle15
+                                        , _hose25
+                                        , _nozzle25
+                                        , _specialTools
+
+                                        , _remarks
+                                    ]);
+
+                                }
+                            }
+
+                            if ($.fn.DataTable.isDataTable('#tblFireHydrant')) {
+                                $('#tblFireHydrant').DataTable().destroy();
+                            }
+                            $('#tblFireHydrant').DataTable({
+                                "data": data,
+                                "responsive": true,
+                                "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                //"columnDefs": [
+                                //    {
+                                //        visible: false,
+                                //        targets: [0]
+                                //    },
+                                //],
+                            });
+                        } else {
+                            if (responsedata.data.length < 1) {
+
+
+
+                                if ($.fn.DataTable.isDataTable('#tblFireHydrant')) {
+                                    $('#tblFireHydrant').DataTable().destroy();
+                                }
+                                $('#tblFireHydrant').DataTable({
+                                    "data": data,
+                                    "responsive": true,
+                                    "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                    //"columnDefs": [
+                                    //    {
+                                    //        visible: false,
+                                    //        targets: [0]
+                                    //    },
+                                    //],
+                                });
+
+                            }
+
+                        }
+
+                 }, error: function () {
+
+                        console.log("error");
+                     if ($.fn.DataTable.isDataTable('#tblFireHydrant')) {
+                         $('#tblFireHydrant').DataTable().destroy();
+                     }
+                        $('#tblFireHydrant').DataTable({
+                         "data": data,
+                         "responsive": true,
+                         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+
+                     });
+                 }
+                });
+        }
+
+    }
+
+
+
+
+
+
+    $("#BicycleId").change(function () {
          loadDatatableBicycle($(this).val());
     });
         $("input[type=text]").keyup(function () {
             $(this).val($(this).val().toUpperCase());
     });
 
+    
 
     function saveBicycleData($obj) {
        
@@ -879,6 +1759,50 @@
         });
 
 
+    }
+
+    function loadlocations(_area) {
+       
+        $.ajax({
+            url: "@Url.Action("getLocation", "Areas")"
+            , method: "POST"
+            , dataType: 'json'
+            , data: { areaid: _area }
+
+            , success: function (responsedata) {
+                $("#Plant").val(responsedata.company);
+
+                $(".LocationID").empty();
+             
+                if ($.trim(responsedata.datafe)) {
+                    $.each(responsedata.datafe, function (value, index) {
+                        $('#LocationIDFE').append('<option value="' + index.id + '">' + index.location + '</option>');
+                    });
+                }
+                getDataPerLocation('LocationIDFE', $('#LocationIDFE').val());
+                if ($.trim(responsedata.datael)) {
+                    $.each(responsedata.datael, function (value, index) {
+                        $('#LocationIDEL').append('<option value="' + index.id + '">' + index.location + '</option>');
+                    });
+                }
+                getDataPerLocation('LocationIDEL', $('#LocationIDEL').val());
+                if ($.trim(responsedata.datafh)) {
+                    $.each(responsedata.datafh, function (value, index) {
+                        $('#LocationIDFH').append('<option value="' + index.id + '">' + index.location + '</option>');
+                    });
+                }
+                getDataPerLocation('LocationIDFH', $('#LocationIDFH').val());
+
+                if ($.trim(responsedata.datait)) {
+                    $.each(responsedata.datait, function (value, index) {
+                        $('#LocationIDIT').append('<option value="' + index.id + '">' + index.area + '</option>');
+                    });
+                }
+                getDataPerLocation('LocationIDIT', $('#LocationIDIT').val());
+
+               
+            }
+        })
     }
     function loadDatatableBicycle(_Bicycle) {
        
@@ -964,7 +1888,7 @@
     }
         //FIRE EXTINGUISHER
         function loadDatatableFireExtinguisher(_area) {
-            dataClearFireExtinguisherData();
+        @*dataClearFireExtinguisherData();
         var data = [];
 
          $.ajax({
@@ -1177,7 +2101,7 @@
                                 }
 
                             }
-            });
+            });*@
 
 
 
@@ -1210,30 +2134,24 @@
 
 
                 var obj = {
-                    LocationFireExtinguisherId: $(this).find("td:eq(0)").text(),
+                    ItemID: $(this).find("td:eq(0)").text(),
                     Cylinder: $(this).find('input:checkbox')[0].checked,
                     Lever: $(this).find('input:checkbox')[1].checked,
                     Gauge: $(this).find('input:checkbox')[2].checked,
                     SafetySeal: $(this).find('input:checkbox')[3].checked,
                     Hose: $(this).find('input:checkbox')[4].checked,
                     Remarks: $(this).find("td:eq(10)").find("input").val().trim(),
-                    AreaId: $("#AreaId").val(),
+                    //AreaId: $("#AreaId").val(),
+                    LocationFireExtinguisherId: $("#LocationIDFE").val(),
                     ID: @ViewBag.ID,
                     InspectedBy: $inspectedBy,
                     ReviewedBy: $reviewedBy,
                     NotedBy: $notedBy,
-
-
                     };
 
                     items.push(obj)
 
             });
-
-
-
-
-
 
             $.ajax({
                 url: "@Url.Action("SaveData","FireExtinguishers")"
@@ -1277,14 +2195,14 @@
     }
     //EMERGENCY LIGHT
     function loadDatatableEmergencyLight(_area) {
-        dataClearEmergencyLightData();
+        @*dataClearEmergencyLightData();
         var data = [];
 
          $.ajax({
                         url: "@Url.Action("getDataPerArea", "EmergencyLights")"
                             , method: "POST"
                             , dataType: 'json'
-             , data: { AreaId: _area, dateTime: $("#Date").val() }
+                            , data: { AreaId: _area, dateTime: $("#Date").val() }
                             , success: function (responsedata) {
 
                                 if (responsedata.status == "success" && responsedata.data.length > 0) {
@@ -1448,7 +2366,7 @@
                                 }
 
                             }
-            });
+            });*@
 
 
 
@@ -1479,23 +2397,28 @@
                 $notedBy = lst[2].value
 
                      var obj = {
-                         LocationEmergencyLightId: $(this).find("td:eq(0)").text(),
+                         ItemID: $(this).find("td:eq(0)").text(),
                          Battery: $(this).find('input:checkbox')[0].checked,
                          Bulb: $(this).find('input:checkbox')[1].checked,
                          Usable: $(this).find('input:checkbox')[2].checked,
 
                          Remarks: $(this).find("td:eq(6)").find("input").val(),
-                         AreaId: $("#AreaId").val(),
+                         //AreaId: $("#AreaId").val(),
+                         LocationEmergencyLightId: $("#LocationIDEL").val(),
                          ID: @ViewBag.ID,
                          InspectedBy: $inspectedBy,
                          ReviewedBy: $reviewedBy,
                          NotedBy: $notedBy,
 
-                    }
+                }
+
+               
+
                     items.push(obj)
 
+            });
 
-                });
+                  
 
 
 
@@ -1539,7 +2462,7 @@
     }
     //INERGEN TANK
     function loadDatatableInergenTank(_area) {
-        dataClearInergenTankData();
+        @*dataClearInergenTankData();
         var data = [];
 
          $.ajax({
@@ -1727,7 +2650,7 @@
                                 }
 
                             }
-            });
+            });*@
 
 
 
@@ -1759,7 +2682,7 @@
 
                 var obj = {
 
-                    LocationInergenTankId: $(this).find("td:eq(0)").text(),
+                         ItemId: $(this).find("td:eq(0)").text(),
 
                          Cylinder: $(this).find('input:checkbox')[0].checked,
                          Gauge: $(this).find('input:checkbox')[1].checked,
@@ -1768,20 +2691,22 @@
 
 
                          Remarks: $(this).find("td:eq(7)").find("input").val(),
-                         AreaId: $("#AreaId").val(),
+                         //AreaId: $("#AreaId").val(),
+                         LocationInergenTankId: $("#LocationIDIT").val(),
                          ID: @ViewBag.ID,
                          InspectedBy: $inspectedBy,
                          ReviewedBy: $reviewedBy,
                          NotedBy: $notedBy,
 
-                    }
+                }
+               
+
                     items.push(obj)
 
 
                 });
 
-
-
+        
 
             $.ajax({
                 url: "@Url.Action("SaveData", "InergenTanks")"
@@ -1808,6 +2733,7 @@
 
 
     }
+
     function dataClearFireHydrantData() {
         $("#tblFireHydrant td[contenteditable=true]").each(function () {
             $(this).html('');
@@ -1822,7 +2748,7 @@
     }
      //FIRE HYDRANT
     function loadDatatableFireHydrant(_area) {
-        dataClearFireHydrantData();
+        @*dataClearFireHydrantData();
         var data = [];
 
          $.ajax({
@@ -2085,7 +3011,7 @@
                     }
 
                 }
-            });
+            });*@
 
 
 
@@ -2115,7 +3041,9 @@
                 $notedBy = lst[2].value
 
                      var obj = {
-                         LocationFireHydrantId: $(this).find("td:eq(0)").text(),
+                         
+                         
+                         ItemId: $(this).find("td:eq(0)").text(),
 
                          GlassCabinet: $(this).find('input:checkbox')[0].checked,
                          Hanger: $(this).find('input:checkbox')[1].checked,
@@ -2126,14 +3054,16 @@
                          SpecialTools: $(this).find('input:checkbox')[6].checked,
 
 
-                         Remarks: $(this).find("td:eq(10)").find("input").val(),
-                         AreaId: $("#AreaId").val(),
+                         Remarks: $(this).find("td:eq(10)").find("input").val().trim(),
+                         //AreaId: $("#AreaId").val(),
+                         LocationFireHydrantId: $("#LocationIDFH").val(),
                          ID: @ViewBag.ID,
                          InspectedBy: $inspectedBy,
                          ReviewedBy: $reviewedBy,
                          NotedBy: $notedBy,
 
-                    }
+                }
+
                     items.push(obj)
 
 
