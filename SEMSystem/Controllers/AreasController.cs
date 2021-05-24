@@ -704,7 +704,7 @@ namespace SEMSystem.Controllers
                        (A, B) =>
                           new
                           {
-                             B.Id,
+                              B.Items.Id,
                               ItemName = B.Items.Name,
                               B.Items.Code,
                               A.i.Type,
@@ -791,7 +791,7 @@ namespace SEMSystem.Controllers
                        (A, B) =>
                           new
                           {
-                              B.Id,
+                              B.Items.Id,
                               ItemName = B.Items.Name,
                               B.Items.Code,
                            
@@ -873,7 +873,7 @@ namespace SEMSystem.Controllers
                            (A, B) =>
                               new
                               {
-                                  B.Id,
+                                  B.Items.Id,
                                   ItemName = B.Items.Name,
                                   B.Items.Code,
                            
@@ -961,7 +961,7 @@ namespace SEMSystem.Controllers
                        (A, B) =>
                           new
                           {
-                              B.Id,
+                              B.Items.Id,
                               ItemName = B.Items.Name,
                               B.Items.Code,
                               A.i.Serial,
