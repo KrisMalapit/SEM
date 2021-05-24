@@ -14,6 +14,7 @@ using SEMSystem.Models.View_Model;
 
 namespace SEMSystem.Controllers
 {
+    //kris
     public class ReportsController : Controller
     {
         private readonly SEMSystemContext _context;
