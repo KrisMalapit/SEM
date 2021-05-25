@@ -126,5 +126,10 @@ namespace SEMSystem.Models
 
 
         }
+
+        internal object Include(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

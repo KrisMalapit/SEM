@@ -1,4 +1,4 @@
-﻿@model SEMSystem.Models.EmergencyLightHeader
+﻿@model SEMSystem.Models.FireHydrantHeader
 
 
 <style>
@@ -9,20 +9,17 @@
 <div class="col-lg-12">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
-            <h2>Emergency Light</h2>
+            <h2>Fire Extinguisher</h2>
             <div class="row">
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Area</label>
 
 
-              
-                    <div class="col-md-4">
+                <div class="col-md-4">
+                 
+                     @*  <select id="AreaId" name="AreaId" class="form-control" asp-items="@ViewBag.AreaId" disabled></select>*@
+                    <input id="AreaId" name="AreaId" class="form-control" disabled value="@ViewBag.Area" />
 
-                        @*  <select id="AreaId" name="AreaId" class="form-control" asp-items="@ViewBag.AreaId" disabled></select>*@
-                        <input id="AreaId" name="AreaId" class="form-control" disabled value="@ViewBag.Area" />
-
-                    </div>
-
-           
+                </div>
 
 
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Date</label>
@@ -34,15 +31,15 @@
             <div class="row">
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Location</label>
                 <div class="col-md-4">
-
-
-                    @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
+                  
+                   
+                        @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
                     <input id="LocationId" name="LocationId" class="form-control" disabled value="@ViewBag.Location" />
 
                 </div>
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                 <div class="col-md-4">
-                    <input id="Plant" name="Plant" class="form-control" disabled value="@ViewBag.Company" />
+                    <input id="Plant" name="Plant" class="form-control" disabled value="@ViewBag.Company"/>
 
                 </div>
             </div>
@@ -55,12 +52,14 @@
                         <th>ID</th>
                         <th width="20%">Item</th>
                         <th width="15%">Code</th>
-
-                        <th>Battery</th>
-                        <th>Bulb</th>
-                        <th>Usable</th>
-
-                        <th width="25%">Remarks</th>
+                        <th width="15%">Type</th>
+                        <th>Capacity</th>
+                        <th>Cylinder</th>
+                        <th>Lever</th>
+                        <th>Gauge</th>
+                        <th>Safety Seal</th>
+                        <th>Hose</th>
+                        <th  width="25%">Remarks</th>
 
                     </tr>
 
@@ -69,17 +68,18 @@
             </table>
             <p>
 
-                <a href="#" onclick="saveEmergencyData();">
+                <a href="#" onclick="saveFireHydrantData();">
                     <i class="fa fa-check"></i>
                     <span class="email-text">&nbsp;Save</span>
-                </a> 
-                
+                </a>
+
                 <text> |&nbsp; </text>
 
 
 
 
-                <a href="#" onclick="print('@ViewBag.ID','rptEmergencyLight');">
+
+                <a href="#" onclick="print('@ViewBag.ID','rptFireHydrant');">
                     <i class="fa fa-print"></i>
                     <span class="print">&nbsp;Print</span>
                 </a>
@@ -99,132 +99,15 @@
 <script>
         $(function () {
            
-            if ( @ViewBag.ID == 0) {
-                loadDatatable($("#AreaId").val());
-                
-            } else {
+            console.log(' @ViewBag.ID ');
                 loadDatatableEdit();
-               
-            }
-            
-
 
         })
-        $("#AreaId").change(function () {
-            $("#Plant").val("");
-             loadDatatable(this.value);
-        })
+        
         $("input[type=text]").keyup(function () {
             $(this).val($(this).val().toUpperCase());
         });
-        function loadDatatable(_area) {
-
-        var data = [];
-
-         $.ajax({
-                        url: "@Url.Action("getDataPerArea")"
-                            , method: "POST"
-                            , dataType: 'json'
-                            , data: { AreaId: _area }
-                            , success: function (responsedata) {
-
-                                if (responsedata.status == "success" && responsedata.data.length > 0) {
-
-                                    //$("#Plant").val(responsedata.data[0].companyName);
-
-                                    for (var i = 0; i < responsedata.data.length; i++) {
-
-                                        var $id = responsedata.data[i].id;
-
-
-
-                                        var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
-
-
-
-                                        var _battery = '<div class="form-check">' +
-                                            '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Battery" >' +
-                                            '<span class="form-check-sign"><span class="check"></span></span>' +
-                                            '</label>' +
-                                            '</div>';
-
-                                        var _bulb = '<div class="form-check">' +
-                                            '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Bulb" >' +
-                                            '<span class="form-check-sign"><span class="check"></span></span>' +
-                                            '</label>' +
-                                            '</div>';
-
-                                        var _usable = '<div class="form-check">' +
-                                            '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Usable" >' +
-                                            '<span class="form-check-sign"><span class="check"></span></span>' +
-                                            '</label>' +
-                                            '</div>';
-
-                                      
-
-                                        data.push([
-                                            responsedata.data[i].itemId
-                                            , responsedata.data[i].itemName
-                                            , responsedata.data[i].code
-                                           
-                                            , _battery
-                                            , _bulb
-                                            , _usable
-                                          
-                                            , _remarks
-                                           ]);
-
-                                    }
-                                    if ($.fn.DataTable.isDataTable('#tbl')) {
-                                        $('#tbl').DataTable().destroy();
-                                    }
-                                    $('#tbl').DataTable({
-                                        "data": data,
-                                        "responsive": true,
-                                        "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-                                        //"columnDefs": [
-                                        //    {
-                                        //        visible: false,
-                                        //        targets: [0]
-                                        //    },
-                                        //],
-                                    });
-                                } else {
-                                    if (responsedata.data.length < 1) {
-
-
-
-                                        if ($.fn.DataTable.isDataTable('#tbl')) {
-                                            $('#tbl').DataTable().destroy();
-                                        }
-                                        $('#tbl').DataTable({
-                                            "data": data,
-                                            "responsive": true,
-                                            "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-                                            //"columnDefs": [
-                                            //    {
-                                            //        visible: false,
-                                            //        targets: [0]
-                                            //    },
-                                            //],
-                                        });
-
-                                    }
-
-                                }
-
-                            }
-            });
-
-
-
-
-
-
-        }
+        
         function loadDatatableEdit() {
 
         var data = [];
@@ -235,66 +118,120 @@
                             , dataType: 'json'
                             , data: { id: @ViewBag.ID }
                             , success: function (responsedata) {
-
+                                console.log(responsedata);
                                 if (responsedata.status == "success") {
-                                   
+
                                     //$("#Plant").val(responsedata.data[0].companyName);
+
                                     for (var i = 0; i < responsedata.data.length; i++) {
                                         var $id = responsedata.data[i].id;
-                                        
+
                                         $checkedValue = "";
 
-                                        if (responsedata.data[i].battery == 1) {
+                                        if (responsedata.data[i].glassCabinet == 1) {
                                             $checkedValue = 'checked';
-                                        } 
-                                      
-                                        var _battery =
+                                        }
+
+                                        var _glassCabinet =
                                             '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type = "checkbox" value = "" name = "Battery" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type = "checkbox" value = "" name = "GlassCabinet" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
 
                                         $checkedValue = "";
-                                        if (responsedata.data[i].bulb == 1) {
+                                        if (responsedata.data[i].hanger == 1) {
                                             $checkedValue = 'checked';
                                         }
 
-                                        var _bulb = '<div class="form-check">' +
+                                        var _hanger = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Bulb" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value="" name="Hanger" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
 
                                         $checkedValue = "";
-                                        if (responsedata.data[i].usable == 1) {
+                                        if (responsedata.data[i].hose15 == 1) {
                                             $checkedValue = 'checked';
                                         }
 
-                                        var _usable = '<div class="form-check">' +
+                                        var _hose15 = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Usable" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value="" name="Hose15" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
 
-                                      
+                                        $checkedValue = "";
+                                        if (responsedata.data[i].nozzle15 == 1) {
+                                            $checkedValue = 'checked';
+                                        }
 
-                                        var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + responsedata.data[i].remarks + "'>";
+                                        var _nozzle15 =
+                                            '<div class="form-check">' +
+                                            '<label class="form-check-label">' +
+                                            '<input class="form-check-input" type = "checkbox" value = "" name = "Nozzle15" ' + $checkedValue + '>' +
+                                            '<span class="form-check-sign"><span class="check"></span></span>' +
+                                            '</label>' +
+                                            '</div>';
+
+                                        $checkedValue = "";
+                                        if (responsedata.data[i].hose25 == 1) {
+                                            $checkedValue = 'checked';
+                                        }
+
+                                        var _hose25 = '<div class="form-check">' +
+                                            '<label class="form-check-label">' +
+                                            '<input class="form-check-input" type="checkbox" value="" name="Hose25" ' + $checkedValue + '>' +
+                                            '<span class="form-check-sign"><span class="check"></span></span>' +
+                                            '</label>' +
+                                            '</div>';
+
+                                        $checkedValue = "";
+                                        if (responsedata.data[i].nozzle25 == 1) {
+                                            $checkedValue = 'checked';
+                                        }
+
+                                        var _nozzle25 = '<div class="form-check">' +
+                                            '<label class="form-check-label">' +
+                                            '<input class="form-check-input" type="checkbox" value="" name="Nozzle25" ' + $checkedValue + '>' +
+                                            '<span class="form-check-sign"><span class="check"></span></span>' +
+                                            '</label>' +
+                                            '</div>';
+
+                                        $checkedValue = "";
+                                        if (responsedata.data[i].specialTools == 1) {
+                                            $checkedValue = 'checked';
+                                        }
+
+                                        var _specialTools = '<div class="form-check">' +
+                                            '<label class="form-check-label">' +
+                                            '<input class="form-check-input" type="checkbox" value="" name="SpecialTools" ' + $checkedValue + '>' +
+                                            '<span class="form-check-sign"><span class="check"></span></span>' +
+                                            '</label>' +
+                                            '</div>';
+
+                                        var _rem = responsedata.data[i].remarks === null ? "" : responsedata.data[i].remarks;
+                                        var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+
 
                                         data.push([
                                             responsedata.data[i].itemId
                                             , responsedata.data[i].itemName
                                             , responsedata.data[i].code
 
-                                            , _battery
-                                            , _bulb
-                                            , _usable
-                                           
+                                            , _glassCabinet
+                                            , _hanger
+                                            , _hose15
+                                            , _nozzle15
+                                            , _hose25
+                                            , _nozzle25
+                                            , _specialTools
+
                                             , _remarks
-                                           ]);
+                                        ]);
 
                                     }
                                     if ($.fn.DataTable.isDataTable('#tbl')) {
@@ -343,7 +280,7 @@
 
 
         }
-        function saveEmergencyData () {
+    function saveFireHydrantData  () {
 
 
             var items = [];
@@ -352,11 +289,12 @@
 
                      var obj = {
                          ItemId: $(this).find("td:eq(0)").text(),
-                         Battery: $(this).find('input:checkbox')[0].checked,
-                         Bulb: $(this).find('input:checkbox')[1].checked,
-                         Usable: $(this).find('input:checkbox')[2].checked,
-                        
-                         Remarks: $(this).find("td:eq(6)").find("input").val(),
+                         Cylinder: $(this).find('input:checkbox')[0].checked,
+                         Lever: $(this).find('input:checkbox')[1].checked,
+                         Gauge: $(this).find('input:checkbox')[2].checked,
+                         SafetySeal: $(this).find('input:checkbox')[3].checked,
+                         Hose: $(this).find('input:checkbox')[4].checked,
+                         Remarks: $(this).find("td:eq(10)").find("input").val(),
                          AreaId: $("#AreaId").val(),
                          ID: @ViewBag.ID
 
@@ -367,7 +305,7 @@
                 });
 
 
-            console.log(items);
+
 
             $.ajax({
                 url: "@Url.Action("EditData")"
@@ -394,9 +332,8 @@
 
 
     }
-    function print($refid,$rpt) {
+     function print($refid,$rpt) {
         window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid+ '&Report=' + $rpt + '&rptType=PDF');
     }
-
 
 </script>

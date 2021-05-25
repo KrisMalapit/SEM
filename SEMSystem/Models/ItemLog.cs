@@ -10,7 +10,7 @@ namespace SEMSystem.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int ItemId { get; set; }
-        public virtual Item Items { get; set; }
+        //public virtual Item Items { get; set; }
         public string OldStatus { get; set; }
         public string NewStatus { get; set; }
         public DateTime CreatedDate { get; set; }

@@ -7,6 +7,7 @@ using SEMSystem.Models;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SEMSystem.Models.View_Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace SEMSystem.Controllers
 {
@@ -44,7 +45,7 @@ namespace SEMSystem.Controllers
         // GET: FireHydrant/Create
         public IActionResult Edit(int id)
         {
-            var model = _context.FireHydrantHeaders.Find(id);
+            var model = _context.FireHydrantHeaders.Include(a => a.Locations).Where(a => a.Id == id).FirstOrDefault();
 
             this.AddBreadCrumb(new BreadCrumb
             {
@@ -55,9 +56,17 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
-            ViewData["AreaId"] = new SelectList(_context.LocationFireHydrants, "ID", "Name", model.LocationFireHydrantId);
+            // ViewData["AreaId"] = new SelectList(_context.LocationFireHydrants, "ID", "Name", model.LocationFireHydrantId);
+            ViewData["Area"] = _context.Areas.Find(model.Locations.AreaId).Name;
+
+            //ViewData["LocationId"] = new SelectList(_context.LocationFireExtinguishers, "Id", "Name",model.LocationFireExtinguisherId);
+            ViewData["Location"] = _context.LocationFireHydrants.Find(model.LocationFireHydrantId).Location;
+
+
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
+            ViewData["Company"] = _context.Areas.Include(a=>a.Companies).Where(a=>a.ID == model.Locations.AreaId).FirstOrDefault().Companies.Name;
+
 
             return View("Create", model);
         }
@@ -120,6 +129,8 @@ namespace SEMSystem.Controllers
                          CompanyName = a.Locations.Areas.Companies.Name,
                          AreaName = a.Locations.Areas.Name
                          ,
+                         a.Locations.Location
+                         ,
                          a.Status
                      })
                     .Where(a => a.Status == "Active")
@@ -141,6 +152,8 @@ namespace SEMSystem.Controllers
                    a.CreatedAt,
                    CompanyName = a.Locations.Areas.Companies.Name,
                    AreaName = a.Locations.Areas.Name
+                   ,
+                   a.Locations.Location
                   ,
                    a.Id
                    ,
@@ -480,6 +493,91 @@ namespace SEMSystem.Controllers
             return Json(model);
         }
         [HttpPost]
+        public ActionResult EditData(FireHydrantViewModel[] item)
+        {
+            string status = "success";
+            string message = "";
+
+            try
+            {
+                int headerId = item[0].ID;
+
+                foreach (var detail in item)
+                {
+                    var d = _context.FireHydrantDetails
+                        .Where(a => a.FireHydrantHeaderId == headerId)
+                        .Where(a => a.ItemId == detail.ItemId)
+                        .FirstOrDefault();
+
+                    if (d == null)
+                    {
+
+                        var _detail = new FireHydrantDetail
+                        {
+                            
+                            ItemId = detail.ItemId,
+                            GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0,
+                            Hanger = detail.Hanger == "true" ? 1 : 0,
+                            Hose15 = detail.Hose15 == "true" ? 1 : 0,
+                            Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0,
+                            Hose25 = detail.Hose25 == "true" ? 1 : 0,
+                            Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0,
+                            SpecialTools = detail.SpecialTools == "true" ? 1 : 0,
+                            InspectedBy = detail.InspectedBy,
+                            ReviewedBy = detail.ReviewedBy,
+                            NotedBy = detail.NotedBy,
+                            CreatedAt = DateTime.Now.Date,
+                            UpdatedAt = DateTime.Now,
+                            FireHydrantHeaderId = headerId,
+                            Remarks = detail.Remarks
+                        };
+
+                        _context.Add(_detail);
+
+
+                    }
+                    else
+                    {
+                        d.GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0;
+                        d.Hanger = detail.Hanger == "true" ? 1 : 0;
+                        d.Hose15 = detail.Hose15 == "true" ? 1 : 0;
+                        d.Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0;
+                        d.Hose25 = detail.Hose25 == "true" ? 1 : 0;
+                        d.Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0;
+                        d.SpecialTools = detail.SpecialTools == "true" ? 1 : 0;
+
+
+                        d.InspectedBy = detail.InspectedBy;
+                        d.Remarks = detail.Remarks;
+                        d.NotedBy = detail.NotedBy;
+                        d.UpdatedAt = DateTime.Now;
+                        d.UpdatedBy = User.Identity.GetUserName();
+                        d.FireHydrantHeaderId = headerId;
+                        d.ReviewedBy = detail.ReviewedBy;
+
+                        _context.Update(d);
+                    }
+                    _context.SaveChanges();
+                }
+                status = "success";
+            }
+            catch (Exception e)
+            {
+                status = "fail";
+                message = e.InnerException.Message;
+            }
+
+
+            var model = new
+            {
+                status
+               ,
+                message
+
+            };
+            return Json(model);
+        }
+        [HttpPost]
         public ActionResult Delete(int id)
         {
             string status = "";
@@ -564,6 +662,8 @@ namespace SEMSystem.Controllers
             //              }
             //        );
 
+
+
             var v = _context.FireHydrantDetails
                    .Where(a => a.FireHydrantHeaders.Status == "Active")
                    .Where(a => a.FireHydrantHeaderId == id) //A
@@ -586,6 +686,7 @@ namespace SEMSystem.Controllers
                                 {
 
                                     A.i.ItemId,
+                                    ItemName = A.i.Items.Name,
                                     A.i.GlassCabinet,
                                     A.i.Hanger,
                                     A.i.Hose15,
@@ -594,8 +695,8 @@ namespace SEMSystem.Controllers
                                     A.i.Nozzle25,
                                     A.i.SpecialTools,
                                     A.i.Remarks,
-                                    B.Code,
-                                   
+                                    A.i.Items.Code,
+
                                     A.i.InspectedBy,
                                     A.i.ReviewedBy,
                                     A.i.NotedBy,

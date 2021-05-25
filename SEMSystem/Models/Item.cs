@@ -22,5 +22,6 @@ namespace SEMSystem.Models
         public string Status { get; set; } = "Active";
         [Display(Name = "Equipment Type")]
         public string EquipmentType { get; set; }
+        public int IsIn { get; set; } = 1;
     }
 }

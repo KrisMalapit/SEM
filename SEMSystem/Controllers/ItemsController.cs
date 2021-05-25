@@ -33,7 +33,7 @@ namespace SEMSystem.Controllers
 
             var _itemForRefill = _context.Items
                 .Where(a => a.EquipmentType == "Fire Extinguisher")
-                .Where(a => a.Status != "Deleted")
+                .Where(a => a.Status == "Active")
                 .Where(a=>a.ItemStatus != "For Refill")
                 .Where(a=>a.DatePurchased.Value.Date.AddDays(2) >= yearDate)
                 .ToList();
@@ -440,10 +440,10 @@ namespace SEMSystem.Controllers
                     _context.Add(log);
 
 
-                    
+                _context.Items.Find(item.ItemId).IsIn = 1;
 
 
-                    ItemLog itemLog = new ItemLog
+                ItemLog itemLog = new ItemLog
                     {
                         ItemId = id,
                         OldStatus = "",
@@ -499,6 +499,9 @@ namespace SEMSystem.Controllers
                         CreatedBy = User.Identity.GetFullName(),
                         Description = "Added item to location " + LocationName
                     };
+
+                    _context.Items.Find(item.ItemId).IsIn = 0;
+
                     _context.Add(itemLog);
                 }
 
