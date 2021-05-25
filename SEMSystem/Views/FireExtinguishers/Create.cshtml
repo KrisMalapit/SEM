@@ -15,14 +15,9 @@
 
 
                 <div class="col-md-4">
-                    @if (ViewBag.ID == 0)
-                    {
-                        <select id="AreaId" name="AreaId" class="form-control" asp-items="ViewBag.AreaId"></select>
-                    }
-                    else
-                    {
-                        <select id="AreaId" name="AreaId" class="form-control" asp-items="ViewBag.AreaId" disabled></select>
-                    }
+                 
+                     @*  <select id="AreaId" name="AreaId" class="form-control" asp-items="@ViewBag.AreaId" disabled></select>*@
+                    <input id="AreaId" name="AreaId" class="form-control" disabled value="@ViewBag.Area" />
 
                 </div>
 
@@ -32,10 +27,19 @@
                     <input id="Date" name="Date" class="form-control" disabled value="@ViewBag.CreatedAt" />
                 </div>
             </div>
+            <br />
             <div class="row">
+                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Location</label>
+                <div class="col-md-4">
+                  
+                   
+                        @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
+                    <input id="LocationId" name="LocationId" class="form-control" disabled value="@ViewBag.Location" />
+
+                </div>
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                 <div class="col-md-4">
-                    <input id="Plant" name="Plant" class="form-control" disabled />
+                    <input id="Plant" name="Plant" class="form-control" disabled value="@ViewBag.Company" />
 
                 </div>
             </div>
@@ -46,7 +50,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th width="20%">Location</th>
+                        <th width="20%">Item</th>
                         <th width="15%">Code</th>
                         <th width="15%">Type</th>
                         <th>Capacity</th>
@@ -67,12 +71,14 @@
                 <a href="#" onclick="saveFireData();">
                     <i class="fa fa-check"></i>
                     <span class="email-text">&nbsp;Save</span>
-                </a> <text> |&nbsp; </text>
+                </a>
+
+                <text> |&nbsp; </text>
 
 
 
 
-                <a href="#" onclick="print();">
+                <a href="#" onclick="print('@ViewBag.ID','rptFireExtinguisher');">
                     <i class="fa fa-print"></i>
                     <span class="print">&nbsp;Print</span>
                 </a>
@@ -119,10 +125,10 @@
                             , dataType: 'json'
                             , data: { AreaId: _area }
                             , success: function (responsedata) {
-
+                                consoel.log(responsedata);
                                 if (responsedata.status == "success" && responsedata.data.length > 0) {
 
-                                    $("#Plant").val(responsedata.data[0].companyName);
+                                    //$("#Plant").val(responsedata.data[0].companyName);
 
                                     for (var i = 0; i < responsedata.data.length; i++) {
 
@@ -170,8 +176,8 @@
                                             '</div>';
 
                                         data.push([
-                                            responsedata.data[i].id
-                                            , responsedata.data[i].location
+                                            responsedata.data[i].itemId
+                                            , responsedata.data[i].itemName
                                             , responsedata.data[i].code
                                             , responsedata.data[i].type
                                             , responsedata.data[i].capacity
@@ -241,10 +247,10 @@
                             , dataType: 'json'
                             , data: { id: @ViewBag.ID }
                             , success: function (responsedata) {
-
+                                console.log(responsedata);
                                 if (responsedata.status == "success") {
 
-                                    $("#Plant").val(responsedata.data[0].companyName);
+                                    //$("#Plant").val(responsedata.data[0].companyName);
                                     for (var i = 0; i < responsedata.data.length; i++) {
                                         var $id = responsedata.data[i].id;
                                         
@@ -313,8 +319,8 @@
                                         var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + responsedata.data[i].remarks + "' data-id='" + $id + "'>";
 
                                         data.push([
-                                            responsedata.data[i].id
-                                            , responsedata.data[i].location
+                                            responsedata.data[i].itemId
+                                            , responsedata.data[i].itemName
                                             , responsedata.data[i].code
                                             , responsedata.data[i].type
                                             , responsedata.data[i].capacity
@@ -381,7 +387,7 @@
                 //console.log($(this).closest('tr').find('input:checkbox')[0].checked)
 
                      var obj = {
-                         LocationFireExtinguisherId: $(this).find("td:eq(0)").text(),
+                         ItemId: $(this).find("td:eq(0)").text(),
                          Cylinder: $(this).find('input:checkbox')[0].checked,
                          Lever: $(this).find('input:checkbox')[1].checked,
                          Gauge: $(this).find('input:checkbox')[2].checked,
@@ -401,7 +407,7 @@
 
 
             $.ajax({
-                url: "@Url.Action("SaveData")"
+                url: "@Url.Action("EditData")"
                 , type: "POST"
                 , dataType: "json"
                 , data: { item: items }
@@ -424,5 +430,9 @@
                 })
 
 
-        }
+    }
+     function print($refid,$rpt) {
+        window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid+ '&Report=' + $rpt + '&rptType=PDF');
+    }
+
 </script>

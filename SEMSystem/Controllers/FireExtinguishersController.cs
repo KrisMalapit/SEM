@@ -7,6 +7,7 @@ using SEMSystem.Models;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SEMSystem.Models.View_Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace SEMSystem.Controllers
 {
@@ -44,8 +45,8 @@ namespace SEMSystem.Controllers
         // GET: FireExtinguisher/Create
         public IActionResult Edit(int id)
         {
-            var model = _context.FireExtinguisherHeaders.Find(id);
-
+            var model = _context.FireExtinguisherHeaders.Include(a=>a.Locations).Where(a=>a.Id == id).FirstOrDefault();
+            
             this.AddBreadCrumb(new BreadCrumb
             {
                 Title = "Fire Extinguisher",
@@ -53,12 +54,20 @@ namespace SEMSystem.Controllers
                 Order = 1
             });
 
+            
+
+            
 
             ViewData["ID"] = id;
-            ViewData["LocationId"] = new SelectList(_context.LocationFireExtinguishers, "Id", "Name",model.LocationFireExtinguisherId);
+            //ViewData["AreaId"] = new SelectList(_context.Areas, "Id", "Name", model.Locations.AreaId);
+            ViewData["Area"] = _context.Areas.Find(model.Locations.AreaId).Name;
+
+            //ViewData["LocationId"] = new SelectList(_context.LocationFireExtinguishers, "Id", "Name",model.LocationFireExtinguisherId);
+            ViewData["Location"] = _context.LocationFireExtinguishers.Find(model.LocationFireExtinguisherId).Location;
+
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
-
+            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.Locations.AreaId).FirstOrDefault().Companies.Name;
             return View("Create", model);
         }
         [HttpPost]
@@ -119,7 +128,10 @@ namespace SEMSystem.Controllers
                          a.CreatedAt,
                          CompanyName = a.Locations.Areas.Companies.Name,
                          AreaName = a.Locations.Areas.Name
-                         ,a.Status
+                         ,
+                         a.Locations.Location
+                         ,
+                         a.Status
                      })
                     .Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -140,6 +152,7 @@ namespace SEMSystem.Controllers
                    a.CreatedAt,
                    CompanyName = a.Locations.Areas.Companies.Name,
                    AreaName = a.Locations.Areas.Name
+                   , a.Locations.Location
                   ,
                    a.Id
                    ,a.Status
@@ -161,7 +174,7 @@ namespace SEMSystem.Controllers
 
 
 
-
+                var xxx = v.ToList();
                 var data = v;
 
                 var jsonData = new { draw = draw, recordsFiltered = recFilter, recordsTotal,  data };
@@ -295,14 +308,14 @@ namespace SEMSystem.Controllers
                                   {
 
                                       A.i.ItemId,
-                                      A.i.Cylinder,
+                                      ItemName = A.i.Items.Name,
                                       A.i.Lever,
                                       A.i.Gauge,
                                       A.i.SafetySeal,
                                       A.i.Hose,
                                       A.i.Remarks,
-                                      B.Code,
-                                      B.Type,
+                                     A.i.Items.Code,
+                                     B.Type,
                                       B.Capacity,
                                       A.i.InspectedBy,
                                       A.i.ReviewedBy,
@@ -310,6 +323,7 @@ namespace SEMSystem.Controllers
                                       CompanyName = B.Areas.Companies.Name,
                                       HeaderId = A.i.FireExtinguisherHeaderId
                                   }
+
                             );
             status = "success";
 
@@ -458,6 +472,85 @@ namespace SEMSystem.Controllers
             };
             return Json(model);
         }
+
+        [HttpPost]
+        public ActionResult EditData(FireExtinguisherViewModel[] item)
+        {
+            string status = "success";
+            string message = "";
+
+            try
+            {
+                int headerId = item[0].ID;
+
+                foreach (var detail in item)
+                {
+                    var d = _context.FireExtinguisherDetails
+                        .Where(a => a.FireExtinguisherHeaderId == headerId)
+                        .Where(a => a.ItemId == detail.ItemId)
+                        .FirstOrDefault();
+
+                    if (d == null)
+                    {
+
+                        var _detail = new FireExtinguisherDetail
+                        {
+                            ItemId = detail.ItemId,
+                            Cylinder = detail.Cylinder == "true" ? 1 : 0,
+                            Lever = detail.Lever == "true" ? 1 : 0,
+                            Gauge = detail.Gauge == "true" ? 1 : 0,
+                            SafetySeal = detail.SafetySeal == "true" ? 1 : 0,
+                            Hose = detail.Hose == "true" ? 1 : 0,
+                            CreatedAt = DateTime.Now.Date,
+                            UpdatedAt = DateTime.Now,
+                            FireExtinguisherHeaderId = headerId,
+                            Remarks = detail.Remarks,
+                            //InspectedBy = detail.InspectedBy,
+                            //ReviewedBy = detail.ReviewedBy,
+                            //NotedBy = detail.NotedBy
+                        };
+
+                        _context.Add(_detail);
+
+
+                    }
+                    else
+                    {
+                        d.Cylinder = detail.Cylinder == "true" ? 1 : 0;
+                        d.Lever = detail.Lever == "true" ? 1 : 0;
+                        d.Gauge = detail.Gauge == "true" ? 1 : 0;
+                        d.SafetySeal = detail.SafetySeal == "true" ? 1 : 0;
+                        d.Hose = detail.Hose == "true" ? 1 : 0;
+                        d.UpdatedAt = DateTime.Now;
+                        d.UpdatedBy = User.Identity.GetUserName();
+                        d.FireExtinguisherHeaderId = headerId;
+                        d.Remarks = detail.Remarks;
+                        //d.InspectedBy = detail.InspectedBy;
+                        //d.ReviewedBy = detail.ReviewedBy;
+                        //d.NotedBy = detail.NotedBy;
+                        _context.Update(d);
+                    }
+                    _context.SaveChanges();
+                }
+                status = "success";
+            }
+            catch (Exception e)
+            {
+                status = "fail";
+                message = e.InnerException.Message;
+            }
+            
+
+            var model = new
+            {
+                status
+               ,
+                message
+               
+            };
+            return Json(model);
+        }
+
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -560,13 +653,14 @@ namespace SEMSystem.Controllers
                                 {
 
                                     A.i.ItemId,
+                                    ItemName = A.i.Items.Name,
                                     A.i.Cylinder,
                                     A.i.Lever,
                                     A.i.Gauge,
                                     A.i.SafetySeal,
                                     A.i.Hose,
                                     A.i.Remarks,
-                                    B.Code,
+                                    A.i.Items.Code,
                                     B.Type,
                                     B.Capacity,
                                     A.i.InspectedBy,

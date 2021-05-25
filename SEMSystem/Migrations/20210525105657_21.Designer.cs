@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEMSystem.Models;
 
 namespace SEMSystem.Migrations
 {
     [DbContext(typeof(SEMSystemContext))]
-    partial class SEMSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210525105657_21")]
+    partial class _21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -546,6 +548,8 @@ namespace SEMSystem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ItemId");
+
                     b.ToTable("ItemLogs");
                 });
 
@@ -903,6 +907,14 @@ namespace SEMSystem.Migrations
                     b.HasOne("SEMSystem.Models.LocationInergenTank", "Locations")
                         .WithMany()
                         .HasForeignKey("LocationInergenTankId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SEMSystem.Models.ItemLog", b =>
+                {
+                    b.HasOne("SEMSystem.Models.Item", "Items")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

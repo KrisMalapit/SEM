@@ -744,7 +744,7 @@ namespace SEMSystem.Controllers
                                      A.i.SafetySeal,
                                      A.i.Hose,
                                      A.i.Remarks,
-                                     B.Code,
+                                     A.i.Items.Code,
                                      B.Type,
                                      B.Capacity,
                                      A.i.InspectedBy,
@@ -883,7 +883,7 @@ namespace SEMSystem.Controllers
                         );
 
 
-                var xx = v.ToList();
+                
                     var detail = _context.FireHydrantDetails
                         .Where(a => a.FireHydrantHeaders.Status == "Active")
                         .Where(a => a.FireHydrantHeaders.LocationFireHydrantId == LocationId)
@@ -924,7 +924,7 @@ namespace SEMSystem.Controllers
                                      }
                                 );
                 status = "success";
-                var xy = detail.ToList();
+             
                 var model = new
                 {
                     status

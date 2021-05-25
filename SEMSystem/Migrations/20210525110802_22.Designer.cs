@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEMSystem.Models;
 
 namespace SEMSystem.Migrations
 {
     [DbContext(typeof(SEMSystemContext))]
-    partial class SEMSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210525110802_22")]
+    partial class _22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
