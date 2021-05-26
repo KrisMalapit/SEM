@@ -983,7 +983,7 @@
                                                     '</label>' +
                                                     '</div>';
 
-                                                var _rem = responsedata.datadetail[i].remarks == "null" ? "" : responsedata.datadetail[i].remarks;
+                                                var _rem = responsedata.datadetail[i].remarks == null ? "" : responsedata.datadetail[i].remarks;
                                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "' data-id='" + $id + "'>";
                                            
                                                 data.push([
@@ -1141,7 +1141,7 @@
                                                 '</div>';
 
 
-                                            var _rem = responsedata.datadetail[i].remarks === "null" ? "" : responsedata.datadetail[i].remarks;
+                                            var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
                                             var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
 
                                             data.push([
@@ -1330,7 +1330,7 @@
                                     '</label>' +
                                     '</div>';
 
-                                var _rem = responsedata.datadetail[i].remarks === "null" ? "" : responsedata.datadetail[i].remarks;
+                                var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
 
                                 data.push([
@@ -1592,7 +1592,7 @@
 
 
 
-                                    var _rem = responsedata.datadetail[i].remarks === "null" ? "" : responsedata.datadetail[i].remarks;
+                                    var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
 
                                     var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
 
