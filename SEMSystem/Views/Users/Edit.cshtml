@@ -65,7 +65,7 @@
                     @Html.DropDownList("RoleId", (IEnumerable<SelectListItem>)ViewData["Roles"], "Select Role", new { @class = "form-control" })
                     <span asp-validation-for="RoleId" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label class="control-label">User Type</label>
                     <select id="UserType"  name="UserType" class="form-control">
                         <option value="SEMSystem">SEMSystem</option>
@@ -73,7 +73,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label class="control-label">Company Access</label>
                     <select id="CompanyAccess" style="width:400px" name="companytags[]" class="form-control">
                         <option value="1">SEM CALACA AND POWER CORP</option>
