@@ -570,4 +570,7 @@
 
 
     }
+       function print($refid,$rpt) {
+        window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid+ '&Report=' + $rpt + '&rptType=PDF');
+    }
 </script>
