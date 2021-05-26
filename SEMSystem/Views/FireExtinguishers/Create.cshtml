@@ -175,6 +175,8 @@
                                             '</label>' +
                                             '</div>';
 
+                                       
+
                                         data.push([
                                             responsedata.data[i].itemId
                                             , responsedata.data[i].itemName
@@ -316,8 +318,9 @@
                                             '</label>' +
                                             '</div>';
 
-                                        var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + responsedata.data[i].remarks + "' data-id='" + $id + "'>";
-
+                                        //var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + responsedata.data[i].remarks + "' data-id='" + $id + "'>";
+                                        var _rem = responsedata.data[i].remarks === null ? "" : responsedata.data[i].remarks;
+                                        var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
                                         data.push([
                                             responsedata.data[i].itemId
                                             , responsedata.data[i].itemName
