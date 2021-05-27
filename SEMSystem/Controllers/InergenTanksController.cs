@@ -337,6 +337,14 @@ namespace SEMSystem.Controllers
             int headerId = 0;
             string status = "";
             string message = "";
+
+            string series = "";
+            string refno = "";
+            string series_code = "INERGENTANK";
+            series = new NoSeriesController(_context).GetNoSeries(series_code);
+            refno = "IT" + series;
+
+
             try
             {
                 var _header = _context.InergenTankHeaders.Where(a => a.Status == "Active")
@@ -348,12 +356,17 @@ namespace SEMSystem.Controllers
                 {
                     InergenTankHeader header = new InergenTankHeader();
                     //header.AreaId = item[0].AreaId;
+                    header.ReferenceNo = refno;
                     header.LocationInergenTankId = item[0].LocationInergenTankId;
                     header.CreatedAt = DateTime.Now.Date;
                     header.CreatedBy = User.Identity.GetUserName();
                     _context.Add(header);
                     _context.SaveChanges();
                     headerId = header.Id;
+
+                    string x = new NoSeriesController(_context).UpdateNoSeries(series, series_code);
+
+
 
                     foreach (var detail in item)
                     {

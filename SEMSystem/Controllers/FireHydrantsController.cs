@@ -337,6 +337,12 @@ namespace SEMSystem.Controllers
         [HttpPost]
         public IActionResult SaveData(FireHydrantViewModel[] item)
         {
+            string series = "";
+            string refno = "";
+            string series_code = "FIREHYDRANT";
+            series = new NoSeriesController(_context).GetNoSeries(series_code);
+            refno = "FH" + series;
+
             int headerId = 0;
             string status = "";
             string message = "";
@@ -349,13 +355,16 @@ namespace SEMSystem.Controllers
 
                 if (_header.Count() == 0)
                 {
-                    FireHydrantHeader header = new FireHydrantHeader();
-                    //header.AreaId = item[0].AreaId;
-                    header.LocationFireHydrantId = item[0].LocationFireHydrantId;
-                    header.CreatedAt = DateTime.Now.Date;
-                    header.CreatedBy = User.Identity.GetUserName();
+                    FireHydrantHeader header = new FireHydrantHeader
+                    {
+                        ReferenceNo = refno,
+                        LocationFireHydrantId = item[0].LocationFireHydrantId,
+                        CreatedAt = DateTime.Now.Date,
+                        CreatedBy = User.Identity.GetUserName()
+                    };
                     _context.Add(header);
                     _context.SaveChanges();
+                    string x = new NoSeriesController(_context).UpdateNoSeries(series, series_code);
                     headerId = header.Id;
 
                     foreach (var detail in item)

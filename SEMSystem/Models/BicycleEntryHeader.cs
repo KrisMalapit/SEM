@@ -9,6 +9,7 @@ namespace SEMSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public string ReferenceNo { get; set; }
         public int BicycleId { get; set; }
         public virtual Bicycle Bicycles { get; set; }
         public DateTime CreatedAt { get; set; }

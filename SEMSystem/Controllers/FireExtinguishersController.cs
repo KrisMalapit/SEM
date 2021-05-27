@@ -54,14 +54,9 @@ namespace SEMSystem.Controllers
                 Order = 1
             });
 
-            
-
-            
-
             ViewData["ID"] = id;
             //ViewData["AreaId"] = new SelectList(_context.Areas, "Id", "Name", model.Locations.AreaId);
             ViewData["Area"] = _context.Areas.Find(model.Locations.AreaId).Name;
-
             //ViewData["LocationId"] = new SelectList(_context.LocationFireExtinguishers, "Id", "Name",model.LocationFireExtinguisherId);
             ViewData["Location"] = _context.LocationFireExtinguishers.Find(model.LocationFireExtinguisherId).Location;
 
@@ -76,9 +71,6 @@ namespace SEMSystem.Controllers
             string strFilter = "";
             try
             {
-               
-
-
                 var draw = Request.Form["draw"].FirstOrDefault();
                 var start = Request.Form["start"].FirstOrDefault();
                 var length = Request.Form["length"].FirstOrDefault();
@@ -88,7 +80,6 @@ namespace SEMSystem.Controllers
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
-
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -190,68 +181,6 @@ namespace SEMSystem.Controllers
             string status = "";
             int headerid = 0;
 
-            //var v =
-
-            //    _context.LocationFireExtinguishers
-            //    .Where(a => a.Status == "Active")
-            //    .Where(a=>a.AreaId == AreaId)
-            //    .Select(a => new {
-            //        a.Location,
-            //        a.Type,
-            //        a.Capacity,
-            //        a.Code,
-            //        a.Id,
-            //        CompanyName = a.Areas.Companies.Name
-            //    });
-
-            //status = "success";
-
-
-
-
-
-            //var detail = _context.FireExtinguisherDetails
-            //        .Where(a => a.FireExtinguisherHeaders.Status == "Active")
-            //        .Where(a => a.FireExtinguisherHeaders.AreaId == AreaId)
-            //        .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
-            //        .GroupJoin(
-            //           _context.LocationFireExtinguishers // B
-            //           .Where(a => a.Status == "Active"),
-            //           i => i.LocationFireExtinguisherId, //A key
-            //           p => p.Id,//B key
-            //           (i, g) =>
-            //              new
-            //              {
-            //                  i, //holds A data
-            //                  g  //holds B data
-            //              }
-            //        )
-            //        .SelectMany(
-            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-            //           (A, B) =>
-            //              new
-            //              {
-
-            //                  Id = A.i.LocationFireExtinguisherId,
-            //                  A.i.Cylinder,
-            //                  A.i.Lever,
-            //                  A.i.Gauge,
-            //                  A.i.SafetySeal,
-            //                  A.i.Hose,
-            //                  A.i.Remarks,
-            //                  B.Location,
-            //                  B.Code,
-            //                  B.Type,
-            //                  B.Capacity,
-            //                  A.i.InspectedBy,
-            //                  A.i.ReviewedBy,
-            //                  A.i.NotedBy,
-            //                  CompanyName = B.Areas.Companies.Name,
-            //                  HeaderId = A.i.FireExtinguisherHeaderId
-            //              }
-            //        );
-
-
 
             var v =
 
@@ -342,6 +271,12 @@ namespace SEMSystem.Controllers
         [HttpPost]
         public IActionResult SaveData(FireExtinguisherViewModel[] item)
         {
+            string series = "";
+            string refno = "";
+            string series_code = "FIREEXTINGUISHER";
+            series = new NoSeriesController(_context).GetNoSeries(series_code);
+            refno = "FE" + series;
+            
             int headerId = 0;
             string status = "";
             string message = "";
@@ -355,8 +290,21 @@ namespace SEMSystem.Controllers
                 if (_header.Count() == 0)
                 {
 
+                    var comp = _context.LocationFireExtinguishers.Where(a => a.Id == item[0].LocationFireExtinguisherId).FirstOrDefault();
+                    //    .Areas.Companies.Code;
+                    //if (comp.Substring(0,2) == "SCPC") 
+                    //{
+                    //    comp = "SC";
+                    //}
+                    //else
+                    //{
+                    //    comp = "SL";
+
+                    //}
+
                     FireExtinguisherHeader header = new FireExtinguisherHeader
                     {
+                        ReferenceNo = refno,
                         LocationFireExtinguisherId = item[0].LocationFireExtinguisherId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
@@ -364,6 +312,8 @@ namespace SEMSystem.Controllers
 
                     _context.Add(header);
                     _context.SaveChanges();
+                    string x = new NoSeriesController(_context).UpdateNoSeries(series, series_code);
+
                     headerId = header.Id;
 
                     foreach (var detail in item)

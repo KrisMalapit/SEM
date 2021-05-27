@@ -22,7 +22,7 @@
                         @*<th>Warranty (Months)</th>
         <th>Date Purchased</th>
         <th>Date Expiration</th>*@
-
+                        <th>Date Purchase</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -58,7 +58,7 @@
                                         var newDate = new Date(responsedata.data[i].datePurchased);
                                         newDate.setMonth(newDate.getMonth() + parseInt(responsedata.data[i].warranty));
 
-                                       
+                                        var datepurchase = responsedata.data[i].datePurchased == null ? "" : moment(responsedata.data[i].datePurchased).format("MM/DD/YYYY") 
 
 
 
@@ -72,7 +72,7 @@
                                             //, responsedata.data[i].warranty 
                                             //, moment(responsedata.data[i].datePurchased).format("MM/DD/YYYY") 
                                             //, moment(newDate).format("MM/DD/YYYY")
-                                            
+                                            , datepurchase
                                             , responsedata.data[i].itemStatus 
                                             ,$actions]);
 

@@ -35,7 +35,7 @@ namespace SEMSystem.Controllers
                 .Where(a => a.EquipmentType == "Fire Extinguisher")
                 .Where(a => a.Status == "Active")
                 .Where(a=>a.ItemStatus != "For Refill")
-                .Where(a=>a.DatePurchased.Value.Date.AddDays(2) >= yearDate)
+                .Where(a=>a.DatePurchased.Value.Date.AddMonths(12) <= yearDate)
                 .ToList();
 
             if (_itemForRefill.Count() > 0)

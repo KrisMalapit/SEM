@@ -111,6 +111,7 @@ namespace SEMSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 _context.Add(bicycle);
                 await _context.SaveChangesAsync();
 

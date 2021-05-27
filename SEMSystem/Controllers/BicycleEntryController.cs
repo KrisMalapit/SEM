@@ -69,9 +69,6 @@ namespace SEMSystem.Controllers
             string strFilter = "";
             try
             {
-
-
-
                 var draw = Request.Form["draw"].FirstOrDefault();
                 var start = Request.Form["start"].FirstOrDefault();
                 var length = Request.Form["length"].FirstOrDefault();
@@ -226,9 +223,20 @@ namespace SEMSystem.Controllers
         [HttpPost]
         public IActionResult CreateModifyBicycle(BicycleEntryDetail item,int BicycleId)
         {
+
+          
             int headerId = 0;
             string status = "";
             string message = "";
+
+
+
+            string series = "";
+            string refno = "";
+            string series_code = "BICYCLE";
+            series = new NoSeriesController(_context).GetNoSeries(series_code);
+            refno = "BIC" + series;
+
             try
             {
                 var _header = _context.BicycleEntryHeaders
@@ -240,6 +248,7 @@ namespace SEMSystem.Controllers
                 {
                     BicycleEntryHeader header = new BicycleEntryHeader
                     {
+                        ReferenceNo = refno,
                         BicycleId = BicycleId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
@@ -247,7 +256,8 @@ namespace SEMSystem.Controllers
                     _context.Add(header);
                     _context.SaveChanges();
 
-                   
+                    string x = new NoSeriesController(_context).UpdateNoSeries(series, series_code);
+
 
                     item.BicycleEntryHeaderId = header.Id;
                     item.UpdatedBy = User.Identity.GetUserName();
