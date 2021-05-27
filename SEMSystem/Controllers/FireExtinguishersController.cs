@@ -273,9 +273,7 @@ namespace SEMSystem.Controllers
         {
             string series = "";
             string refno = "";
-            string series_code = "FIREEXTINGUISHER";
-            series = new NoSeriesController(_context).GetNoSeries(series_code);
-            refno = "FE" + series;
+           
             
             int headerId = 0;
             string status = "";
@@ -290,21 +288,25 @@ namespace SEMSystem.Controllers
                 if (_header.Count() == 0)
                 {
 
-                    var comp = _context.LocationFireExtinguishers.Where(a => a.Id == item[0].LocationFireExtinguisherId).FirstOrDefault();
-                    //    .Areas.Companies.Code;
-                    //if (comp.Substring(0,2) == "SCPC") 
-                    //{
-                    //    comp = "SC";
-                    //}
-                    //else
-                    //{
-                    //    comp = "SL";
+                    var comp = _context.LocationFireExtinguishers.Include(a=>a.Areas.Companies).Where(a => a.Id == item[0].LocationFireExtinguisherId).FirstOrDefault()
+                        .Areas.Companies.Code;
+                    if (comp == "SCPC")
+                    {
+                        comp = "SC";
+                    }
+                    else
+                    {
+                        comp = "SL";
 
-                    //}
+                    }
+                    string series_code = comp + "FIREEXTINGUISHER";
+                    series = new NoSeriesController(_context).GetNoSeries(series_code);
+                    refno = "FE" + series;
+
 
                     FireExtinguisherHeader header = new FireExtinguisherHeader
                     {
-                        ReferenceNo = refno,
+                        ReferenceNo = comp +  refno,
                         LocationFireExtinguisherId = item[0].LocationFireExtinguisherId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
