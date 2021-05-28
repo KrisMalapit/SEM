@@ -12,7 +12,7 @@ namespace SEMSystem.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-
+     
         [Display(Name = "Name of Owner")]
         [Required]
         public string NameOwner { get; set; }

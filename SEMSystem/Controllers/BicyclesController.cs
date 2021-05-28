@@ -109,9 +109,11 @@ namespace SEMSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Bicycle bicycle)
         {
+           
             if (ModelState.IsValid)
             {
 
+                
                 _context.Add(bicycle);
                 await _context.SaveChangesAsync();
 

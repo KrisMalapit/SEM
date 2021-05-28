@@ -339,9 +339,9 @@ namespace SEMSystem.Controllers
         {
             string series = "";
             string refno = "";
-            string series_code = "FIREHYDRANT";
-            series = new NoSeriesController(_context).GetNoSeries(series_code);
-            refno = "FH" + series;
+            //string series_code = "FIREHYDRANT";
+            //series = new NoSeriesController(_context).GetNoSeries(series_code);
+            //refno = "FH" + series;
 
             int headerId = 0;
             string status = "";
@@ -355,6 +355,22 @@ namespace SEMSystem.Controllers
 
                 if (_header.Count() == 0)
                 {
+                    var comp = _context.LocationFireHydrants.Include(a => a.Areas.Companies).Where(a => a.Id == item[0].LocationFireHydrantId).FirstOrDefault()
+                     .Areas.Companies.Code;
+                    if (comp == "SCPC")
+                    {
+                        comp = "SC";
+                    }
+                    else
+                    {
+                        comp = "SL";
+
+                    }
+                    string series_code = comp + "FIREHYDRANT";
+                    series = new NoSeriesController(_context).GetNoSeries(series_code);
+                    refno = comp + "FH" + series;
+
+
                     FireHydrantHeader header = new FireHydrantHeader
                     {
                         ReferenceNo = refno,

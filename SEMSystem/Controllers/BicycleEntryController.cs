@@ -233,9 +233,7 @@ namespace SEMSystem.Controllers
 
             string series = "";
             string refno = "";
-            string series_code = "BICYCLE";
-            series = new NoSeriesController(_context).GetNoSeries(series_code);
-            refno = "BIC" + series;
+           
 
             try
             {
@@ -246,6 +244,22 @@ namespace SEMSystem.Controllers
 
                 if (_header == null)
                 {
+                    var comp = _context.Bicycles.Include(a => a.Departments.Companies)
+                        .Where(a => a.ID == item.BicycleHeaders.BicycleId).FirstOrDefault().Departments.Companies.Code
+                        
+
+                    if (comp == "SCPC")
+                    {
+                        comp = "SC";
+                    }
+                    else
+                    {
+                        comp = "SL";
+                    }
+                    string series_code = comp + "BICYCLE";
+                    series = new NoSeriesController(_context).GetNoSeries(series_code);
+                    refno = comp + "BIC" + series;
+
                     BicycleEntryHeader header = new BicycleEntryHeader
                     {
                         ReferenceNo = refno,

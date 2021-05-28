@@ -340,9 +340,9 @@ namespace SEMSystem.Controllers
 
             string series = "";
             string refno = "";
-            string series_code = "INERGENTANK";
-            series = new NoSeriesController(_context).GetNoSeries(series_code);
-            refno = "IT" + series;
+            //string series_code = "INERGENTANK";
+            //series = new NoSeriesController(_context).GetNoSeries(series_code);
+            //refno = "IT" + series;
 
 
             try
@@ -354,6 +354,22 @@ namespace SEMSystem.Controllers
 
                 if (_header.Count() == 0)
                 {
+                    var comp = _context.LocationInergenTanks.Include(a => a.Areas.Companies).Where(a => a.Id == item[0].LocationInergenTankId)
+                        .FirstOrDefault().Areas.Companies.Code;
+
+                    if (comp == "SCPC")
+                    {
+                        comp = "SC";
+                    }
+                    else
+                    {
+                        comp = "SL";
+                    }
+                    string series_code = comp + "INERGENTANK";
+                    series = new NoSeriesController(_context).GetNoSeries(series_code);
+                    refno = comp + "IT" + series;
+
+
                     InergenTankHeader header = new InergenTankHeader();
                     //header.AreaId = item[0].AreaId;
                     header.ReferenceNo = refno;

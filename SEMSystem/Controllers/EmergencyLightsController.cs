@@ -334,21 +334,37 @@ namespace SEMSystem.Controllers
 
             string series = "";
             string refno = "";
-            string series_code = "EMERGENCYLIGHT";
-            series = new NoSeriesController(_context).GetNoSeries(series_code);
-            refno = "EL" + series;
+            //string series_code = "EMERGENCYLIGHT";
+            //series = new NoSeriesController(_context).GetNoSeries(series_code);
+            //refno = "EL" + series;
 
 
             try
             {
                 var _header = _context.EmergencyLightHeaders
                     .Where(a => a.Status == "Active")
-                     //.Where(a => a.AreaId == item[0].AreaId)
-                     .Where(a => a.LocationEmergencyLightId == item[0].LocationEmergencyLightId)
+                    .Where(a => a.LocationEmergencyLightId == item[0].LocationEmergencyLightId)
                     .Where(a => a.CreatedAt == DateTime.Now.Date);
 
                 if (_header.Count() == 0)
                 {
+
+                    var comp = _context.LocationEmergencyLights.Include(a => a.Areas.Companies).Where(a => a.Id == item[0].LocationEmergencyLightId).FirstOrDefault()
+                      .Areas.Companies.Code;
+                    if (comp == "SCPC")
+                    {
+                        comp = "SC";
+                    }
+                    else
+                    {
+                        comp = "SL";
+
+                    }
+                    string series_code = comp + "EMERGENCYLIGHT";
+                    series = new NoSeriesController(_context).GetNoSeries(series_code);
+                    refno = comp + "EL" + series;
+
+
                     EmergencyLightHeader header = new EmergencyLightHeader
                     {
                         //header.AreaId = item[0].AreaId;

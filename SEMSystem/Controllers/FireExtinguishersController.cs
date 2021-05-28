@@ -301,12 +301,12 @@ namespace SEMSystem.Controllers
                     }
                     string series_code = comp + "FIREEXTINGUISHER";
                     series = new NoSeriesController(_context).GetNoSeries(series_code);
-                    refno = "FE" + series;
+                    refno = comp + "FE" + series;
 
 
                     FireExtinguisherHeader header = new FireExtinguisherHeader
                     {
-                        ReferenceNo = comp +  refno,
+                        ReferenceNo =  refno,
                         LocationFireExtinguisherId = item[0].LocationFireExtinguisherId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
