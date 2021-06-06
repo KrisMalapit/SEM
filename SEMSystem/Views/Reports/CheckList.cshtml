@@ -215,7 +215,7 @@
          console.log('from ' + $from);
          console.log('to ' + $to);
          console.log('equipment ' + $equipment);
-         return false;
+        
          window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid + '&fromDate=' + $from + '&toDate=' + $to + '&rptType=PDF' + '&Report=rptCheckList' + '&Equipment=' + $equipment);
         
 
