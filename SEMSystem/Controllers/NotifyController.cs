@@ -83,7 +83,7 @@ namespace SEMSystem.Controllers
         private string SendEmail(NotifyViewModel nvm)
         {
 
-
+            string email = "";
 
             string message = "";
             string rply = "";
