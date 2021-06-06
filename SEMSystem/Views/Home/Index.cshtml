@@ -28,758 +28,1146 @@
         border-top-left-radius: 1px;
         border-top-right-radius: 1px;
     }
+
+    .modal-lg {
+        width: 70% !important
+    }
+
+
+    .modal-dialog {
+    max-width: 100%;
+    margin: 1.75rem auto;
+    }
 </style>
 
 
 
 <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet">
 
+<div class="modal inmodal in " id="modalItem" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle"></h4>
+                <small class="font-bold">List of items to be approve</small>
+            </div>
+            <div class="modal-body">
+                <input id="type" type="hidden" />
+                <div class="form-group">
+                    <form id="frm">
+                        <table id="tbl" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Reference No</th>
+                                    <th>Date</th>
+
+                                    <th>Company</th>
+                                    <th>Area</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+
+
+                <button type="button" class="btn btn-white" data-dismiss="modal" onclick="location.reload();">Close</button>
+                <button type="button" class="btn btn-primary" onclick="proceed();" id="btnApprove">Approve</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 <div class="tabs-container">
     <ul class="nav nav-tabs" role="tablist">
-        <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> <i class="fa fa-gavel"></i>Equipment</a></li>
-        <li><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-bicycle"></i>Bicycle</a></li>
-        <li><a class="nav-link" data-toggle="tab" href="#tab-0">Map</a></li>
+        <li><a class="nav-link active" data-toggle="tab" href="#tab-main"> <i class="fa fa-gavel"></i>Main</a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#tab-de"> <i class="fa fa-bicycle"></i>Data Entry</a></li>
     </ul>
     <div class="tab-content">
-        <div role="tabpanel" id="tab-0" class="tab-pane">
-            <div class="panel-body">
-                Map
+        <div role="tabpanel" id="tab-main" class="tab-pane active" style="padding:20px;">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Pending for Review</h5>
+                        </div>
+                        <div class="ibox-content">
+
+
+                            <table style="width:100%;">
+                                <tr>
+                                    <td width="80%">
+                                        Fire Extinguisher
+                                        <a href="#" onclick="loadData(1);">(@ViewBag.ReviewFE)</a>
+                                    </td>
+                                    <td rowspan="4" style="text-align:center;">
+                                        <div class="stat-percent font-bold text-success"> <i class="fa fa-search" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Emergency Light <a href="#" onclick="loadData(2);">(@ViewBag.ReviewEL)</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td>Inergen Tank <a href="#" onclick="loadData(3);">(@ViewBag.ReviewIT)</a></td>
+
+                                </tr>
+                                <tr>
+                                    <td>Fire Hydrant <a href="#" onclick="loadData(4);">(@ViewBag.ReviewFH)</a></td>
+
+                                </tr>
+
+                            </table>
+
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Pending For Approval</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <table style="width:100%;">
+                                <tr>
+                                    <td width="80%">
+                                        Fire Extinguisher
+                                        <a href="#" onclick="loadData(5);">(@ViewBag.ApproverFE)</a>
+                                    </td>
+                                    <td rowspan="4" style="text-align:center;">
+                                        <div class="stat-percent font-bold text-success"> <i class="fa fa-check" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Emergency Light <a href="#" onclick="loadData(6);">(@ViewBag.ApproverEL)</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Inergen Tank <a href="#" onclick="loadData(7);">(@ViewBag.ApproverIT)</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Fire Hydrant <a href="#" onclick="loadData(8);">(@ViewBag.ApproverFH)</a></td>
+
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div role="tabpanel" id="tab-1" class="tab-pane active">
-            <div class="panel-body">
-
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        Area Information
-                    </div>
-
-                    <div class="col-md-12" style="padding-top:10px;padding-bottom:10px;">
-                        <div class="row " style="margin-bottom:5px;">
-
-                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Area</label>
-                            <div class="col-md-4">
-                                <select id="AreaId" name="AreaId" class="form-control" ></select>
-
-                            </div>
-
-                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
-                            <div class="col-md-4">
-                                <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
-                            </div>
-                        </div>
-                        <div class="row">
-
-                           
-
-
-                            <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
-                            <div class="col-md-4">
-                                <input id="Plant" name="Plant" class="form-control" disabled="">
-
-                            </div>
+        <div role="tabpanel" id="tab-de" class="tab-pane" style="padding:20px;">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> <i class="fa fa-gavel"></i>Equipment</a></li>
+                    <li><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-bicycle"></i>Bicycle</a></li>
+                    <li><a class="nav-link" data-toggle="tab" href="#tab-0">Map</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" id="tab-0" class="tab-pane">
+                        <div class="panel-body">
+                            Map
                         </div>
                     </div>
+                    <div role="tabpanel" id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
 
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    Area Information
+                                </div>
 
-                </div>
-                <div class="col-md-12">
-                    <div class="row col-md-4" style="font-size:20px;"><i class="fa fa-table" style="padding-top:5px;"></i> &nbsp; &nbsp; <label> Data Entry</label></div>
-                    <br />
-                    <div class="tabs-container">
-                        <ul class="nav nav-tabs">
-                            <li><a class="nav-link active" data-toggle="tab" href="#tab-3">  <i class="fa fa-fire-extinguisher"></i> Fire Extinguisher</a></li>
-                            <li><a class="nav-link" data-toggle="tab" href="#tab-4"> <i class="fa fa-lightbulb-o"></i>Emergency Light</a></li>
-                            <li><a class="nav-link" data-toggle="tab" href="#tab-5"><i class="fa fa-battery-half"></i>Inergen System</a></li>
+                                <div class="col-md-12" style="padding-top:10px;padding-bottom:10px;">
+                                    <div class="row " style="margin-bottom:5px;">
 
-                            <li><a class="nav-link" data-toggle="tab" href="#tab-6">  <i class="fa fa-fire"></i>Fire Hydrant</a></li>
-
-                            <li><a class="nav-link" data-toggle="tab" href="#tab-7"> <i class="fa fa-medkit"></i>EPR Equipment</a></li>
-
-                        </ul>
-                        <div class="tab-content">
-                            @*Fire Extinguisher*@
-                            <div id="tab-3" class="tab-pane active">
-                                <div class="_panel-body">
-                                    <br />
-                                    <div class="col-md-12 row">
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Location</label>
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Area</label>
                                         <div class="col-md-4">
-                                            <select id="LocationIDFE"  name="AreaId" class="form-control LocationID"></select>
+                                            <select id="AreaId" name="AreaId" class="form-control"></select>
+
+                                        </div>
+
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
+                                        <div class="col-md-4">
+                                            <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <table id="tblFireExtinguisher" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th width="20%">Item</th>
-                                                    <th width="15%">Code</th>
-                                                    <th width="15%">Type</th>
-                                                    <th>Capacity</th>
-                                                    <th>Cylinder</th>
-                                                    <th>Lever</th>
-                                                    <th>Gauge</th>
-                                                    <th>Safety Seal</th>
-                                                    <th>Hose</th>
-                                                    <th width="25%">Remarks</th>
+                                    <div class="row">
 
-                                                </tr>
-                                            </thead>
-                                        </table>
+
+
+
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
+                                        <div class="col-md-4">
+                                            <input id="Plant" name="Plant" class="form-control" disabled="">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row col-md-4" style="font-size:20px;"><i class="fa fa-table" style="padding-top:5px;"></i> &nbsp; &nbsp; <label> Data Entry</label></div>
+                                <br />
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                        <li><a class="nav-link active" data-toggle="tab" href="#tab-3">  <i class="fa fa-fire-extinguisher"></i> Fire Extinguisher</a></li>
+                                        <li><a class="nav-link" data-toggle="tab" href="#tab-4"> <i class="fa fa-lightbulb-o"></i>Emergency Light</a></li>
+                                        <li><a class="nav-link" data-toggle="tab" href="#tab-5"><i class="fa fa-battery-half"></i>Inergen System</a></li>
+
+                                        <li><a class="nav-link" data-toggle="tab" href="#tab-6">  <i class="fa fa-fire"></i>Fire Hydrant</a></li>
+
+                                        <li><a class="nav-link" data-toggle="tab" href="#tab-7"> <i class="fa fa-medkit"></i>EPR Equipment</a></li>
+
+                                    </ul>
+                                    <div class="tab-content">
+                                        @*Fire Extinguisher*@
+                                        <div id="tab-3" class="tab-pane active">
+                                            <div class="_panel-body">
+                                                <br />
+                                                <div class="col-md-12 row">
+                                                    <label class="col-md-2 col-form-label" style="padding-top:5px; "> Location</label>
+                                                    <div class="col-md-4">
+                                                        <select id="LocationIDFE" name="AreaId" class="form-control LocationID" style="width:100%;"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tblFireExtinguisher" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th width="20%">Item</th>
+                                                                <th width="15%">Code</th>
+                                                                <th width="15%">Type</th>
+                                                                <th>Capacity</th>
+                                                                <th>Cylinder</th>
+                                                                <th>Lever</th>
+                                                                <th>Gauge</th>
+                                                                <th>Safety Seal</th>
+                                                                <th>Hose</th>
+                                                                <th width="25%">Remarks</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+
+                                                <div class="row col-md-12" id="divApproversFE">
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Inspected By</label>
+                                                        <input class="form-control col-md-12 inpIns" name="InspectedBy" />
+                                                        <label>Safety Inspector</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Reviewed By</label>
+                                                        <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
+                                                        <label>OSH Coordinator</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Noted By</label>
+                                                        <input class="form-control col-md-12 inpNot" name="NotedBy" />
+                                                        <label>OIC Fire and Safety</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <p>
+                                                <a href="#" onclick="saveFireData(this);">
+                                                    <i class="fa fa-check"></i>
+                                                    <span class="email-text">&nbsp;Save</span>
+                                                </a> <text> |&nbsp; </text>
+                                                <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdFE","rptFireExtinguisher");'>
+                                                    <i class="fa fa-print"></i>
+                                                    <span class="print">&nbsp;Print</span>
+                                                </a>
+                                                <text> |&nbsp; </text>
+                                                <a class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdFE","FE");'>
+                                                    <i class="fa fa-check-square"></i>
+                                                    <span class="save">&nbsp;Submit For Approval</span>
+                                                </a>
+                                            </p>
+                                        </div>
+                                        @*Emergency Light*@
+                                        <div id="tab-4" class="tab-pane">
+                                            <div class="_panel-body">
+                                                <br />
+                                                <div class="col-md-12 row">
+                                                    <label class="col-md-2 col-form-label" style="padding-top:5px; "> Location</label>
+                                                    <div class="col-md-4">
+                                                        <select id="LocationIDEL" name="AreaId" class="form-control LocationID" style="width:100%"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tblEmergencyLight" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th width="20%">Item</th>
+                                                                <th width="15%">Code</th>
+
+                                                                <th>Battery</th>
+                                                                <th>Bulb</th>
+                                                                <th>Usable</th>
+
+                                                                <th width="25%">Remarks</th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+                                                <div class="row col-md-12" id="divApproversEL">
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Inspected By</label>
+                                                        <input class="form-control col-md-12 inpIns" name="InspectedBy" />
+                                                        <label>Safety Inspector</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Reviewed By</label>
+                                                        <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
+                                                        <label>OSH Coordinator</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Noted By</label>
+                                                        <input class="form-control col-md-12 inpNot" name="NotedBy" />
+                                                        <label>OIC Fire and Safety</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <a href="#" onclick="saveEmergencyLight(this);">
+                                                    <i class="fa fa-check"></i>
+                                                    <span class="email-text">&nbsp;Save</span>
+                                                </a> <text> |&nbsp; </text>
+                                                <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdEL","rptEmergencyLight");'>
+
+                                                    <i class="fa fa-print"></i>
+                                                    <span class="print">&nbsp;Print</span>
+                                                </a>
+                                                <text> |&nbsp; </text>
+                                                <a  class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdEL","EL");'>
+                                                    <i class="fa fa-check-square"></i>
+                                                    <span class="print">&nbsp;Submit For Approval</span>
+                                                </a>
+                                            </p>
+                                        </div>
+                                        @*Inergen Tanks*@
+                                        <div id="tab-5" class="tab-pane">
+                                            <div class="_panel-body">
+                                                <br />
+                                                <div class="col-md-12 row">
+                                                    <label class="col-md-2 col-form-label" style="padding-top:5px;">Location</label>
+                                                    <div class="col-md-4">
+                                                        <select id="LocationIDIT" name="AreaId" class="form-control LocationID" style="width:100%"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tblInergenTank" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th width="20%">Item</th>
+                                                                <th width="15%">Code</th>
+
+                                                                <th>Cylinder</th>
+                                                                <th>Gauge</th>
+                                                                <th>Hose</th>
+                                                                <th>Pressure</th>
+
+                                                                <th width="25%">Remarks</th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+                                                <div class="row col-md-12" id="divApproversIT">
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Inspected By</label>
+                                                        <input class="form-control col-md-12 inpIns" name="InspectedBy" />
+                                                        <label>Safety Inspector</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Reviewed By</label>
+                                                        <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
+                                                        <label>OSH Coordinator</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Noted By</label>
+                                                        <input class="form-control col-md-12 inpNot" name="NotedBy" />
+                                                        <label>OIC Fire and Safety</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <a href="#" onclick="saveInergenData(this);">
+                                                    <i class="fa fa-check"></i>
+                                                    <span class="email-text">&nbsp;Save</span>
+                                                </a> <text> |&nbsp; </text>
+                                                <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdIT","rptInergenTank");'>
+                                                    <i class="fa fa-print"></i>
+                                                    <span class="print">&nbsp;Print</span>
+                                                </a><text> |&nbsp; </text>
+                                                <a  class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdIT","IT");'>
+                                                    <i class="fa fa-check-square"></i>
+                                                    <span class="print">&nbsp;Submit For Approval</span>
+                                                </a>
+                                            </p>
+                                        </div>
+                                        @*Fire Hydrant*@
+                                        <div id="tab-6" class="tab-pane">
+                                            <div class="_panel-body">
+                                                <br />
+                                                <div class="col-md-12 row">
+                                                    <label class="col-md-2 col-form-label" style="padding-top:5px;">Location</label>
+                                                    <div class="col-md-4">
+                                                        <select id="LocationIDFH" name="AreaId" class="form-control LocationID" style="width:100%"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table id="tblFireHydrant" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th width="20%">Item</th>
+                                                                <th width="15%">Code</th>
+
+                                                                <th>GlassCabinet</th>
+                                                                <th>Hanger</th>
+                                                                <th>1 1/2 Hose</th>
+                                                                <th>1 1/2 Nozzle</th>
+                                                                <th>2 1/2 Hose</th>
+                                                                <th>2 1/2 Nozzle</th>
+                                                                <th>SpecialTools</th>
+
+
+                                                                <th width="25%">Remarks</th>
+
+                                                            </tr>
+
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+                                                <div class="row col-md-12" id="divApproversFH">
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Inspected By</label>
+                                                        <input class="form-control col-md-12 inpIns" name="InspectedBy" />
+                                                        <label>Safety Inspector</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Reviewed By</label>
+                                                        <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
+                                                        <label>OSH Coordinator</label>
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label style="font-weight:bold;">Noted By</label>
+                                                        <input class="form-control col-md-12 inpNot" name="NotedBy" />
+                                                        <label>OIC Fire and Safety</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <a href="#" onclick="saveFireHydrant(this);">
+                                                    <i class="fa fa-check"></i>
+                                                    <span class="email-text">&nbsp;Save</span>
+                                                </a> <text> |&nbsp; </text>
+                                                <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdFH","rptFireHydrant");'>
+                                                    <i class="fa fa-print"></i>
+                                                    <span class="print">&nbsp;Print</span>
+                                                </a><text> |&nbsp; </text>
+                                                <a  class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdFH","FH");'>
+                                                    <i class="fa fa-check-square"></i>
+                                                    <span class="print">&nbsp;Submit For Approval</span>
+                                                </a>
+                                            </p>
+                                        </div>
+                                        @*EPR*@
+                                        <div id="tab-7" class="tab-pane">
+                                            <div class="_panel-body">
+                                                <br />
+
+                                            </div>
+                                            <p>
+                                                <a href="#" onclick="saveEPR(this);">
+                                                    <i class="fa fa-check"></i>
+                                                    <span class="email-text">&nbsp;Save</span>
+                                                </a> <text> |&nbsp; </text>
+                                                <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdEPR","rptEPR");'>
+                                                    <i class="fa fa-print"></i>
+                                                    <span class="print">&nbsp;Print</span>
+                                                </a><text> |&nbsp; </text>
+                                                <a href="#" onclick='submitApproval("@ViewBag.ReferenceIdEPR");'>
+                                                    <i class="fa fa-check-square"></i>
+                                                    <span class="print">&nbsp;Submit For Approval</span>
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    Item Information
+                                </div>
+
+                                <div class="col-md-12" style="padding-top:10px;padding-bottom:10px;">
+                                    <div class="row " style="margin-bottom:5px;">
+
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Identification No</label>
+                                        <div class="col-md-4">
+                                            <select id="BicycleId" name="BicycleId" class="form-control" asp-items="ViewBag.BicycleId"></select>
+
+                                        </div>
+
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
+                                        <div class="col-md-4">
+                                            <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
+                                        </div>
                                     </div>
 
-                                    <div class="row col-md-12" id="divApproversFE">
-                                        <div class="form-group col-md-4">
+                                    <div class="row ">
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px;"> Name of Owner</label>
+                                        <div class="col-md-4">
+                                            <input id="NameOwner" name="NameOwner" class="form-control" disabled />
+                                        </div>
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px;"> Brand Name</label>
+                                        <div class="col-md-4">
+                                            <input id="BrandName" name="BrandName" class="form-control" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row col-md-4" style="font-size:20px;"><i class="fa fa-table" style="padding-top:5px;"></i> &nbsp; &nbsp; <label> Data Entry</label></div>
+                                <br />
+                                <table class="table table-bordered" id="tblBicycle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:5%;">Item No</th>
+                                            <th style="width:55%;">Parts Description To Be Checked</th>
+                                            <th style="width:5%;">Safe</th>
+                                            <th style="width:5%;">UnSafe</th>
+                                            <th style="width:30%;">Remarks</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td rowspan="9" style="text-align:center; vertical-align:middle;font-size:24px">1</td>
+                                            <td colspan="4">FRAME AND FIT</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Frame</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Are tubes in line and free of dents, bends?</li>
+                                                    <li>Are the connection/welding of the frame intact?</li>
+                                                    <li>Is the frame size appropriate for the height of the cyclist?</li>
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+
+                                                @*<input class="form-check-input" type="checkbox" id="FrameSafe" name="FrameSafe" value="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>*@
+                                                <input type="radio" id="FrameSafe" name="Frame" value="FrameSafe">
+
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+
+                                                @*<input class="form-check-input" type="checkbox" id="FrameUnSafe" name="FrameUnSafe" value="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>*@
+                                                <input type="radio" id="FrameUnSafe" name="Frame" value="FrameUnSafe">
+
+                                            </td>
+                                            <td contenteditable="true" id="FrameRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Front Fork</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Is the fork free of dents,bends and good condition?</li>
+                                                    <li>Fork turn freely inside of headset?</li>
+                                                    <li>Is the fork free of jolt? (Bearings are ok? / tightening is ok?)</li>
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontForkSafe" name="FrontForkSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="FrontForkSafe" name="FrontFork" value="FrontForkSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontForkUnSafe" name="FrontForkUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="FrontForkUnSafe" name="FrontFork" value="FrontForkUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="FrontForkRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Handlebars</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Handle bars in line with front wheel?</li>
+                                                    <li>Handle bars do not move when you hold the front wheel between your leg and try to twist?</li>
+                                                    <li>Grips tight, in good condition?</li>
+                                                    <li>Basket is properly installed in front handle bar?</li>
+                                                    <li>Are reflectors properly installed in front and at the rear of the frame for proper visiblity</li>
+                                                    <li>Are lights properly installed?</li>
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="HandlebarSafe" name="HandlebarSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="HandlebarSafe" name="Handlebar" value="HandlebarSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="HandlebarUnSafe" name="HandlebarUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="HandlebarUnSafe" name="Handlebar" value="HandlebarUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="HandlebarRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Seat</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Saddle in good condition (no damage)</li>
+                                                    <li>Saddle and seat post does not move when you grab hold and try to twist it side to side or up and down</li>
+
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="SeatSafe" name="SeatSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="SeatSafe" name="Seat" value="SeatSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="SeatUnSafe" name="SeatUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="SeatUnSafe" name="Seat" value="SeatUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="SeatRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="3" style="text-align:center; vertical-align:middle;font-size:24px;">2</td>
+                                            <td colspan="4">AIR AND WHEELS</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Front and Rear Wheels</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Tire (Inflation) : Inflated properly and valve stem right?</li>
+                                                    <li>Tire (Casing) : Good tread and no side wall damage?</li>
+                                                    <li>Rims : No dent, twist, or kinks?</li>
+                                                    <li>Alignment : When spun, wheel is true and centered in stays?</li>
+                                                    <li>Complete wheel-spoke "rayos" and no bend?</li>
+                                                    <li>Bearing : Wheel spins freely and evenly and does not wiggle?</li>
+                                                    <li>Bike stand is peroperly installed?</li>
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontRearSafe" name="FrontRearSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="FrontRearSafe" name="FrontRear" value="FrontRearSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontRearUnSafe" name="FrontRearUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="FrontRearUnSafe" name="FrontRear" value="FrontRearUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="FrontRearRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="3" style="text-align:center; vertical-align:middle;font-size:24px;">3</td>
+                                            <td colspan="4">BRAKES</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Disc Brake/V-Brake/Caliper Brake (Front and Rear)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Cable taut, No frayed ends?</li>
+                                                    <li>Caliber brake centered adn tight?</li>
+                                                    <li>Nuts tight on brake shoe?</li>
+                                                    <li>Brake pads are ok?</li>
+                                                    <li>Front and rear brakes operate effectively and smoothly?</li>
+
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="BrakeSafe" name="BrakeSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="BrakeSafe" name="Brake" value="BrakeSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="BrakeUnSafe" name="BrakeUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="BrakeUnSafe" name="Brake" value="BrakeUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="BrakeRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="5" style="text-align:center; vertical-align:middle;font-size:24px;">4</td>
+                                            <td colspan="4">CRANK AND CHAIN</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Cranks and Pedals</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Crank and turns freely and evenly. no looseness or binding, not bent?</li>
+                                                    <li>Pedals tight, intact, no binding, free spinning?</li>
+
+
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="CrankChainSafe" name="CrankChainSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="CrankChainSafe" name="CrankChain" value="CrankChainSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="CrankChainUnSafe" name="CrankChainUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="CrankChainUnSafe" name="CrankChain" value="CrankChainUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="CrankChainRemarks"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">Chain</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <ul>
+                                                    <li>Chain clean and feee of rust, lubricated?</li>
+                                                    <li>No excessive looseness?</li>
+                                                    <li>Chain guard secure, free of chain?</li>
+
+                                                </ul>
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="ChainSafe" name="ChainSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="ChainSafe" name="Chain" value="ChainSafe">
+                                            </td>
+                                            <td style="text-align:center;vertical-align:middle;">
+                                                @*<div class="form-check form-check-inline">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="ChainUnSafe" name="ChainUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
+                                                <input type="radio" id="ChainUnSafe" name="Chain" value="ChainUnSafe">
+                                            </td>
+                                            <td contenteditable="true" id="ChainRemarks"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="ibox-content">
+
+                                    <h4>
+                                        Note
+                                    </h4>
+                                    <div class="alert alert-warning">
+                                        Bike must meet item marked "SAFE" prior to use
+                                    </div>
+
+                                    <div class="row" id="divApproversB">
+                                        <div class="form-group col-md-6">
                                             <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-12 inpIns" name="InspectedBy" />
+                                            <input class="form-control col-md-4" id="InspectedBy" name="InspectedBy" />
                                             <label>Safety Inspector</label>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Reviewed By</label>
-                                            <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
-                                            <label>OSH Coordinator</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label style="font-weight:bold;">Noted By</label>
-                                            <input class="form-control col-md-12 inpNot" name="NotedBy" />
-                                            <label>OIC Fire and Safety</label>
+                                            <input class="form-control col-md-4" id="NotedBy" name="NotedBy" />
+                                            <label>Safety Supervisor</label>
                                         </div>
                                     </div>
 
                                 </div>
+                                <br />
                                 <p>
-                                    <a href="#" onclick="saveFireData(this);">
+                                    <a href="#" onclick="saveBicycleData(this);">
                                         <i class="fa fa-check"></i>
                                         <span class="email-text">&nbsp;Save</span>
                                     </a> <text> |&nbsp; </text>
-                                    <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdFE","rptFireExtinguisher");'>
+                                    <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdB","rptBicycle");'>
                                         <i class="fa fa-print"></i>
                                         <span class="print">&nbsp;Print</span>
                                     </a>
                                 </p>
-                            </div>
-                            @*Emergency Light*@
-                            <div id="tab-4" class="tab-pane">
-                                <div class="_panel-body">
-                                    <br />
-                                    <div class="col-md-12 row">
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Location</label>
-                                        <div class="col-md-4">
-                                            <select id="LocationIDEL" name="AreaId" class="form-control LocationID" style="width:100%"></select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <table id="tblEmergencyLight" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
-
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th width="20%">Item</th>
-                                                    <th width="15%">Code</th>
-
-                                                    <th>Battery</th>
-                                                    <th>Bulb</th>
-                                                    <th>Usable</th>
-
-                                                    <th width="25%">Remarks</th>
-
-                                                </tr>
-
-                                            </thead>
-
-                                        </table>
-                                    </div>
-                                    <div class="row col-md-12" id="divApproversEL">
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-12 inpIns" name="InspectedBy" />
-                                            <label>Safety Inspector</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Reviewed By</label>
-                                            <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
-                                            <label>OSH Coordinator</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Noted By</label>
-                                            <input class="form-control col-md-12 inpNot" name="NotedBy" />
-                                            <label>OIC Fire and Safety</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p>
-                                    <a href="#" onclick="saveEmergencyLight(this);">
-                                        <i class="fa fa-check"></i>
-                                        <span class="email-text">&nbsp;Save</span>
-                                    </a> <text> |&nbsp; </text>
-                                    <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdEL","rptEmergencyLight");'>
-
-                                        <i class="fa fa-print"></i>
-                                        <span class="print">&nbsp;Print</span>
-                                    </a>
-                                </p>
-                            </div>
-                            @*Inergen Tanks*@
-                            <div id="tab-5" class="tab-pane">
-                                <div class="_panel-body">
-                                    <br />
-                                    <div class="col-md-12 row">
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px;">Location</label>
-                                        <div class="col-md-4">
-                                            <select id="LocationIDIT" name="AreaId" class="form-control LocationID"  style="width:100%"></select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <table id="tblInergenTank" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
-
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th width="20%">Item</th>
-                                                    <th width="15%">Code</th>
-
-                                                    <th>Cylinder</th>
-                                                    <th>Gauge</th>
-                                                    <th>Hose</th>
-                                                    <th>Pressure</th>
-
-                                                    <th width="25%">Remarks</th>
-
-                                                </tr>
-
-                                            </thead>
-
-                                        </table>
-                                    </div>
-                                    <div class="row col-md-12" id="divApproversIT">
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-12 inpIns" name="InspectedBy" />
-                                            <label>Safety Inspector</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Reviewed By</label>
-                                            <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
-                                            <label>OSH Coordinator</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Noted By</label>
-                                            <input class="form-control col-md-12 inpNot" name="NotedBy" />
-                                            <label>OIC Fire and Safety</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p>
-                                    <a href="#" onclick="saveInergenData(this);">
-                                        <i class="fa fa-check"></i>
-                                        <span class="email-text">&nbsp;Save</span>
-                                    </a> <text> |&nbsp; </text>
-                                    <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdIT","rptInergenTank");'>
-                                        <i class="fa fa-print"></i>
-                                        <span class="print">&nbsp;Print</span>
-                                    </a>
-                                </p>
-                            </div>
-                            @*Fire Hydrant*@
-                            <div id="tab-6" class="tab-pane">
-                                <div class="_panel-body">
-                                    <br />
-                                    <div class="col-md-12 row">
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px;">Location</label>
-                                        <div class="col-md-4">
-                                            <select id="LocationIDFH" name="AreaId" class="form-control LocationID"  style="width:100%"></select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <table id="tblFireHydrant" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
-
-                                            <thead>
-                                                <tr>
-                                                    <th>ID</th>
-                                                    <th width="20%">Item</th>
-                                                    <th width="15%">Code</th>
-
-                                                    <th>GlassCabinet</th>
-                                                    <th>Hanger</th>
-                                                    <th>1 1/2 Hose</th>
-                                                    <th>1 1/2 Nozzle</th>
-                                                    <th>2 1/2 Hose</th>
-                                                    <th>2 1/2 Nozzle</th>
-                                                    <th>SpecialTools</th>
 
 
-                                                    <th width="25%">Remarks</th>
 
-                                                </tr>
-
-                                            </thead>
-
-                                        </table>
-                                    </div>
-                                    <div class="row col-md-12" id="divApproversFH">
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-12 inpIns" name="InspectedBy" />
-                                            <label>Safety Inspector</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Reviewed By</label>
-                                            <input class="form-control col-md-12 inpRev" name="ReviewedBy" />
-                                            <label>OSH Coordinator</label>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label style="font-weight:bold;">Noted By</label>
-                                            <input class="form-control col-md-12 inpNot" name="NotedBy" />
-                                            <label>OIC Fire and Safety</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p>
-                                    <a href="#" onclick="saveFireHydrant(this);">
-                                        <i class="fa fa-check"></i>
-                                        <span class="email-text">&nbsp;Save</span>
-                                    </a> <text> |&nbsp; </text>
-                                    <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdFH","rptFireHydrant");'>
-                                        <i class="fa fa-print"></i>
-                                        <span class="print">&nbsp;Print</span>
-                                    </a>
-                                </p>
-                            </div>
-                            @*EPR*@
-                            <div id="tab-7" class="tab-pane">
-                                <div class="_panel-body">
-                                    <br />
-
-                                </div>
-                                <p>
-                                    <a href="#" onclick="saveEPR(this);">
-                                        <i class="fa fa-check"></i>
-                                        <span class="email-text">&nbsp;Save</span>
-                                    </a> <text> |&nbsp; </text>
-                                    <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdEPR","rptEPR");'>
-                                        <i class="fa fa-print"></i>
-                                        <span class="print">&nbsp;Print</span>
-                                    </a>
-                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div role="tabpanel" id="tab-2" class="tab-pane">
-            <div class="panel-body">
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        Item Information
-                    </div>
 
-                    <div class="col-md-12" style="padding-top:10px;padding-bottom:10px;">
-                        <div class="row " style="margin-bottom:5px;">
-
-                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Identification No</label>
-                            <div class="col-md-4">
-                                <select id="BicycleId" name="BicycleId" class="form-control" asp-items="ViewBag.BicycleId"></select>
-
-                            </div>
-
-                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
-                            <div class="col-md-4">
-                                <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
-                            </div>
-                        </div>
-
-                        <div class="row ">
-                            <label class="col-md-2 col-form-label" style="padding-top:5px;"> Name of Owner</label>
-                            <div class="col-md-4">
-                                <input id="NameOwner" name="NameOwner" class="form-control" disabled />
-                            </div>
-                            <label class="col-md-2 col-form-label" style="padding-top:5px;"> Brand Name</label>
-                            <div class="col-md-4">
-                                <input id="BrandName" name="BrandName" class="form-control" disabled />
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="col-md-12">
-                    <div class="row col-md-4" style="font-size:20px;"><i class="fa fa-table" style="padding-top:5px;"></i> &nbsp; &nbsp; <label> Data Entry</label></div>
-                    <br />
-                    <table class="table table-bordered" id="tblBicycle">
-                        <thead>
-                            <tr>
-                                <th style="width:5%;">Item No</th>
-                                <th style="width:55%;">Parts Description To Be Checked</th>
-                                <th style="width:5%;">Safe</th>
-                                <th style="width:5%;">UnSafe</th>
-                                <th style="width:30%;">Remarks</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td rowspan="9" style="text-align:center; vertical-align:middle;font-size:24px">1</td>
-                                <td colspan="4">FRAME AND FIT</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Frame</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Are tubes in line and free of dents, bends?</li>
-                                        <li>Are the connection/welding of the frame intact?</li>
-                                        <li>Is the frame size appropriate for the height of the cyclist?</li>
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-
-                                            @*<input class="form-check-input" type="checkbox" id="FrameSafe" name="FrameSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>*@
-                                            <input type="radio" id="FrameSafe" name="Frame" value="FrameSafe">
-
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-
-                                            @*<input class="form-check-input" type="checkbox" id="FrameUnSafe" name="FrameUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>*@
-                                            <input type="radio" id="FrameUnSafe" name="Frame" value="FrameUnSafe">
-
-                                </td>
-                                <td contenteditable="true" id="FrameRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Front Fork</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Is the fork free of dents,bends and good condition?</li>
-                                        <li>Fork turn freely inside of headset?</li>
-                                        <li>Is the fork free of jolt? (Bearings are ok? / tightening is ok?)</li>
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="FrontForkSafe" name="FrontForkSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="FrontForkSafe" name="FrontFork" value="FrontForkSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="FrontForkUnSafe" name="FrontForkUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="FrontForkUnSafe" name="FrontFork" value="FrontForkUnSafe">
-                                </td>
-                                <td contenteditable="true" id="FrontForkRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Handlebars</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Handle bars in line with front wheel?</li>
-                                        <li>Handle bars do not move when you hold the front wheel between your leg and try to twist?</li>
-                                        <li>Grips tight, in good condition?</li>
-                                        <li>Basket is properly installed in front handle bar?</li>
-                                        <li>Are reflectors properly installed in front and at the rear of the frame for proper visiblity</li>
-                                        <li>Are lights properly installed?</li>
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="HandlebarSafe" name="HandlebarSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="HandlebarSafe" name="Handlebar" value="HandlebarSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="HandlebarUnSafe" name="HandlebarUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="HandlebarUnSafe" name="Handlebar" value="HandlebarUnSafe">
-                                </td>
-                                <td contenteditable="true" id="HandlebarRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Seat</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Saddle in good condition (no damage)</li>
-                                        <li>Saddle and seat post does not move when you grab hold and try to twist it side to side or up and down</li>
-
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="SeatSafe" name="SeatSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="SeatSafe" name="Seat" value="SeatSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="SeatUnSafe" name="SeatUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="SeatUnSafe" name="Seat" value="SeatUnSafe">
-                                </td>
-                                <td contenteditable="true" id="SeatRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="3" style="text-align:center; vertical-align:middle;font-size:24px;">2</td>
-                                <td colspan="4">AIR AND WHEELS</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Front and Rear Wheels</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Tire (Inflation) : Inflated properly and valve stem right?</li>
-                                        <li>Tire (Casing) : Good tread and no side wall damage?</li>
-                                        <li>Rims : No dent, twist, or kinks?</li>
-                                        <li>Alignment : When spun, wheel is true and centered in stays?</li>
-                                        <li>Complete wheel-spoke "rayos" and no bend?</li>
-                                        <li>Bearing : Wheel spins freely and evenly and does not wiggle?</li>
-                                        <li>Bike stand is peroperly installed?</li>
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="FrontRearSafe" name="FrontRearSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="FrontRearSafe" name="FrontRear" value="FrontRearSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="FrontRearUnSafe" name="FrontRearUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="FrontRearUnSafe" name="FrontRear" value="FrontRearUnSafe">
-                                </td>
-                                <td contenteditable="true" id="FrontRearRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="3" style="text-align:center; vertical-align:middle;font-size:24px;">3</td>
-                                <td colspan="4">BRAKES</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Disc Brake/V-Brake/Caliper Brake (Front and Rear)</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Cable taut, No frayed ends?</li>
-                                        <li>Caliber brake centered adn tight?</li>
-                                        <li>Nuts tight on brake shoe?</li>
-                                        <li>Brake pads are ok?</li>
-                                        <li>Front and rear brakes operate effectively and smoothly?</li>
-
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="BrakeSafe" name="BrakeSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="BrakeSafe" name="Brake" value="BrakeSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="BrakeUnSafe" name="BrakeUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="BrakeUnSafe" name="Brake" value="BrakeUnSafe">
-                                </td>
-                                <td contenteditable="true" id="BrakeRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td rowspan="5" style="text-align:center; vertical-align:middle;font-size:24px;">4</td>
-                                <td colspan="4">CRANK AND CHAIN</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Cranks and Pedals</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Crank and turns freely and evenly. no looseness or binding, not bent?</li>
-                                        <li>Pedals tight, intact, no binding, free spinning?</li>
-
-
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="CrankChainSafe" name="CrankChainSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="CrankChainSafe" name="CrankChain" value="CrankChainSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="CrankChainUnSafe" name="CrankChainUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="CrankChainUnSafe" name="CrankChain" value="CrankChainUnSafe">
-                                </td>
-                                <td contenteditable="true" id="CrankChainRemarks"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Chain</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <ul>
-                                        <li>Chain clean and feee of rust, lubricated?</li>
-                                        <li>No excessive looseness?</li>
-                                        <li>Chain guard secure, free of chain?</li>
-
-                                    </ul>
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="ChainSafe" name="ChainSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="ChainSafe" name="Chain" value="ChainSafe">
-                                </td>
-                                <td style="text-align:center;vertical-align:middle;">
-                                    @*<div class="form-check form-check-inline">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" id="ChainUnSafe" name="ChainUnSafe" value="">
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>*@
-                                    <input type="radio" id="ChainUnSafe" name="Chain" value="ChainUnSafe">
-                                </td>
-                                <td contenteditable="true" id="ChainRemarks"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="ibox-content">
-
-                        <h4>
-                            Note
-                        </h4>
-                        <div class="alert alert-warning">
-                            Bike must meet item marked "SAFE" prior to use
-                        </div>
-
-                        <div class="row" id="divApproversB">
-                            <div class="form-group col-md-6">
-                                <label style="font-weight:bold;">Inspected By</label>
-                                <input class="form-control col-md-4" id="InspectedBy" name="InspectedBy" />
-                                <label>Safety Inspector</label>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label style="font-weight:bold;">Noted By</label>
-                                <input class="form-control col-md-4" id="NotedBy" name="NotedBy" />
-                                <label>Safety Supervisor</label>
-                            </div>
-                        </div>
-
-                    </div>
-                    <br />
-                    <p>
-                        <a href="#" onclick="saveBicycleData(this);">
-                            <i class="fa fa-check"></i>
-                            <span class="email-text">&nbsp;Save</span>
-                        </a> <text> |&nbsp; </text>
-                        <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdB","rptBicycle");'>
-                            <i class="fa fa-print"></i>
-                            <span class="print">&nbsp;Print</span>
-                        </a>
-                    </p>
-
-
-
-                </div>
-            </div>
         </div>
     </div>
 </div>
-<script>
 
-    //printReport
+   
+<script>
+    $equipmentid = 0;
+    $equipmenttype = "";
+    $docstatus = "";
+    function loadData(id) {
+        $equipmentid = id;
+       
+
+        if (id == 1 || id == 5) {
+            $("#modalTitle").html("Fire Extinguisher");
+            $equipmenttype = "fe";
+           
+        } else if (id == 2 || id == 6) {
+            $("#modalTitle").html("Emergency Light");
+            $equipmenttype = "el";
+           
+        } else if (id == 3 || id == 7) {
+            $("#modalTitle").html("Inergen Tank");
+            $equipmenttype = "it";
+           
+        }
+        else {
+            $("#modalTitle").html("Fire Hydrant");
+            $equipmenttype = "fh";
+            
+        }
+
+        if (id < 5) {
+            $docstatus = "For Review";
+        } else {
+            $docstatus = "For Approval";
+        }
+
+
+
+        var data = [];
+       
+        $.ajax({
+            url: "@Url.Action("GetLocationData", "Home")"
+            , method: "POST"
+            , dataType: 'json'
+            , data: { equipmenttype: $equipmenttype, docstatus: $docstatus }
+            , success: function (responsedata) {
+                if (responsedata.status == "success") {
+
+                    for (var i = 0; i < responsedata.data.length; i++) {
+                        
+                        var $id = responsedata.data[i].id;
+                        var $date = moment(responsedata.data[i].createdAt).format("MM-DD-YYYY");
+                         var linkDetails = "";
+                        if (id == 1 || id == 5) {
+                            linkDetails = "@Url.Action("Edit", "FireExtinguisher")?id=" + $id;
+                           
+                        } else if (id == 2 || id == 6) {
+                           linkDetails = "@Url.Action("Edit", "EmergencyLights")?id=" + $id;
+                      
+                        } else if (id == 3 || id == 7) {
+                            linkDetails = "@Url.Action("Edit", "InergenTanks")?id=" + $id;
+                    
+                        }
+                        else {
+                           linkDetails = "@Url.Action("Edit", "FireHydrants")?id=" + $id;
+                           
+                        }
+
+                        if (id < 5) {
+                            $docstatus = "For Review";
+                        } else {
+                            $docstatus = "For Approval";
+                        }
+
+
+                    
+
+                        $actions =
+                            '<a title="Details" class="btn btn-info btn-bitbucket" href="' + linkDetails + '" target="_blank"><i class="fa fa-list"></i></a> ';
+                        
+                        data.push([
+                            responsedata.data[i].id
+                            , responsedata.data[i].referenceNo
+                            , $date
+                           
+                            , responsedata.data[i].companyName
+                            , responsedata.data[i].areaName
+                            , responsedata.data[i].location
+                            , responsedata.data[i].documentStatus
+                            , $actions]
+                        );
+
+                    }
+
+                    if ($.fn.DataTable.isDataTable('#tbl')) {
+                        $('#tbl').DataTable().destroy();
+
+                    }
+
+                    $('#tbl').DataTable({
+                        "data": data,
+                        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+                        "columnDefs": [
+                            {
+                                'targets': 0,
+                                'orderable' : false,
+                                'checkboxes': {
+                                    'selectRow': true
+                                }
+                            },
+                                {
+                                'targets': 5,
+                                'orderable': false
+                            }
+                      
+                        ],
+                        'select': {
+                            'style': 'multi'
+                        },
+                        order: [1, 'asc'],
+                    });
+
+                    //$("#type").val(id);
+                    //if (id == 2) {
+                    //    $("#btnApprove").attr('disabled',true)
+                    //}
+                    //if (id == 0) {
+                    //    $("#btnApprove").hide();
+                    //}
+
+                    $("#modalItem").modal("show");
+
+
+
+            } else {
+                toastr["error"](responsedata.message)
+                toastr.options = {
+                    "closeButton": true,
+                    "showDuration": "3000",
+                }
+            }
+
+            }
+        })
+    }
+    function proceed() {
+        $id = $("#type").val();
+        
+
+
+        var table = $('#tbl').DataTable();
+        var rows_selected = table.column(0).checkboxes.selected();
+        data = [];
+
+        $.each(rows_selected, function (index, rowId) {
+            data.push(rowId );
+
+        });
+
+        
+        if (data.length < 1) {
+            toastr["error"]("No item selected")
+            toastr.options = {
+                "closeButton": true,
+                "showDuration": "3000",
+            };
+        } else {
+         
+                $.ajax({
+                url: "@Url.Action("Approve")"
+                    , method: "POST"
+                    , data: { id: data, docstatus: $docstatus, equipmenttype : $equipmenttype }
+                    , dataType: 'json'
+                    , success: function (responsedata) {
+                        if (responsedata.status == "success") {
+                            toastr["success"]("Data approved!", "<b>Success</b> ")
+                            loadData($equipmentid);
+                        } else {
+                            toastr["error"](responsedata.message)
+                            toastr.options = {
+                                "closeButton": true,
+                                "showDuration": "3000",
+                            }
+                        }
+                    }
+               })
+        }
+    }
+
+
+
+        //var $hasNovalue = true;
+
+        function submitApproval($refid, $module) {
+
+            //console.log($hasNovalue);
+            if ($refid == 0) {
+                toastr["error"]("No record to be submitted")
+                toastr.options = {
+                    "closeButton": true,
+                    "showDuration": "3000",
+                }
+            } else {
+
+                
+
+                    if (confirm('This will change status to For Approval Status. Continue?')) {
+                        $.ajax({
+                        url: "@Url.Action("SubmitDocument")"
+                        , method: "POST"
+                        , data: { id: $refid,module : $module }
+                        , dataType: 'json'
+                        , success: function (responsedata) {
+                           if (responsedata.status == "success") {
+                               toastr["success"]("Item Submitted","<b>Success</b> ")
+                               
+                            } else {
+                                toastr["error"](responsedata.message)
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "showDuration": "3000",
+                                }
+                            }
+                            }
+                        })
+
+                    }
+            }
+            
+        }
+   //printReport
     function print($refid,$rpt) {
         window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid+ '&Report=' + $rpt + '&rptType=PDF');
     }
 
-   
+
     $(function () {
+
+       
         $(".inpIns").val("@User.Identity.GetFullName()");
-        $(".inpRev").val("GBARROYO/ECCUETO");
-        $(".inpNot").val("HBLUCY");
+        //$(".inpRev").val("GBARROYO/ECCUETO");
+        //$(".inpNot").val("HBLUCY");
+        $(".inpIns").prop('disabled',true);
+        $(".inpRev").prop('disabled',true);
+        $(".inpNot").prop('disabled', true);
+
 
 
         $("#InspectedBy").val("@User.Identity.GetFullName()");
@@ -818,7 +1206,7 @@
         //loadDatatableBicycle($("#BicycleId").val())
         //loadDatatableFireHydrant($("#AreaId").val())
 
-       
+
     })
     $("#AreaId").change(function () {
         loadlocations(this.value)
@@ -833,9 +1221,9 @@
         //console.log(this.value);
         getDataPerLocation($(this).prop('id'), this.value);
     })
-    
+
     function getDataPerLocation(_locationtype, _locationid) {
-        
+
         //FIRE EXTINNGUISHER -- LocationIDFE
         if (_locationtype == "LocationIDFE") {
             dataClearFireExtinguisherData();
@@ -846,14 +1234,17 @@
                                 , dataType: 'json'
                                 , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
                                 , success: function (responsedata) {
-                                    console.log(responsedata);
-                            
+                                   
 
                                     if (responsedata.status == "success" && responsedata.data.length > 0) {
-                                   
                                         if (responsedata.datadetail.length == 0) {
-                                            for (var i = 0; i < responsedata.data.length; i++) {
+                                            //$hasNovalue = true;
+                                            var $obj = $("#tblFireExtinguisher").closest('.tab-pane').find('.aClick');
+                                            $($obj).attr('onclick', "print(" + 0 + ",'rptFireExtinguisher')");
+                                            $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + 0 + ",'FE')");
 
+
+                                            for (var i = 0; i < responsedata.data.length; i++) {
                                                 var $id = responsedata.data[i].id;
                                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
                                                 var _cylinder = '<div class="form-check">' +
@@ -908,9 +1299,12 @@
                                             }
 
                                         } else {
+                                            //$hasNovalue = false;
 
+                                            //console.log($hasNovalue);
                                             var $obj = $("#tblFireExtinguisher").closest('.tab-pane').find('.aClick');
                                             $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptFireExtinguisher')");
+                                            $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + responsedata.datadetail[0].headerId + ",'FE')");
 
                                             var $div = $("#tblFireExtinguisher").closest('.tab-pane');
                                             $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
@@ -984,7 +1378,7 @@
 
                                                 var _rem = responsedata.datadetail[i].remarks == null ? "" : responsedata.datadetail[i].remarks;
                                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "' data-id='" + $id + "'>";
-                                           
+
                                                 data.push([
                                                     responsedata.datadetail[i].id
                                                     , responsedata.datadetail[i].itemName
@@ -1008,7 +1402,7 @@
                                             "data": data,
                                             "responsive": true,
                                             "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-                                        
+
                                         });
                                     } else {
                                         if (responsedata.data.length < 1) {
@@ -1019,7 +1413,7 @@
                                                 "data": data,
                                                 "responsive": true,
                                                 "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-                                           
+
                                             });
 
                                         }
@@ -1055,6 +1449,13 @@
                         , success: function (responsedata) {
                                 if (responsedata.status == "success" && responsedata.data.length > 0) {
                                     if (responsedata.datadetail.length == 0) {
+                                        //$hasNovalue = true;
+                                        var $obj = $("#tblEmergencyLight").closest('.tab-pane').find('.aClick');
+                                        $($obj).attr('onclick', "print(" + 0 + ",'rptEmergencyLight')");
+                                        $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + 0 + ",'EL')");
+
+
+
                                         for (var i = 0; i < responsedata.data.length; i++) {
                                             var $id = responsedata.data[i].id;
                                             var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
@@ -1090,8 +1491,10 @@
 
                                         }
                                     } else {
+                                        //$hasNovalue = false;
                                         var $obj = $("#tblEmergencyLight").closest('.tab-pane').find('.aClick');
                                         $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptEmergencyLight')");
+                                        $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + responsedata.datadetail[0].headerId + ",'EL')");
 
                                         var $div = $("#tblEmergencyLight").closest('.tab-pane');
                                         $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
@@ -1165,7 +1568,7 @@
                                         "data": data,
                                         "responsive": true,
                                         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-                                        
+
                                     });
                                 } else {
                                     if (responsedata.data.length < 1) {
@@ -1179,7 +1582,7 @@
                                             "data": data,
                                             "responsive": true,
                                             "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
-                                           
+
                                         });
 
                                     }
@@ -1216,6 +1619,11 @@
                     if (responsedata.status == "success" && responsedata.data.length > 0) {
 
                         if (responsedata.datadetail.length == 0) {
+                            //$hasNovalue = true;
+                            var $obj = $("#tblInergenTank").closest('.tab-pane').find('.aClick');
+                            $($obj).attr('onclick', "print(" + 0 + ",'rptInergenTank')");
+                            $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + 0 + ",'IT')");
+
                         for (var i = 0; i < responsedata.data.length; i++) {
 
                             var $id = responsedata.data[i].id;
@@ -1269,8 +1677,10 @@
 
                             }
                         } else {
+                            //$hasNovalue = false;
                             var $obj = $("#tblInergenTank").closest('.tab-pane').find('.aClick');
                             $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptInergenTank')");
+                            $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + responsedata.datadetail[0].headerId + ",'IT')");
 
                             var $div = $("#tblInergenTank").closest('.tab-pane');
                             $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
@@ -1414,8 +1824,14 @@
 
                         if (responsedata.status == "success" && responsedata.data.length > 0) {
 
-                           // $("#Plant").val(responsedata.data[0].companyName);
+                        
                             if (responsedata.datadetail.length == 0) {
+                                //$hasNovalue = true;
+                                var $obj = $("#tblFireHydrant").closest('.tab-pane').find('.aClick');
+                                $($obj).attr('onclick', "print(" + 0 + ",'rptFireHydrant')");
+                                $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + 0 + ",'FH')");
+
+
                                 for (var i = 0; i < responsedata.data.length; i++) {
                                     var $id = responsedata.data[i].id;
                                     var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
@@ -1486,9 +1902,10 @@
 
                                 }
                             } else {
-                                
+                                //$hasNovalue = false;
                                 var $obj = $("#tblFireHydrant").closest('.tab-pane').find('.aClick');
                                 $($obj).attr('onclick', "print(" + responsedata.datadetail[0].headerId + ",'rptFireHydrant')");
+                                $($obj).siblings(".aApprove").attr('onclick', "submitApproval(" + responsedata.datadetail[0].headerId + ",'FH')");
 
                                 var $div = $("#tblFireHydrant").closest('.tab-pane');
                                 $($div.find('.inpIns')).prop('value', responsedata.datadetail[0].inspectedBy)
@@ -1655,7 +2072,7 @@
 
                  }, error: function () {
 
-                        console.log("error");
+                       
                      if ($.fn.DataTable.isDataTable('#tblFireHydrant')) {
                          $('#tblFireHydrant').DataTable().destroy();
                      }
@@ -1683,10 +2100,10 @@
             $(this).val($(this).val().toUpperCase());
     });
 
-    
+
 
     function saveBicycleData($obj) {
-       
+
         var data = [];
 
         $("#tblBicycle input[type='radio']").each(function () {
@@ -1700,8 +2117,8 @@
             data.push({ name: $name, value: $name_value });
         });
 
-       
-  
+
+
         $("#tblBicycle td[contenteditable=true]").each(function () {
             $name = $(this).prop('id');
             $name_value = document.getElementById($name).innerHTML;
@@ -1761,7 +2178,7 @@
     }
 
     function loadlocations(_area) {
-       
+
         $.ajax({
             url: "@Url.Action("getLocation", "Areas")"
             , method: "POST"
@@ -1772,7 +2189,7 @@
                 $("#Plant").val(responsedata.company);
 
                 $(".LocationID").empty();
-             
+
                 if ($.trim(responsedata.datafe)) {
                     $.each(responsedata.datafe, function (value, index) {
                         $('#LocationIDFE').append('<option value="' + index.id + '">' + index.location + '</option>');
@@ -1799,12 +2216,12 @@
                 }
                 getDataPerLocation('LocationIDIT', $('#LocationIDIT').val());
 
-               
+
             }
         })
     }
     function loadDatatableBicycle(_Bicycle) {
-       
+
         dataClearBicycleData();
 
 
@@ -2037,7 +2454,7 @@
 
                                             var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
                                             var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "' data-id='" + $id + "'>";
-                                           
+
                                             data.push([
                                                 responsedata.datadetail[i].id
                                                 , responsedata.datadetail[i].location
@@ -2163,8 +2580,11 @@
 
                             toastr["success"]("Item saved!", "<b>Success</b> ")
 
-                            $($obj).siblings("a").attr('onclick', "print(" + responsedata.referenceId + ",'rptFireExtinguisher')");
+                            $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptFireExtinguisher')");
+                            $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'FE')");
+                          
 
+                          
 
                         } else {
 
@@ -2411,13 +2831,13 @@
 
                 }
 
-               
+
 
                     items.push(obj)
 
             });
 
-                  
+
 
 
 
@@ -2430,9 +2850,10 @@
                      , success: function (responsedata) {
 
                         if (responsedata.status == "success") {
-
+                          
                             toastr["success"]("Item saved!", "<b>Success</b> ")
-                            $($obj).siblings("a").attr('onclick', "print(" + responsedata.referenceId + ",'rptEmergencyLight')");
+                            $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptEmergencyLight')");
+                            $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'EL')");
 
                         } else {
 
@@ -2698,14 +3119,14 @@
                          NotedBy: $notedBy,
 
                 }
-               
+
 
                     items.push(obj)
 
 
                 });
 
-        
+
 
             $.ajax({
                 url: "@Url.Action("SaveData", "InergenTanks")"
@@ -2717,7 +3138,8 @@
                         if (responsedata.status == "success") {
 
                             toastr["success"]("Item saved!", "<b>Success</b> ")
-                            $($obj).siblings("a").attr('onclick', "print(" + responsedata.referenceId + ",'rptInergenTank')");
+                            $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptInergenTank')");
+                            $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'IT')");
 
                         } else {
 
@@ -3040,8 +3462,8 @@
                 $notedBy = lst[2].value
 
                      var obj = {
-                         
-                         
+
+
                          ItemId: $(this).find("td:eq(0)").text(),
 
                          GlassCabinet: $(this).find('input:checkbox')[0].checked,
@@ -3081,7 +3503,8 @@
                         if (responsedata.status == "success") {
 
                             toastr["success"]("Item saved!", "<b>Success</b> ")
-                            $($obj).siblings("a").attr('onclick', "print(" + responsedata.referenceId + ",'rptFireHydrant')");
+                            $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptFireHydrant')");
+                            $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'FH')");
 
                         } else {
 

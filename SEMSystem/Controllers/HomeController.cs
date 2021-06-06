@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using SEMSystem.Models;
 using DNTBreadCrumb.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SEMSystem.Models.View_Model;
+using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace SEMSystem.Controllers
 {
@@ -25,8 +28,453 @@ namespace SEMSystem.Controllers
         }
 
 
+        public LocationDashboardCount GetLocationCount()
+        {
+            var fe = _context.FireExtinguisherHeaders.Where(a => a.Status == "Active");
+            var el = _context.EmergencyLightHeaders.Where(a => a.Status == "Active");
+            var it = _context.InergenTankHeaders.Where(a => a.Status == "Active");
+            var fh = _context.FireHydrantHeaders.Where(a => a.Status == "Active");
+
+            var ldc = new LocationDashboardCount
+            {
+                ReviewFE = fe.Where(a => a.DocumentStatus == "For Review").Count(),
+                ApproverFE = fe.Where(a => a.DocumentStatus == "For Approval").Count(),
+                ReviewEL = el.Where(a => a.DocumentStatus == "For Review").Count(),
+                ApproverEL = el.Where(a => a.DocumentStatus == "For Approval").Count(),
+                ReviewIT = it.Where(a => a.DocumentStatus == "For Review").Count(),
+                ApproverIT = it.Where(a => a.DocumentStatus == "For Approval").Count(),
+                ReviewFH = fh.Where(a => a.DocumentStatus == "For Review").Count(),
+                ApproverFH = fh.Where(a => a.DocumentStatus == "For Approval").Count()
+            };
+
+            return ldc;
+
+        }
+        [HttpPost]
+        public JsonResult Approve(int[] id, string docstatus,string equipmenttype)
+        {
+            string status = "";
+            string message = "";
+            string refno = "";
 
 
+            if (docstatus == "For Review")
+            {
+                docstatus = "For Approval";
+            }
+            else
+            {
+                docstatus = "Approved";
+            }
+
+            switch (equipmenttype)
+            {
+                case "fe":
+
+                    foreach (var item in id)
+                    {
+                        var wdif = _context.FireExtinguisherHeaders.Find(item);
+                        wdif.DocumentStatus = docstatus;
+
+                        if (docstatus == "For Approval")
+                        {
+                            wdif.ReviewedDate = DateTime.Now.Date;
+                            _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.ReviewedBy = User.Identity.GetFullName()
+                           );
+                        }
+                        else
+                        {
+                            wdif.ApprovedDate = DateTime.Now.Date;
+                            _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.NotedBy = User.Identity.GetFullName()
+                           );
+                        }
+
+                        _context.Entry(wdif).State = EntityState.Modified;
+
+
+
+
+                        Log log = new Log
+                        {
+                            Descriptions = "Modified FEHeader, Id = " + item,
+                            Action = "Modify",
+                            Status = "Success",
+                            UserId = User.Identity.GetUserName(),
+                            CreatedDate = DateTime.Now
+                        };
+                        _context.Add(log);
+
+                        _context.SaveChanges();
+
+                        string stat = new NotifyController(_context).SendNotification(docstatus,equipmenttype, item); // send email
+
+                    }
+
+
+                    status = "success";
+
+                    var model = new
+                    {
+                        status,
+                        message,
+                       
+                    };
+
+
+
+                    return Json(model);
+
+                case "el":
+
+                    foreach (var item in id)
+                    {
+                        var wdif = _context.EmergencyLightHeaders.Find(item);
+                        wdif.DocumentStatus = docstatus;
+
+                        if (docstatus == "For Approval")
+                        {
+                            wdif.ReviewedDate = DateTime.Now.Date;
+                            _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.ReviewedBy = User.Identity.GetFullName()
+                           );
+                        }
+                        else
+                        {
+                            wdif.ApprovedDate = DateTime.Now.Date;
+                            _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.NotedBy = User.Identity.GetFullName()
+                           );
+                        }
+
+                        _context.Entry(wdif).State = EntityState.Modified;
+
+
+
+
+                        Log log = new Log
+                        {
+                            Descriptions = "Modified ELHeader, Id = " + item,
+                            Action = "Modify",
+                            Status = "Success",
+                            UserId = User.Identity.GetUserName(),
+                            CreatedDate = DateTime.Now
+                        };
+                        _context.Add(log);
+
+                        _context.SaveChanges();
+
+                        //string stat = new NotifyController(_context).SendNotificationString(item); // send email
+
+                    }
+
+
+                    status = "success";
+
+                    var modelel = new
+                    {
+                        status,
+                        message,
+
+                    };
+
+
+
+                    return Json(modelel);
+
+
+                case "it":
+
+                    foreach (var item in id)
+                    {
+                        var wdif = _context.InergenTankHeaders.Find(item);
+                        wdif.DocumentStatus = docstatus;
+
+                        if (docstatus == "For Approval")
+                        {
+                            wdif.ReviewedDate = DateTime.Now.Date;
+                            _context.InergenTankDetails.Where(a => a.InergenTankHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.ReviewedBy = User.Identity.GetFullName()
+                           );
+                        }
+                        else
+                        {
+                            wdif.ApprovedDate = DateTime.Now.Date;
+                            _context.InergenTankDetails.Where(a => a.InergenTankHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.NotedBy = User.Identity.GetFullName()
+                           );
+                        }
+
+                        _context.Entry(wdif).State = EntityState.Modified;
+
+                        Log log = new Log
+                        {
+                            Descriptions = "Modified ITHeader, Id = " + item,
+                            Action = "Modify",
+                            Status = "Success",
+                            UserId = User.Identity.GetUserName(),
+                            CreatedDate = DateTime.Now
+                        };
+                        _context.Add(log);
+
+                        _context.SaveChanges();
+
+                        //string stat = new NotifyController(_context).SendNotificationString(item); // send email
+
+                    }
+
+
+                    status = "success";
+
+                    var modelit = new
+                    {
+                        status,
+                        message,
+
+                    };
+
+
+
+                    return Json(modelit);
+
+
+
+
+                case "fh":
+
+                    foreach (var item in id)
+                    {
+                        var wdif = _context.FireHydrantHeaders.Find(item);
+                        wdif.DocumentStatus = docstatus;
+
+                        if (docstatus == "For Approval")
+                        {
+                            wdif.ReviewedDate = DateTime.Now.Date;
+                            _context.FireHydrantDetails.Where(a => a.FireHydrantHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.ReviewedBy = User.Identity.GetFullName()
+                           );
+                        }
+                        else
+                        {
+                            wdif.ApprovedDate = DateTime.Now.Date;
+                            _context.FireHydrantDetails.Where(a => a.FireHydrantHeaderId == item).ToList()
+                           .ForEach(a =>
+                               a.NotedBy = User.Identity.GetFullName()
+                           );
+                        }
+
+                        _context.Entry(wdif).State = EntityState.Modified;
+
+
+
+
+                        Log log = new Log
+                        {
+                            Descriptions = "Modified FHHeader, Id = " + item,
+                            Action = "Modify",
+                            Status = "Success",
+                            UserId = User.Identity.GetUserName(),
+                            CreatedDate = DateTime.Now
+                        };
+                        _context.Add(log);
+
+                        _context.SaveChanges();
+
+                        //string stat = new NotifyController(_context).SendNotificationString(item); // send email
+
+                    }
+
+
+                    status = "success";
+
+                    var modelfh = new
+                    {
+                        status,
+                        message,
+
+                    };
+
+
+
+                    return Json(modelfh);
+
+
+
+
+                default:
+                    return null;
+            }
+
+
+
+
+        }
+        public IActionResult GetLocationData(string equipmenttype, string docstatus)
+        {
+           
+            string status = "";
+            string message = "";
+
+            switch (equipmenttype)
+            {
+                case "fe":
+
+                    var fe = _context.FireExtinguisherHeaders
+                        .Where(a => a.Status == "Active")
+                        .Where(a=>a.DocumentStatus == docstatus)
+                        .Select(a => new
+                        {
+                            a.CreatedAt,
+                            CompanyName = a.Locations.Areas.Companies.Name,
+                            AreaName = a.Locations.Areas.Name
+                           ,a.Locations.Location
+                           ,a.Id
+                           ,a.Status
+                           ,a.DocumentStatus
+                           ,a.ReferenceNo
+                        });
+
+                    status = "success";
+
+                    var model = new
+                    {
+                        status,
+                        message,
+                        data = fe
+                    };
+                  
+                    return Json(model);
+
+                case "el":
+
+                    var el = _context.EmergencyLightHeaders
+                        .Where(a => a.Status == "Active")
+                       .Where(a => a.DocumentStatus == docstatus)
+                       .Select(a => new
+                       {
+                           a.CreatedAt,
+                           CompanyName = a.Locations.Areas.Companies.Name,
+                           AreaName = a.Locations.Areas.Name
+                           ,
+                           a.Locations.Location
+                           ,
+                           a.Id
+                           ,
+                           a.Status
+                           ,
+                           a.DocumentStatus,
+                           a.ReferenceNo
+
+                       });
+
+                    status = "success";
+
+                    var modelel = new
+                    {
+                        status,
+                        message,
+                        data = el
+                    };
+
+
+                    return Json(modelel);
+
+                  
+                case "it":
+                    var it = _context.InergenTankHeaders
+                        .Where(a => a.Status == "Active")
+                        .Where(a => a.DocumentStatus == docstatus)
+                        .Select(a => new
+                        {
+                            a.CreatedAt
+                           ,
+                            CompanyName = a.Locations.Areas.Companies.Name
+                           ,
+                            AreaName = a.Locations.Areas.Name
+                           ,
+                            Location = a.Locations.Area
+                           ,
+                            a.Id
+                           ,
+                            a.Status
+                           ,
+                            a.DocumentStatus,
+                            a.ReferenceNo
+
+                        });
+
+                    status = "success";
+
+                    var modelit = new
+                    {
+                        status,
+                        message,
+                        data = it
+                    };
+
+
+                    return Json(modelit);
+
+                  
+
+                    
+                case "fh":
+                    var fh = _context.FireHydrantHeaders
+                        .Where(a => a.Status == "Active")
+                       .Where(a => a.DocumentStatus == docstatus)
+                        .Select(a => new
+                        {
+                            a.CreatedAt,
+                            CompanyName = a.Locations.Areas.Companies.Name,
+                            AreaName = a.Locations.Areas.Name
+                           ,
+                            a.Locations.Location
+                           ,
+                            a.Id
+                           ,
+                            a.Status
+                           ,
+                            a.DocumentStatus,
+                            a.ReferenceNo
+
+                        });
+
+                    status = "success";
+
+                    var modelfh = new
+                    {
+                        status,
+                        message,
+                        data = fh
+                    };
+
+
+                    return Json(modelfh);
+
+
+                  
+
+                default:
+                    return null; 
+            }
+           
+           
+           
+            
+
+            
+
+           
+
+        }
         [BreadCrumb(Title = "Index", Order = 1, IgnoreAjaxRequests = true)]
         public IActionResult Index()
         {
@@ -41,13 +489,21 @@ namespace SEMSystem.Controllers
             ViewData["ReferenceIdIT"] = 0;
             ViewData["ReferenceIdFH"] = 0;
             ViewData["ReferenceIdB"] = 0;
-            
 
+            var locationdashboard = GetLocationCount();
 
+            ViewData["ReviewFE"] = locationdashboard.ReviewFE;
+            ViewData["ReviewEL"] = locationdashboard.ReviewEL; 
+            ViewData["ReviewIT"] = locationdashboard.ReviewIT; 
+            ViewData["ReviewFH"] = locationdashboard.ReviewFH; 
+            ViewData["ApproverFE"] = locationdashboard.ApproverFE;
+            ViewData["ApproverEL"] = locationdashboard.ApproverEL;
+            ViewData["ApproverIT"] = locationdashboard.ApproverIT;
+            ViewData["ApproverFH"] = locationdashboard.ApproverFH;
 
             return View();
         }
-
+        
 
         [BreadCrumb(Title = "Posts List", Order = 3, IgnoreAjaxRequests = true)]
         public ActionResult Posts()
@@ -81,6 +537,71 @@ namespace SEMSystem.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+
+
+        public JsonResult SubmitDocument(int id,string module)
+        {
+            string message = "";
+            string status = "";
+            try
+            {
+                switch (module)
+                {
+                    case "FE":
+                        var modelFE = _context.FireExtinguisherHeaders.Find(id);
+                        modelFE.DocumentStatus = "For Review";
+                        _context.Update(modelFE);
+                        break;
+                    case "EL":
+                        var modelEL = _context.EmergencyLightHeaders.Find(id);
+                        modelEL.DocumentStatus = "For Review";
+                        _context.Update(modelEL);
+                        break;
+                    case "IT":
+                        var modelIT = _context.InergenTankHeaders.Find(id);
+                        modelIT.DocumentStatus = "For Review";
+                        _context.Update(modelIT);
+                        break;
+                    case "FH":
+                        var modelFH = _context.FireHydrantHeaders.Find(id);
+                        modelFH.DocumentStatus = "For Review";
+                        _context.Update(modelFH);
+                        break;
+                    default:
+                        break;
+                }
+
+
+               // _context.SaveChanges();
+
+
+                Log log = new Log
+                {
+                    Descriptions = "SubmitDocument ID " + id + " MODULE " + module,
+                    Action = "Add",
+                    Status = "success",
+                    UserId = User.Identity.GetUserName()
+                };
+                _context.Add(log);
+                _context.SaveChanges();
+
+                status = "success";
+            }
+            catch (Exception e)
+            {
+                status = "fail";
+                message = e.Message;
+            }
+
+            var model = new
+            {
+                status, message
+            };
+            return Json(model);
+
         }
 
 

@@ -255,7 +255,12 @@
                             , success: function (responsedata) {
 
                                 if (responsedata.status == "success") {
-                                   
+
+                                    if (responsedata.data[0].documentStatus === "Approved") {
+                                        disableProp = "disabled= 'disabled'"
+                                    } else {
+                                        disableProp = ""
+                                    }
                                     //$("#Plant").val(responsedata.data[0].companyName);
                                     for (var i = 0; i < responsedata.data.length; i++) {
                                         var $id = responsedata.data[i].id;
@@ -269,7 +274,7 @@
                                         var _cylinder =
                                             '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type = "checkbox" value = "" name = "Cylinder" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type = "checkbox" value = "" ' + disableProp +' name = "Cylinder" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
@@ -281,7 +286,7 @@
 
                                         var _gauge = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Gauge" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value=""  ' + disableProp + ' name="Gauge" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
@@ -293,7 +298,7 @@
 
                                         var _hose = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value="" ' + disableProp +' name="Hose" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
@@ -304,7 +309,7 @@
                                         }
                                         var _pressure = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value="" ' + disableProp +' name="Hose" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
@@ -312,7 +317,7 @@
 
                                         //var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + responsedata.data[i].remarks + "'>";
                                         var _rem = responsedata.data[i].remarks === null ? "" : responsedata.data[i].remarks;
-                                        var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+                                        var _remarks = "<input  " + disableProp + " class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
                                         data.push([
                                             responsedata.data[i].itemId
                                             , responsedata.data[i].itemName

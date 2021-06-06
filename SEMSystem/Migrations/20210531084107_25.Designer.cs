@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEMSystem.Models;
 
 namespace SEMSystem.Migrations
 {
     [DbContext(typeof(SEMSystemContext))]
-    partial class SEMSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210531084107_25")]
+    partial class _25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,8 +275,6 @@ namespace SEMSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("ApprovedDate");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
@@ -284,8 +284,6 @@ namespace SEMSystem.Migrations
                     b.Property<int>("LocationEmergencyLightId");
 
                     b.Property<string>("ReferenceNo");
-
-                    b.Property<DateTime>("ReviewedDate");
 
                     b.Property<string>("Status");
 
@@ -349,8 +347,6 @@ namespace SEMSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("ApprovedDate");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
@@ -360,8 +356,6 @@ namespace SEMSystem.Migrations
                     b.Property<int>("LocationFireExtinguisherId");
 
                     b.Property<string>("ReferenceNo");
-
-                    b.Property<DateTime>("ReviewedDate");
 
                     b.Property<string>("Status");
 
@@ -429,8 +423,6 @@ namespace SEMSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("ApprovedDate");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
@@ -440,8 +432,6 @@ namespace SEMSystem.Migrations
                     b.Property<int>("LocationFireHydrantId");
 
                     b.Property<string>("ReferenceNo");
-
-                    b.Property<DateTime>("ReviewedDate");
 
                     b.Property<string>("Status");
 
@@ -503,8 +493,6 @@ namespace SEMSystem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("ApprovedDate");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
@@ -514,8 +502,6 @@ namespace SEMSystem.Migrations
                     b.Property<int>("LocationInergenTankId");
 
                     b.Property<string>("ReferenceNo");
-
-                    b.Property<DateTime>("ReviewedDate");
 
                     b.Property<string>("Status");
 

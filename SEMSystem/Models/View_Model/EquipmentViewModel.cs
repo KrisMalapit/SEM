@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SEMSystem.Models.View_Model
 {
 
-    public class FireExtinguisherViewModel
+        public class FireExtinguisherViewModel
     {
         public int LocationFireExtinguisherId { get; set; }
         public int LocationInergenTankId { get; set; }
@@ -71,5 +71,10 @@ namespace SEMSystem.Models.View_Model
         public string ReviewedBy { get; set; }
         public string NotedBy { get; set; }
 
+    }
+    public class EquipmentViewModel
+    {
+        public int ID { get; set; }
+        public string Text { get; set; }
     }
 }

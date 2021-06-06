@@ -20,6 +20,13 @@ namespace SEMSystem.Models
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string Status { get; set; } = "Active";
+        public string DocumentStatus { get; set; } = "Draft";
+
+
+        public DateTime ReviewedDate { get; set; }
+        public DateTime ApprovedDate { get; set; }
+
+
     }
 
 }

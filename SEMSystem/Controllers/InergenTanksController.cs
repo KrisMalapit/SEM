@@ -127,7 +127,8 @@ namespace SEMSystem.Controllers
                          AreaName = a.Locations.Areas.Name
                           ,
                          Location = a.Locations.Area
-                         , a.Status
+                         , a.Status,
+                         a.DocumentStatus
                      })
                     .Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -153,7 +154,8 @@ namespace SEMSystem.Controllers
                   ,
                    a.Id
                    ,
-                   a.Status
+                   a.Status,
+                   a.DocumentStatus
 
                })
               .Where(strFilter)
@@ -170,7 +172,6 @@ namespace SEMSystem.Controllers
                 v = v.OrderBy(sortColumn + (desc ? " descending" : ""));
 
                 var data = v;
-
                 var jsonData = new { draw = draw, recordsFiltered = recFilter, recordsTotal, data };
                 return Ok(jsonData);
             }
@@ -691,7 +692,8 @@ namespace SEMSystem.Controllers
                                    A.i.ReviewedBy,
                                    A.i.NotedBy,
                                    CompanyName = B.Areas.Companies.Name,
-                                   HeaderId = A.i.InergenTankHeaderId
+                                   HeaderId = A.i.InergenTankHeaderId,
+                                   A.i.InergenTankHeaders.DocumentStatus
                                }
                           );
             status = "success";

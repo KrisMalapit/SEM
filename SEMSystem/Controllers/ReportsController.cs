@@ -450,6 +450,67 @@ namespace SEMSystem.Controllers
             });
             return View();
         }
+        [BreadCrumb(Title = "CheckList", Order = 2, IgnoreAjaxRequests = true)]
+        public IActionResult CheckList()
+        {
+            ViewBag.Title = "Item CheckList";
+            var area = _context.Areas.Where(a => a.Status == "Active")
+                .Select(a => new
+                {
+                    a.ID,
+                    Text = a.Name + " - " + a.Companies.Code
+                });
+
+
+            var lstarea = new List<AreaViewModel>();
+            foreach (var item in area.ToList())
+            {
+                var _area = new AreaViewModel
+                {
+                    ID = item.ID,
+                    Text = item.Text
+                };
+                lstarea.Add(_area);
+            }
+
+            var customArea = new AreaViewModel();
+            customArea.ID = -1;
+            customArea.Text = "ALL";
+            var customArea2 = new AreaViewModel
+            {
+                ID = 0,
+                Text = "SAFEKEEP"
+            };
+
+            lstarea.Add(customArea);
+            lstarea.Add(customArea2);
+
+            ViewData["AreaId"] = new SelectList(lstarea.OrderBy(a => a.Text), "ID", "Text");
+
+            var lstequipment = new List<EquipmentViewModel> {
+                 //new EquipmentViewModel {ID = 0, Text = "ALL"}
+                new EquipmentViewModel {ID = 1, Text = "Fire Extinguisher"}
+                ,new EquipmentViewModel {ID = 2, Text = "Emergency Lights"}
+                ,new EquipmentViewModel {ID = 3, Text = "Fire Hydrant"}
+                ,new EquipmentViewModel {ID = 4, Text = "Inergen Tank"}
+            };
+
+
+            ViewData["EquipmentId"] = new SelectList(lstequipment.OrderBy(a => a.ID), "ID", "Text");
+
+
+            this.AddBreadCrumb(new BreadCrumb
+            {
+                Title = "Reports",
+                Url = string.Format(Url.Action("Index", "Reports")),
+                Order = 1
+            });
+
+
+
+            return View();
+        }
+
         [BreadCrumb(Title = "Item Inventory", Order = 2, IgnoreAjaxRequests = true)]
         public IActionResult ItemInventory()
         {

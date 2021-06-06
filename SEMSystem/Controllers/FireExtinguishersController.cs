@@ -122,7 +122,8 @@ namespace SEMSystem.Controllers
                          ,
                          a.Locations.Location
                          ,
-                         a.Status
+                         a.Status,
+                         a.DocumentStatus
                      })
                     .Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -146,7 +147,8 @@ namespace SEMSystem.Controllers
                    , a.Locations.Location
                   ,
                    a.Id
-                   ,a.Status
+                   ,a.Status,
+                   a.DocumentStatus
 
                })
               .Where(strFilter)
@@ -547,42 +549,7 @@ namespace SEMSystem.Controllers
         public ActionResult getDataDetails(int id)
         {
             string status = "";
-            //var v = _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaderId == id) //A
-            //        .GroupJoin(
-            //           _context.LocationFireExtinguishers // B
-            //           .Where(a => a.Status == "Active"),
-            //           i => i.LocationFireExtinguisherId, //A key
-            //           p => p.Id,//B key
-            //           (i, g) =>
-            //              new
-            //              {
-            //                  i, //holds A data
-            //                  g  //holds B data
-            //              }
-            //        )
-            //        .SelectMany(
-            //           temp => temp.g.Take(1).DefaultIfEmpty(), //gets data and transfer to B
-            //           (A, B) =>
-            //              new
-            //              {
-
-            //                  Id = A.i.LocationFireExtinguisherId,
-            //                  A.i.Cylinder,
-            //                  A.i.Lever,
-            //                  A.i.Gauge,
-            //                  A.i.SafetySeal,
-            //                  A.i.Hose,
-            //                  A.i.Remarks,
-            //                  B.Location,
-            //                  B.Code,
-            //                  B.Type,
-            //                  B.Capacity,
-            //                  A.i.InspectedBy,
-            //                  A.i.ReviewedBy,
-            //                  A.i.NotedBy,
-            //                  CompanyName = B.Areas.Companies.Name
-            //              }
-            //        );
+            
             var v = _context.FireExtinguisherDetails
                    .Where(a => a.FireExtinguisherHeaders.Status == "Active")
                    .Where(a => a.FireExtinguisherHeaderId == id) //A
@@ -619,7 +586,8 @@ namespace SEMSystem.Controllers
                                     A.i.ReviewedBy,
                                     A.i.NotedBy,
                                     CompanyName = B.Areas.Companies.Name,
-                                    HeaderId = A.i.FireExtinguisherHeaderId
+                                    HeaderId = A.i.FireExtinguisherHeaderId,
+                                    A.i.FireExtinguisherHeaders.DocumentStatus
                                 }
                            );
             status = "success";
