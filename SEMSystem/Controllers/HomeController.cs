@@ -169,7 +169,7 @@ namespace SEMSystem.Controllers
 
                         _context.SaveChanges();
 
-                        //string stat = new NotifyController(_context).SendNotificationString(item); // send email
+                        string stat = new NotifyController(_context).SendNotification(docstatus, equipmenttype, item); // send email
 
                     }
 
@@ -226,7 +226,7 @@ namespace SEMSystem.Controllers
 
                         _context.SaveChanges();
 
-                        //string stat = new NotifyController(_context).SendNotificationString(item); // send email
+                        string stat = new NotifyController(_context).SendNotification(docstatus, equipmenttype, item); // send email
 
                     }
 
@@ -288,7 +288,7 @@ namespace SEMSystem.Controllers
 
                         _context.SaveChanges();
 
-                        //string stat = new NotifyController(_context).SendNotificationString(item); // send email
+                        string stat = new NotifyController(_context).SendNotification(docstatus, equipmenttype, item); // send email
 
                     }
 
@@ -573,9 +573,9 @@ namespace SEMSystem.Controllers
                     default:
                         break;
                 }
-
-
-               // _context.SaveChanges();
+                string equipmenttype = module.ToLower();
+                string stat = new NotifyController(_context).SendNotification("For Review", equipmenttype, id); // send email
+                                                                                                               // _context.SaveChanges();
 
 
                 Log log = new Log
