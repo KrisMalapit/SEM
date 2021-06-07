@@ -114,18 +114,18 @@ namespace SEMSystem.Controllers
                             //revieweremail = "eccueto@semcalaca.com";
                             revieweremail = "rpgustilo@semirarampc.com";
                         }
-                        message = "There a form For Review with Reference No : " + nvm.ReferenceNo + ",Area :" + nvm.Area + " ,Location: " + nvm.Location;
+                        message = "There a form For Review with Reference No: " + nvm.ReferenceNo + "<br /> Area: " + nvm.Area + "<br /> Location: " + nvm.Location;
                         break;
                     case "For Approval":
-                        message = "There a form For Approval with Reference No : " + nvm.ReferenceNo + ",Area :" + nvm.Area + " ,Location: " + nvm.Location;
+                        message = "There a form For Approval with Reference No: " + nvm.ReferenceNo + "<br /> Area: " + nvm.Area + "<br /> Location: " + nvm.Location;
                         break;
                     default:
                         break;
                 }
 
-                int deptId = 0;
+               
 
-                string msg = "Hi, <br /><br />" + message + ". <br /><br />";
+                string msg = "Hi, <br /><br />" + message + " <br /><br />";
 
                 var body = msg;
                 MailMessage mail = new MailMessage();
