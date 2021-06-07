@@ -15,6 +15,6 @@ namespace SEMSystem.Models.View_Model
         public string Report { get; set; }
         public string rptType { get; set; }
         public int ReferenceId { get; set; }
-        public string Equipment { get; set; }
+        public int Equipment { get; set; }
     }
 }
