@@ -99,18 +99,20 @@ namespace SEMSystem.Controllers
                     case "For Review":
                         if (nvm.CompanyId == 1) //slpgc
                         {
-                            //gbarroyo
-                            revieweremail = "gbarroyo@slpowergen.com";
+                            ////gbarroyo
+                            //revieweremail = "gbarroyo@slpowergen.com";
+                            revieweremail = "kcmalapit@semirarampc.com";
                         }
                         else
                         {
-                            //eccueto
-                            revieweremail = "eccueto@semcalaca.com";
+                            ////eccueto
+                            //revieweremail = "eccueto@semcalaca.com";
+                            revieweremail = "rpgustilo@semirarampc.com";
                         }
                         message = "There a form For Review with Reference No : "  + nvm.ReferenceNo + ",Area :" + nvm.Area + " ,Location: " + nvm.Location;
                         break;
                     case "For Approval":
-                        message = "There a form For Review with Reference No : " + nvm.ReferenceNo + ",Area :" + nvm.Area + " ,Location: " + nvm.Location;
+                        message = "There a form For Approval with Reference No : " + nvm.ReferenceNo + ",Area :" + nvm.Area + " ,Location: " + nvm.Location;
                         break;
                     default:
                         break;
