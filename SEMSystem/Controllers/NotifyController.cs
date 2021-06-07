@@ -88,7 +88,8 @@ namespace SEMSystem.Controllers
             string message = "";
             string rply = "";
             string revieweremail = "";
-            string approveremail = "hblucy@semirarampc.com";
+            //string approveremail = "hblucy@semirarampc.com";
+            string approveremail = "kcmalapit@semirarampc.com";
             string recipient = "";
 
 
