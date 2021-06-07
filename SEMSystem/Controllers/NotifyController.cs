@@ -145,7 +145,7 @@ namespace SEMSystem.Controllers
 
 
 
-                mail.Subject = "Safety Equipment Monitoring System";
+                mail.Subject = "Safety Equipment Monitoring System" + " - " + nvm.DocumentStatus.ToUpper();
                 mail.Body = string.Format(body + " Click on this link to view details. http://192.168.30.182/SEM/");
                 mail.IsBodyHtml = true;
 
