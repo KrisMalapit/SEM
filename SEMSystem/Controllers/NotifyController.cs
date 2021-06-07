@@ -72,7 +72,7 @@ namespace SEMSystem.Controllers
             string status = "";
             
             string message = "";
-            if (docstatus == "Approved")
+            if (docstatus != "Approved")
             {
                 message = SendEmail(notify);
             }
