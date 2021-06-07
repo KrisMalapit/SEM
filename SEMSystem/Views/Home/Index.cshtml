@@ -976,7 +976,7 @@
                         var $date = moment(responsedata.data[i].createdAt).format("MM-DD-YYYY");
                          var linkDetails = "";
                         if (id == 1 || id == 5) {
-                            linkDetails = "@Url.Action("Edit", "FireExtinguisher")?id=" + $id;
+                            linkDetails = "@Url.Action("Edit", "FireExtinguishers")?id=" + $id;
                            
                         } else if (id == 2 || id == 6) {
                            linkDetails = "@Url.Action("Edit", "EmergencyLights")?id=" + $id;
