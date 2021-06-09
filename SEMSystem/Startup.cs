@@ -53,7 +53,7 @@ namespace SEMSystem
                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://192.168.70.231");
                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://sodium2");
                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://192.168.30.182");
-
+                   policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://californium:8443/");
                })
 
            );
