@@ -550,7 +550,6 @@ namespace SEMSystem.Controllers
         public ActionResult getDataDetails(int id)
         {
             string status = "";
-            
             var v = _context.FireExtinguisherDetails
                    .Where(a => a.FireExtinguisherHeaders.Status == "Active")
                    .Where(a => a.FireExtinguisherHeaderId == id) //A
