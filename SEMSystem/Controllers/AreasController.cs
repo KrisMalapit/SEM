@@ -752,8 +752,11 @@ namespace SEMSystem.Controllers
                                      A.i.NotedBy,
                                      CompanyName = B.Areas.Companies.Name,
                                      HeaderId = A.i.FireExtinguisherHeaderId
+                                     ,detailid = A.i.Id
+                                     ,A.i.ImageUrl
                                  }
                             );
+
                 status = "success";
 
                 var model = new
@@ -833,7 +836,10 @@ namespace SEMSystem.Controllers
                                      A.i.ReviewedBy,
                                      A.i.NotedBy,
                                      CompanyName = B.Areas.Companies.Name,
-                                     HeaderId = A.i.EmergencyLightHeaderId
+                                     HeaderId = A.i.EmergencyLightHeaderId,
+                                     detailid = A.i.Id
+                                     ,
+                                     A.i.ImageUrl
                                  }
                             );
                 status = "success";
@@ -920,7 +926,10 @@ namespace SEMSystem.Controllers
                                          A.i.NotedBy,
                                          A.i.Remarks,
                                          CompanyName = B.Areas.Companies.Name,
-                                         HeaderId = A.i.FireHydrantHeaderId
+                                         HeaderId = A.i.FireHydrantHeaderId,
+                                         detailid = A.i.Id
+                                     ,
+                                         A.i.ImageUrl
                                      }
                                 );
                 status = "success";
@@ -1011,7 +1020,10 @@ namespace SEMSystem.Controllers
                                      A.i.ReviewedBy,
                                      A.i.NotedBy,
                                      CompanyName = B.Areas.Companies.Name,
-                                     HeaderId = A.i.InergenTankHeaderId
+                                     HeaderId = A.i.InergenTankHeaderId,
+                                     detailid = A.i.Id
+                                     ,
+                                     A.i.ImageUrl
                                  }
                             );
                // var xy = detail.ToList();

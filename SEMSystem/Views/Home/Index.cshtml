@@ -33,16 +33,85 @@
         width: 70% !important
     }
 
+    .modal-sm {
+        width: 30% !important
+    }
 
     .modal-dialog {
-    max-width: 100%;
-    margin: 1.75rem auto;
+        max-width: 100%;
+        margin: 1.75rem auto;
     }
+
+    #modalImage img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    video {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    #divSnapshotControllers {
+        text-align: center;
+    }
+    
 </style>
 
 
 
+
+
 <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet">
+
+<div class="modal inmodal in " id="modalSnapshot" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalSnapTitle">Capture Photo</h4>
+                <small class="font-bold">Take snapshot of item</small>
+            </div>
+            <div class="modal-body">
+                <input id="snapheaderid" type="hidden"/>
+                <input id="snapheaderequipment" type="hidden"/>
+                <div class="form-group col-md-12" id="divSnapshotControllers">
+                    <input type=button value="Re-Take" onClick="configure()">
+                    <input type=button value="Take Snapshot" onClick="take_snapshot()">
+                    <input type=button value="Save Snapshot" onClick="saveSnap()">
+                    <input type=button value="Close" data-dismiss="modal" class="btnCloseSnap" >
+                </div>
+                <div class="form-group col-md-12"  id="divSnapshotControllers" style="text-align:center;">
+                    <div id="my_camera" style="margin: auto;"></div>
+                    <div id="results"></div>
+                </div>
+                @*<button type="button" class="btn btn-white" data-dismiss="modal" id="btnCloseSnap">Close</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal in " id="modalImage" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalSnapTitle">Captured Image</h4>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <img id="imgSnap" src="" />
+
+                </div>
+                <button type="button" class="btn btn-white btnCloseSnap" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="modal inmodal in " id="modalItem" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -124,7 +193,7 @@
 
                             </table>
 
-                          
+
                         </div>
                     </div>
                 </div>
@@ -252,8 +321,8 @@
                                                                 <th>Gauge</th>
                                                                 <th>Safety Seal</th>
                                                                 <th>Hose</th>
-                                                                <th width="25%">Remarks</th>
-
+                                                                <th width="20%">Remarks</th>
+                                                                <th width="6%">Action</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -318,7 +387,7 @@
                                                                 <th>Usable</th>
 
                                                                 <th width="25%">Remarks</th>
-
+                                                                <th width="6%">Action</th>
                                                             </tr>
 
                                                         </thead>
@@ -354,7 +423,7 @@
                                                     <span class="print">&nbsp;Print</span>
                                                 </a>
                                                 <text> |&nbsp; </text>
-                                                <a  class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdEL","EL");'>
+                                                <a class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdEL","EL");'>
                                                     <i class="fa fa-check-square"></i>
                                                     <span class="print">&nbsp;Submit For Approval</span>
                                                 </a>
@@ -384,8 +453,8 @@
                                                                 <th>Hose</th>
                                                                 <th>Pressure</th>
 
-                                                                <th width="25%">Remarks</th>
-
+                                                                <th width="20%">Remarks</th>
+                                                                <th width="6%">Action</th>
                                                             </tr>
 
                                                         </thead>
@@ -419,7 +488,7 @@
                                                     <i class="fa fa-print"></i>
                                                     <span class="print">&nbsp;Print</span>
                                                 </a><text> |&nbsp; </text>
-                                                <a  class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdIT","IT");'>
+                                                <a class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdIT","IT");'>
                                                     <i class="fa fa-check-square"></i>
                                                     <span class="print">&nbsp;Submit For Approval</span>
                                                 </a>
@@ -453,8 +522,8 @@
                                                                 <th>SpecialTools</th>
 
 
-                                                                <th width="25%">Remarks</th>
-
+                                                                <th width="20%">Remarks</th>
+                                                                <th width="6%">Action</th>
                                                             </tr>
 
                                                         </thead>
@@ -488,7 +557,7 @@
                                                     <i class="fa fa-print"></i>
                                                     <span class="print">&nbsp;Print</span>
                                                 </a><text> |&nbsp; </text>
-                                                <a  class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdFH","FH");'>
+                                                <a class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdFH","FH");'>
                                                     <i class="fa fa-check-square"></i>
                                                     <span class="print">&nbsp;Submit For Approval</span>
                                                 </a>
@@ -924,32 +993,110 @@
     </div>
 </div>
 
-   
+<script type="text/javascript" src="~/js/webcamjs/webcam.js"></script>
+
 <script>
+
+
+
     $equipmentid = 0;
     $equipmenttype = "";
     $docstatus = "";
+
+    $(document).on('click', '.btnSnap', function () {
+        $("#snapheaderequipment").val($(this).attr('data-equipment'));
+        $("#snapheaderid").val($(this).attr('data-id'));
+        $("#modalSnapshot").modal("show");
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    });
+
+    $(document).on('click', '.btnView', function () {
+        $imgid = $(this).attr('data-id')
+        document.getElementById("imgSnap").src = "/snapshots/" + $imgid;
+        $("#modalImage").modal("show");
+
+    });
+
+
+    $(".btnCloseSnap").click(function () {
+
+        $equipmenttype = $("#snapheaderequipment").val();
+
+        if ($equipmenttype == "fe") {
+            getDataPerLocation('LocationIDFE', $('#LocationIDFE').val());
+        }
+        if ($equipmenttype == "el") {
+            getDataPerLocation('LocationIDEL', $('#LocationIDEL').val());
+        }
+        if ($equipmenttype == "it") {
+            getDataPerLocation('LocationIDIT', $('#LocationIDIT').val());
+        }
+        if ($equipmenttype == "fh") {
+            getDataPerLocation('LocationIDFH', $('#LocationIDFH').val());
+        }
+        Webcam.reset();
+    })
+    function configure() {
+        document.getElementById("imageprev").remove();
+        $("#my_camera").removeAttr('hidden')
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+        $("#imageprev").attr('hidden', 'hidden')
+    }
+    // Configure a few settings and attach camera
+    function take_snapshot() {
+
+        // take snapshot and get image data
+        Webcam.snap(function (data_uri) {
+            // display results in page
+            document.getElementById('results').innerHTML =
+                '<img id="imageprev" src="' + data_uri + '"/>';
+
+            $("#my_camera").attr('hidden','hidden')
+        });
+
+        Webcam.reset();
+    }
+    function saveSnap() {
+        // Get base64 value from <img id='imageprev'> source
+        var base64image = document.getElementById("imageprev").src;
+        Webcam.upload(base64image, '@Url.Action("saveSnapShot","Home")?equipmenttype=' + $("#snapheaderequipment").val() + '&detailid=' + + $("#snapheaderid").val(), function (code, text) {
+            toastr["success"]("Snapshot saved!", "<b>Success</b> ")
+        });
+
+    }
     function loadData(id) {
         $equipmentid = id;
-       
+
 
         if (id == 1 || id == 5) {
             $("#modalTitle").html("Fire Extinguisher");
             $equipmenttype = "fe";
-           
+
         } else if (id == 2 || id == 6) {
             $("#modalTitle").html("Emergency Light");
             $equipmenttype = "el";
-           
+
         } else if (id == 3 || id == 7) {
             $("#modalTitle").html("Inergen Tank");
             $equipmenttype = "it";
-           
+
         }
         else {
             $("#modalTitle").html("Fire Hydrant");
             $equipmenttype = "fh";
-            
+
         }
 
         if (id < 5) {
@@ -961,7 +1108,7 @@
 
 
         var data = [];
-       
+
         $.ajax({
             url: "@Url.Action("GetLocationData", "Home")"
             , method: "POST"
@@ -971,23 +1118,23 @@
                 if (responsedata.status == "success") {
 
                     for (var i = 0; i < responsedata.data.length; i++) {
-                        
+
                         var $id = responsedata.data[i].id;
                         var $date = moment(responsedata.data[i].createdAt).format("MM-DD-YYYY");
                          var linkDetails = "";
                         if (id == 1 || id == 5) {
                             linkDetails = "@Url.Action("Edit", "FireExtinguishers")?id=" + $id;
-                           
+
                         } else if (id == 2 || id == 6) {
                            linkDetails = "@Url.Action("Edit", "EmergencyLights")?id=" + $id;
-                      
+
                         } else if (id == 3 || id == 7) {
                             linkDetails = "@Url.Action("Edit", "InergenTanks")?id=" + $id;
-                    
+
                         }
                         else {
                            linkDetails = "@Url.Action("Edit", "FireHydrants")?id=" + $id;
-                           
+
                         }
 
                         if (id < 5) {
@@ -997,16 +1144,16 @@
                         }
 
 
-                    
+
 
                         $actions =
                             '<a title="Details" class="btn btn-info btn-bitbucket" href="' + linkDetails + '" target="_blank"><i class="fa fa-list"></i></a> ';
-                        
+
                         data.push([
                             responsedata.data[i].id
                             , responsedata.data[i].referenceNo
                             , $date
-                           
+
                             , responsedata.data[i].companyName
                             , responsedata.data[i].areaName
                             , responsedata.data[i].location
@@ -1036,7 +1183,7 @@
                                 'targets': 5,
                                 'orderable': false
                             }
-                      
+
                         ],
                         'select': {
                             'style': 'multi'
@@ -1069,7 +1216,7 @@
     }
     function proceed() {
         $id = $("#type").val();
-        
+
 
 
         var table = $('#tbl').DataTable();
@@ -1081,7 +1228,7 @@
 
         });
 
-        
+
         if (data.length < 1) {
             toastr["error"]("No item selected")
             toastr.options = {
@@ -1089,7 +1236,7 @@
                 "showDuration": "3000",
             };
         } else {
-         
+
                 $.ajax({
                 url: "@Url.Action("Approve")"
                     , method: "POST"
@@ -1126,7 +1273,7 @@
                 }
             } else {
 
-                
+
 
                     if (confirm('This will change status to For Approval Status. Continue?')) {
                         $.ajax({
@@ -1137,7 +1284,7 @@
                         , success: function (responsedata) {
                            if (responsedata.status == "success") {
                                toastr["success"]("Item Submitted","<b>Success</b> ")
-                               
+
                             } else {
                                 toastr["error"](responsedata.message)
                                 toastr.options = {
@@ -1150,7 +1297,7 @@
 
                     }
             }
-            
+
         }
    //printReport
     function print($refid,$rpt) {
@@ -1160,7 +1307,7 @@
 
     $(function () {
 
-       
+
         $(".inpIns").val("@User.Identity.GetFullName()");
         //$(".inpRev").val("GBARROYO/ECCUETO");
         //$(".inpNot").val("HBLUCY");
@@ -1234,9 +1381,10 @@
                                 , dataType: 'json'
                                 , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
                                 , success: function (responsedata) {
-                                   
+
 
                                     if (responsedata.status == "success" && responsedata.data.length > 0) {
+                                        var _but = "";
                                         if (responsedata.datadetail.length == 0) {
                                             //$hasNovalue = true;
                                             var $obj = $("#tblFireExtinguisher").closest('.tab-pane').find('.aClick');
@@ -1282,6 +1430,7 @@
                                                     '</label>' +
                                                     '</div>';
 
+
                                                 data.push([
                                                     responsedata.data[i].id
                                                     , responsedata.data[i].itemName
@@ -1294,6 +1443,7 @@
                                                     , _safetyseal
                                                     , _hose
                                                     , _remarks
+                                                    , ""
                                                 ]);
 
                                             }
@@ -1313,6 +1463,7 @@
 
 
                                             for (var i = 0; i < responsedata.datadetail.length; i++) {
+                                                $id = responsedata.datadetail[i].detailid;
 
                                                 $checkedValue = "";
 
@@ -1378,6 +1529,12 @@
 
                                                 var _rem = responsedata.datadetail[i].remarks == null ? "" : responsedata.datadetail[i].remarks;
                                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "' data-id='" + $id + "'>";
+                                                _but = "<button class='btnSnap btn' type='button' class='btn btn-primary' data-equipment='fe' data-id='" + $id + "'><span class='glyphicon glyphicon-camera' ></span ></button>"
+                                                $imageurl = responsedata.datadetail[i].imageUrl;
+                                                if ($imageurl) {
+
+                                                    _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
+                                                }
 
                                                 data.push([
                                                     responsedata.datadetail[i].id
@@ -1391,6 +1548,7 @@
                                                     , _safetyseal
                                                     , _hose
                                                     , _remarks
+                                                    , _but
                                                 ]);
 
                                             }
@@ -1446,7 +1604,8 @@
                         , method: "POST"
                         , dataType: 'json'
                         , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
-                        , success: function (responsedata) {
+                 , success: function (responsedata) {
+                     var _but = "";
                                 if (responsedata.status == "success" && responsedata.data.length > 0) {
                                     if (responsedata.datadetail.length == 0) {
                                         //$hasNovalue = true;
@@ -1486,7 +1645,8 @@
                                                 , _bulb
                                                 , _usable
 
-                                                , _remarks
+                                                , _remarks,
+                                                _but
                                             ]);
 
                                         }
@@ -1502,7 +1662,7 @@
                                         $($div.find('.inpNot')).prop('value', responsedata.datadetail[0].notedBy)
 
                                         for (var i = 0; i < responsedata.datadetail.length; i++) {
-                                            var $id = responsedata.datadetail[i].id;
+                                            var $id = responsedata.datadetail[i].detailid;
 
                                             $checkedValue = "";
 
@@ -1545,6 +1705,12 @@
 
                                             var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
                                             var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+                                            _but = "<button class='btnSnap btn' type='button' class='btn btn-primary' data-equipment='el' data-id='" + $id + "'><span class='glyphicon glyphicon-camera' ></span ></button>"
+                                            $imageurl = responsedata.datadetail[i].imageUrl;
+                                            if ($imageurl) {
+
+                                                _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
+                                            }
 
                                             data.push([
                                                 responsedata.datadetail[i].id
@@ -1555,7 +1721,8 @@
                                                 , _bulb
                                                 , _usable
 
-                                                , _remarks
+                                                , _remarks,
+                                                _but
                                             ]);
 
                                         }
@@ -1615,7 +1782,7 @@
                 , dataType: 'json'
                 , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
                 , success: function (responsedata) {
-
+                    var _but = "";
                     if (responsedata.status == "success" && responsedata.data.length > 0) {
 
                         if (responsedata.datadetail.length == 0) {
@@ -1672,7 +1839,7 @@
                                 , _hose
                                 , _pressure
 
-                                , _remarks
+                                , _remarks,_but
                                 ]);
 
                             }
@@ -1688,7 +1855,7 @@
                             $($div.find('.inpNot')).prop('value', responsedata.datadetail[0].notedBy)
 
                             for (var i = 0; i < responsedata.datadetail.length; i++) {
-                                var $id = responsedata.datadetail[i].id;
+                                var $id = responsedata.datadetail[i].detailid;
 
                                 $checkedValue = "";
 
@@ -1742,6 +1909,13 @@
                                 var _rem = responsedata.datadetail[i].remarks === null ? "" : responsedata.datadetail[i].remarks;
                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
 
+                                _but = "<button class='btnSnap btn' type='button' class='btn btn-primary' data-equipment='it' data-id='" + $id + "'><span class='glyphicon glyphicon-camera' ></span ></button>"
+                                $imageurl = responsedata.datadetail[i].imageUrl;
+                                if ($imageurl) {
+
+                                    _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
+                                }
+
                                 data.push([
                                     responsedata.datadetail[i].id
                                     , responsedata.datadetail[i].itemName
@@ -1752,7 +1926,7 @@
                                     , _hose
                                     , _pressure
 
-                                    , _remarks
+                                    , _remarks, _but
                                 ]);
 
                             }
@@ -1821,10 +1995,10 @@
                     , dataType: 'json'
                     , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
                     , success: function (responsedata) {
-
+                        var _but = "";
                         if (responsedata.status == "success" && responsedata.data.length > 0) {
 
-                        
+
                             if (responsedata.datadetail.length == 0) {
                                 //$hasNovalue = true;
                                 var $obj = $("#tblFireHydrant").closest('.tab-pane').find('.aClick');
@@ -1897,7 +2071,7 @@
                                         , _nozzle25
                                         , _specialTools
 
-                                        , _remarks
+                                        , _remarks, _but
                                     ]);
 
                                 }
@@ -1916,7 +2090,7 @@
                                 for (var i = 0; i < responsedata.datadetail.length; i++) {
 
 
-                                    var $id = responsedata.datadetail[i].id;
+                                    var $id = responsedata.datadetail[i].detailid;
                                     $checkedValue = "";
 
                                     if (responsedata.datadetail[i].glassCabinet == 1) {
@@ -2012,6 +2186,12 @@
 
                                     var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
 
+                                    _but = "<button class='btnSnap btn' type='button' class='btn btn-primary' data-equipment='fh' data-id='" + $id + "'><span class='glyphicon glyphicon-camera' ></span ></button>"
+                                    $imageurl = responsedata.datadetail[i].imageUrl;
+                                    if ($imageurl) {
+
+                                        _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
+                                    }
 
                                     data.push([
                                           responsedata.datadetail[i].id
@@ -2027,6 +2207,7 @@
                                         , _specialTools
 
                                         , _remarks
+                                        , _but
                                     ]);
 
                                 }
@@ -2072,7 +2253,7 @@
 
                  }, error: function () {
 
-                       
+
                      if ($.fn.DataTable.isDataTable('#tblFireHydrant')) {
                          $('#tblFireHydrant').DataTable().destroy();
                      }
@@ -2582,9 +2763,9 @@
 
                             $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptFireExtinguisher')");
                             $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'FE')");
-                          
+                            getDataPerLocation('LocationIDFE', $('#LocationIDFE').val());
 
-                          
+
 
                         } else {
 
@@ -2596,7 +2777,7 @@
                         }
                     }
                 })
-
+            
 
     }
 
@@ -2850,10 +3031,12 @@
                      , success: function (responsedata) {
 
                         if (responsedata.status == "success") {
-                          
+
                             toastr["success"]("Item saved!", "<b>Success</b> ")
                             $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptEmergencyLight')");
                             $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'EL')");
+
+                            getDataPerLocation('LocationIDEL', $('#LocationIDEL').val());
 
                         } else {
 
@@ -2866,6 +3049,8 @@
                     }
                 })
 
+
+       
 
     }
     function dataClearInergenTankData() {
@@ -3140,7 +3325,7 @@
                             toastr["success"]("Item saved!", "<b>Success</b> ")
                             $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptInergenTank')");
                             $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'IT')");
-
+                            getDataPerLocation('LocationIDIT', $('#LocationIDIT').val());
                         } else {
 
                             toastr["error"](responsedata.message)
@@ -3151,7 +3336,7 @@
                         }
                     }
                 })
-
+        
 
     }
 
@@ -3505,7 +3690,7 @@
                             toastr["success"]("Item saved!", "<b>Success</b> ")
                             $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptFireHydrant')");
                             $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'FH')");
-
+                            getDataPerLocation('LocationIDFH', $('#LocationIDFH').val());
                         } else {
 
                             toastr["error"](responsedata.message)
@@ -3517,6 +3702,6 @@
                     }
                 })
 
-
+        
     }
 </script>
