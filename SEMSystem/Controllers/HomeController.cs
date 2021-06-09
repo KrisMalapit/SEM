@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 using System.IO;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace SEMSystem.Controllers
 {
@@ -23,11 +24,14 @@ namespace SEMSystem.Controllers
     public class HomeController : Controller
     {
 
-
+        //private readonly ILogger<HomeController> _logger;
         private readonly SEMSystemContext _context;
 
-        public HomeController(SEMSystemContext context)
+        public HomeController(SEMSystemContext context
+            //, ILogger<HomeController> logger
+            )
         {
+            //_logger = logger;
             _context = context;
         }
         [HttpPost]
@@ -46,7 +50,8 @@ namespace SEMSystem.Controllers
                 if (file.Length > 0)
                 {
                     string fullPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\", newFileName);
-                    WriteLog(fullPath, true);
+                    fullPath.WriteLog();
+                    //_logger.LogInformation(fullPath);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
@@ -113,7 +118,8 @@ namespace SEMSystem.Controllers
 
                 status = "fail";
                 message = e.Message;
-                WriteLog(e.Message, true);
+                e.Message.WriteLog();
+             
             }
             
 
@@ -697,13 +703,8 @@ namespace SEMSystem.Controllers
             return Json(model);
 
         }
-
-        private void WriteLog(string text, bool append)
-        {
-            StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\log.txt", append);
-            sw.Write(text);
-            sw.Close();
-        }
+        
+        
     }
   
 }
