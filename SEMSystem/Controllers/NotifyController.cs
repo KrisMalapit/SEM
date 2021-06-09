@@ -168,7 +168,7 @@ namespace SEMSystem.Controllers
                     }
                     catch (Exception e)
                     {
-                        WriteLog(e.Message + " Time : " + DateTime.Now + " \r\n", true);
+                        WriteLog(e.Message);
                         rply = e.Message;
 
                     }
@@ -179,7 +179,7 @@ namespace SEMSystem.Controllers
             }
             catch (Exception e)
             {
-                WriteLog(e.Message + " Time : " + DateTime.Now + " \r\n", true);
+                WriteLog(e.Message);
                 rply = e.Message.ToString();
             }
 
@@ -192,11 +192,9 @@ namespace SEMSystem.Controllers
 
             return rply;
         }
-        private void WriteLog(string text, bool append)
+        private void WriteLog(string text)
         {
-            StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\log.txt", append);
-            sw.Write(text);
-            sw.Close();
+            text.WriteLog();
         }
     }
 

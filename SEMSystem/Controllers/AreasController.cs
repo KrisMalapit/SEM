@@ -682,7 +682,7 @@ namespace SEMSystem.Controllers
             
             if (LocationType == "LocationIDFE")
             {
-                string.Format("getDataPerLocationFE").WriteLog();
+               
 
                 var v =
                 _context.LocationFireExtinguishers
