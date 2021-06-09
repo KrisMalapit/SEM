@@ -12,20 +12,7 @@
 <div class="col-lg-12">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
-            @*<p>
-                <a asp-action="Create">Create New</a>
-            </p>*@
-
-            @*<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; float: right">
-            <i class="fa fa-calendar"></i>&nbsp;
-            <span></span> <i class="fa fa-caret-down"></i>
-        </div>*@
-
-            @*<div style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; float: right">
-            <i class="fa fa-calendar"></i>&nbsp;
-            <span></span>  <input id="reportrange" type="text" name="daterange" style="border:none;" />
-        </div>*@
-
+          
 
 
             <table id="tbl" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important">
@@ -33,7 +20,7 @@
                 <thead>
 
                     <tr>
-
+                        <th>Reference No</th>
                         <th>Date</th>
                         <th>Company</th>
                         <th>Area</th>
@@ -42,7 +29,7 @@
                         <th>Actions</th>
                     </tr>
                     <tr>
-
+                        <th>Reference No</th>
                         <th>Date</th>
                         <th>Company</th>
                         <th>Area</th>
@@ -69,9 +56,7 @@
     var edate = "";
 
     $(function () {
-        //$from = moment().subtract(0, 'days').format('MM/DD/YYYY');
-        //$to = moment().subtract(0, 'days').format('MM/DD/YYYY');
-
+        
         $('#tbl thead tr:eq(1) th').each(function () {
             var title = $(this).text();
 
@@ -86,33 +71,8 @@
 
 
 
-    //$(function () {
-    //    var start = moment().subtract(0, 'days');
-    //    var end = moment();
-
-    //    function cb(start, end) {
-    //        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    //        loadDatatable(start, end)
-    //        sdate = start;
-    //        edate = end;
-
-
-    //    }
-
-    //    $('#reportrange').daterangepicker({
-    //        opens: 'left'
-    //    }, cb);
-
-    //    cb(start, end);
-
-    //})
     function loadDatatable() {
-        //$type = $("#cmbType").val();
-
-        //$s = start.format('MM/DD/YYYY');
-        //$e = end.format('MM/DD/YYYY');
-        //$from = $s;
-        //$to = $e;
+      
         if ($.fn.DataTable.isDataTable('#tbl')) {
             $('#tbl').DataTable().destroy();
         }
@@ -141,7 +101,7 @@
             },
 
             "columns": [
-
+                { "data": "referenceNo", "name": "ReferenceNo", "autoWidth": true },
                 {
                     data: "createdAt",
                     name: "CreatedAt",
@@ -174,7 +134,8 @@
 
 
 
-            ]
+            ],
+            order: [0, 'desc'],
 
         });
 

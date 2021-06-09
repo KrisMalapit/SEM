@@ -47,7 +47,7 @@
 
         </tr>*@
                     <tr>
-
+                        <th>Reference No</th>
                         <th>Date</th>
                         <th>Company</th>
                         <th>Area</th>
@@ -60,7 +60,7 @@
 
                     </tr>
                     <tr>
-
+                        <th>Reference No</th>
                         <th>Date</th>
                         <th>Company</th>
                         <th>Area</th>
@@ -135,7 +135,7 @@
             },
 
             "columns": [
-
+                { "data": "referenceNo", "name": "ReferenceNo", "autoWidth": true },
                 {
                     data: "createdAt",
                     name: "CreatedAt",
@@ -168,7 +168,8 @@
 
 
 
-            ]
+            ],
+            order: [0, 'desc'],
 
         });
 

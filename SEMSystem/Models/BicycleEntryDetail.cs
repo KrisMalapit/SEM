@@ -56,6 +56,6 @@ namespace SEMSystem.Models
         public string UpdatedBy { get; set; }
         public DateTime UpdatedAt { get; set; }
        
-        
+
     }
 }
