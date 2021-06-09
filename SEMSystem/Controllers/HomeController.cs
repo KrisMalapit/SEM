@@ -51,7 +51,7 @@ namespace SEMSystem.Controllers
                 {
                     string fullPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\", newFileName);
                     
-                    //_logger.LogInformation(fullPath);
+                   
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
@@ -66,44 +66,44 @@ namespace SEMSystem.Controllers
                 {
                     case "fe":
                         var fe = _context.FireExtinguisherDetails.Find(detailid);
-                        if (!string.IsNullOrEmpty(fe.ImageUrl))
-                        {
-                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fe.ImageUrl);
-                            System.IO.File.Delete(filePath);
-                        }
+                        //if (!string.IsNullOrEmpty(fe.ImageUrl))
+                        //{
+                        //    filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fe.ImageUrl);
+                        //    System.IO.File.Delete(filePath);
+                        //}
                         fe.ImageUrl = newFileName;
                         _context.Entry(fe).State = EntityState.Modified;
                         _context.SaveChanges();
                         break;
                     case "el":
                         var el = _context.EmergencyLightDetails.Find(detailid);
-                        if (!string.IsNullOrEmpty(el.ImageUrl))
-                        {
-                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + el.ImageUrl);
-                            System.IO.File.Delete(filePath);
-                        }
+                        //if (!string.IsNullOrEmpty(el.ImageUrl))
+                        //{
+                        //    filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + el.ImageUrl);
+                        //    System.IO.File.Delete(filePath);
+                        //}
                         el.ImageUrl = newFileName;
                         _context.Entry(el).State = EntityState.Modified;
                         _context.SaveChanges();
                         break;
                     case "it":
                         var it = _context.InergenTankDetails.Find(detailid);
-                        if (!string.IsNullOrEmpty(it.ImageUrl))
-                        {
-                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + it.ImageUrl);
-                            System.IO.File.Delete(filePath);
-                        }
+                        //if (!string.IsNullOrEmpty(it.ImageUrl))
+                        //{
+                        //    filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + it.ImageUrl);
+                        //    System.IO.File.Delete(filePath);
+                        //}
                         it.ImageUrl = newFileName;
                         _context.Entry(it).State = EntityState.Modified;
                         _context.SaveChanges();
                         break;
                     case "fh":
                         var fh = _context.FireHydrantDetails.Find(detailid);
-                        if (!string.IsNullOrEmpty(fh.ImageUrl))
-                        {
-                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fh.ImageUrl);
-                            System.IO.File.Delete(filePath);
-                        }
+                        //if (!string.IsNullOrEmpty(fh.ImageUrl))
+                        //{
+                        //    filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fh.ImageUrl);
+                        //    System.IO.File.Delete(filePath);
+                        //}
                         fh.ImageUrl = newFileName;
                         _context.Entry(fh).State = EntityState.Modified;
                         _context.SaveChanges();
