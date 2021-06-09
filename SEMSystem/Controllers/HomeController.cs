@@ -50,7 +50,7 @@ namespace SEMSystem.Controllers
                 if (file.Length > 0)
                 {
                     string fullPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\", newFileName);
-                    fullPath.WriteLog();
+                    
                     //_logger.LogInformation(fullPath);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
