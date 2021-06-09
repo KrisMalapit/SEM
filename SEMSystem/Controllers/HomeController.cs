@@ -37,7 +37,7 @@ namespace SEMSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> saveSnapShot(string equipmenttype,int detailid)
         {
-           
+            string.Format("inside snapshot").WriteLog();
             string filename = "";
             string status = "";
             string message = "";
