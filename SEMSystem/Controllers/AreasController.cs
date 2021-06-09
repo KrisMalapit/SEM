@@ -678,10 +678,12 @@ namespace SEMSystem.Controllers
         {
             string status = "";
 
-           
 
+            
             if (LocationType == "LocationIDFE")
             {
+                string.Format("getDataPerLocationFE").WriteLog();
+
                 var v =
                 _context.LocationFireExtinguishers
                 .Where(a => a.Id == LocationId)
