@@ -2,10 +2,88 @@
 
 
 <style>
-    /*table input {
-        border-color: #e9ecef;
-    }*/
+    .modal-lg {
+        width: 70% !important
+    }
+
+    .modal-sm {
+        width: 30% !important
+    }
+
+    .modal-dialog {
+        max-width: 100%;
+        margin: 1.75rem auto;
+    }
+    #modalImage img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+
+    video {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+
+    #divSnapshotControllers {
+        text-align: center;
+    }
 </style>
+
+
+<div class="modal inmodal in " id="modalSnapshot" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalSnapTitle">Capture Photo</h4>
+                <small class="font-bold">Take snapshot of item</small>
+            </div>
+            <div class="modal-body">
+                <input id="snapheaderid" type="hidden" />
+                <input id="snapheaderequipment" type="hidden" />
+                <div class="form-group col-md-12" id="divSnapshotControllers">
+                    <input type=button value="Re-Take" onClick="configure()">
+                    <input type=button value="Take Snapshot" onClick="take_snapshot()">
+                    <input type=button value="Save Snapshot" onClick="saveSnap()">
+                    <input type=button value="Close" data-dismiss="modal" class="btnCloseSnap">
+                </div>
+                <div class="form-group col-md-12" id="divSnapshotControllers" style="text-align:center;">
+                    <div id="my_camera" style="margin: auto;"></div>
+                    <div id="results"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal in " id="modalImage" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalSnapTitle">Captured Image</h4>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <img id="imgSnap" src="" />
+
+                </div>
+                <button type="button" class="btn btn-white btnCloseSnap" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 <div class="col-lg-12">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
@@ -15,8 +93,8 @@
 
 
                 <div class="col-md-4">
-                 
-                     @*  <select id="AreaId" name="AreaId" class="form-control" asp-items="@ViewBag.AreaId" disabled></select>*@
+
+                    @*  <select id="AreaId" name="AreaId" class="form-control" asp-items="@ViewBag.AreaId" disabled></select>*@
                     <input id="AreaId" name="AreaId" class="form-control" disabled value="@ViewBag.Area" />
 
                 </div>
@@ -31,9 +109,9 @@
             <div class="row">
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Location</label>
                 <div class="col-md-4">
-                  
-                   
-                        @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
+
+
+                    @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
                     <input id="LocationId" name="LocationId" class="form-control" disabled value="@ViewBag.Location" />
 
                 </div>
@@ -45,7 +123,7 @@
             </div>
             <br />
 
-            <table id="tbl" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important;" >
+            <table id="tbl" class="table table-striped table-no-bordered table-hover dataTable" style="width: 100%!important;">
 
                 <thead>
                     <tr>
@@ -59,7 +137,8 @@
                         <th>Gauge</th>
                         <th>Safety Seal</th>
                         <th>Hose</th>
-                        <th  width="25%">Remarks</th>
+                        <th width="20%">Remarks</th>
+                        <th width="6%">Actions</th>
 
                     </tr>
 
@@ -90,14 +169,79 @@
             </p>
             <a asp-action="Index">Back to List</a>
         </div>
-           
-        </div>
+
+    </div>
 </div>
 
 
 <script>
+
+    $(document).on('click', '.btnSnap', function () {
+        $("#snapheaderequipment").val($(this).attr('data-equipment'));
+        $("#snapheaderid").val($(this).attr('data-id'));
+        $("#modalSnapshot").modal("show");
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    });
+
+    $(document).on('click', '.btnView', function () {
+        $imgid = $(this).attr('data-id')
+        document.getElementById("imgSnap").src = "/snapshots/" + $imgid;
+        $("#modalImage").modal("show");
+
+    });
+
+
+    $(".btnCloseSnap").click(function () {
+
+        loadDatatableEdit()
+        Webcam.reset();
+    })
+    function configure() {
+        document.getElementById("imageprev").remove();
+        $("#my_camera").removeAttr('hidden')
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+        $("#imageprev").attr('hidden', 'hidden')
+    }
+    // Configure a few settings and attach camera
+    function take_snapshot() {
+
+        // take snapshot and get image data
+        Webcam.snap(function (data_uri) {
+            // display results in page
+            document.getElementById('results').innerHTML =
+                '<img id="imageprev" src="' + data_uri + '"/>';
+
+            $("#my_camera").attr('hidden','hidden')
+        });
+
+        Webcam.reset();
+    }
+    function saveSnap() {
+        // Get base64 value from <img id='imageprev'> source
+        var base64image = document.getElementById("imageprev").src;
+        Webcam.upload(base64image, '@Url.Action("saveSnapShot","Home")?equipmenttype=' + $("#snapheaderequipment").val() + '&detailid=' + + $("#snapheaderid").val(), function (code, text) {
+            toastr["success"]("Snapshot saved!", "<b>Success</b> ")
+        });
+
+    }
+
+
+
+
         $(function () {
-           
+
             if ( @ViewBag.ID == 0) {
                 loadDatatable($("#AreaId").val());
                 console.log("Add");
@@ -105,7 +249,7 @@
                 loadDatatableEdit();
                 console.log("Edit");
             }
-            
+
 
 
         })
@@ -115,7 +259,7 @@
         $("input[type=text]").keyup(function () {
             $(this).val($(this).val().toUpperCase());
         });
-        function loadDatatable(_area) {
+        @*function loadDatatable(_area) {
 
         var data = [];
 
@@ -125,7 +269,7 @@
                             , dataType: 'json'
                             , data: { AreaId: _area }
                             , success: function (responsedata) {
-                                consoel.log(responsedata);
+                                var _but = "";
                                 if (responsedata.status == "success" && responsedata.data.length > 0) {
 
                                     //$("#Plant").val(responsedata.data[0].companyName);
@@ -175,7 +319,14 @@
                                             '</label>' +
                                             '</div>';
 
-                                       
+                                        //_but = "<button class='btnSnap btn' type='button' class='btn btn-primary' data-equipment='fe' data-id='" + $id + "'><span class='glyphicon glyphicon-camera' ></span ></button>"
+                                        //$imageurl = responsedata.data[i].imageUrl;
+                                        //if ($imageurl) {
+
+                                        //    _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
+                                        //}
+
+
 
                                         data.push([
                                             responsedata.data[i].itemId
@@ -189,6 +340,7 @@
                                             , _safetyseal
                                             , _hose
                                             , _remarks
+                                            ,_but
                                            ]);
 
                                     }
@@ -238,7 +390,7 @@
 
 
 
-        }
+        }*@
         function loadDatatableEdit() {
 
         var data = [];
@@ -249,9 +401,9 @@
                             , dataType: 'json'
                             , data: { id: @ViewBag.ID }
                             , success: function (responsedata) {
-                               
+                                var _but = "";
                                 if (responsedata.status == "success") {
-                                    
+
                                     if (responsedata.data[0].documentStatus === "Approved") {
                                         disableProp = "disabled= 'disabled'"
                                     } else {
@@ -260,13 +412,13 @@
                                     //$("#Plant").val(responsedata.data[0].companyName);
                                     for (var i = 0; i < responsedata.data.length; i++) {
                                         var $id = responsedata.data[i].id;
-                                        
+
                                         $checkedValue = "";
 
                                         if (responsedata.data[i].cylinder == 1) {
                                             $checkedValue = 'checked';
-                                        } 
-                                      
+                                        }
+
                                         var _cylinder =
                                             '<div class="form-check">' +
                                             '<label class="form-check-label">' +
@@ -322,10 +474,17 @@
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
-                                        
+
                                         //var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();' value='" + responsedata.data[i].remarks + "' data-id='" + $id + "'>";
                                         var _rem = responsedata.data[i].remarks === null ? "" : responsedata.data[i].remarks;
                                         var _remarks = "<input " + disableProp + " class='form-control' style='width:100%' onfocus='this.select();' value='" + _rem + "'>";
+
+                                        _but = "<button class='btnSnap btn' type='button' class='btn btn-primary' data-equipment='fe' data-id='" + $id + "'><span class='glyphicon glyphicon-camera' ></span ></button>"
+                                        $imageurl = responsedata.data[i].imageUrl;
+                                        if ($imageurl) {
+
+                                            _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
+                                        }
                                         data.push([
                                             responsedata.data[i].itemId
                                             , responsedata.data[i].itemName
@@ -338,6 +497,7 @@
                                             , _safetyseal
                                             , _hose
                                             , _remarks
+                                            , _but
                                            ]);
 
                                     }
@@ -356,7 +516,7 @@
                                         //],
                                     });
                                 } else {
-                                    
+
 
 
                                         if ($.fn.DataTable.isDataTable('#tbl')) {
@@ -374,15 +534,15 @@
                                             //],
                                         });
 
-                                   
+
 
                                 }
 
                             }
             });
-          
 
-           
+
+
 
 
 

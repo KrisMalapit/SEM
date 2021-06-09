@@ -118,7 +118,7 @@ namespace SEMSystem.Controllers
                          a.CreatedAt,
                          a.Bicycles.NameOwner,
                          a.Bicycles.IdentificationNo,
-                      
+                         a.ReferenceNo,
                          a.Status
                      })
                     .Where(a => a.Status == "Active")
@@ -143,7 +143,8 @@ namespace SEMSystem.Controllers
                   
                    a.Id
                    ,
-                   a.Status
+                   a.Status,
+                   a.ReferenceNo
 
                })
               .Where(strFilter)

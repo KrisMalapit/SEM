@@ -123,7 +123,8 @@ namespace SEMSystem.Controllers
                          a.Locations.Location
                          ,
                          a.Status,
-                         a.DocumentStatus
+                         a.DocumentStatus,
+                         a.ReferenceNo
                      })
                     .Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -148,7 +149,7 @@ namespace SEMSystem.Controllers
                   ,
                    a.Id
                    ,a.Status,
-                   a.DocumentStatus
+                   a.DocumentStatus,a.ReferenceNo
 
                })
               .Where(strFilter)
@@ -252,7 +253,7 @@ namespace SEMSystem.Controllers
                                       A.i.ReviewedBy,
                                       A.i.NotedBy,
                                       CompanyName = B.Areas.Companies.Name,
-                                      HeaderId = A.i.FireExtinguisherHeaderId
+                                      HeaderId = A.i.FireExtinguisherHeaderId,A.i.ImageUrl
                                   }
 
                             );
@@ -587,7 +588,9 @@ namespace SEMSystem.Controllers
                                     A.i.NotedBy,
                                     CompanyName = B.Areas.Companies.Name,
                                     HeaderId = A.i.FireExtinguisherHeaderId,
-                                    A.i.FireExtinguisherHeaders.DocumentStatus
+                                    A.i.FireExtinguisherHeaders.DocumentStatus,
+                                    A.i.ImageUrl,
+                                    A.i.Id
                                 }
                            );
             status = "success";
