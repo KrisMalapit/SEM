@@ -46,7 +46,7 @@ namespace SEMSystem.Controllers
                 if (file.Length > 0)
                 {
                     string fullPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\", newFileName);
-
+                    WriteLog(fullPath, true);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
@@ -113,6 +113,7 @@ namespace SEMSystem.Controllers
 
                 status = "fail";
                 message = e.Message;
+                WriteLog(e.Message, true);
             }
             
 
@@ -697,6 +698,12 @@ namespace SEMSystem.Controllers
 
         }
 
-
+        private void WriteLog(string text, bool append)
+        {
+            StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\log.txt", append);
+            sw.Write(text);
+            sw.Close();
+        }
     }
+  
 }
