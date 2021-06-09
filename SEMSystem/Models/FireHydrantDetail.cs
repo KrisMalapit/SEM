@@ -28,5 +28,6 @@ namespace SEMSystem.Models
         public string InspectedBy { get; set; }
         public string ReviewedBy { get; set; }
         public string NotedBy { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

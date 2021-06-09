@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SEMSystem.Models.View_Model;
 using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
+using System.IO;
+using System.Text;
 
 namespace SEMSystem.Controllers
 {
@@ -26,7 +30,96 @@ namespace SEMSystem.Controllers
         {
             _context = context;
         }
+        [HttpPost]
+        public async Task<IActionResult> saveSnapShot(string equipmenttype,int detailid)
+        {
+           
+            string filename = "";
+            string status = "";
+            string message = "";
+            try
+            {
+                IFormFile file = Request.Form.Files[0];
+                string newFileName = DateTime.Now.Ticks +"_"+ equipmenttype+Convert.ToString(detailid) + "_" + file.FileName;
+                string filePath = "";
+               
+                if (file.Length > 0)
+                {
+                    string fullPath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\", newFileName);
 
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        stream.Position = 0;
+
+                        filename = stream.Name;
+                    }
+                }
+
+
+                switch (equipmenttype)
+                {
+                    case "fe":
+                        var fe = _context.FireExtinguisherDetails.Find(detailid);
+                        if (!string.IsNullOrEmpty(fe.ImageUrl))
+                        {
+                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fe.ImageUrl);
+                            System.IO.File.Delete(filePath);
+                        }
+                        fe.ImageUrl = newFileName;
+                        _context.Entry(fe).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        break;
+                    case "el":
+                        var el = _context.EmergencyLightDetails.Find(detailid);
+                        if (!string.IsNullOrEmpty(el.ImageUrl))
+                        {
+                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + el.ImageUrl);
+                            System.IO.File.Delete(filePath);
+                        }
+                        el.ImageUrl = newFileName;
+                        _context.Entry(el).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        break;
+                    case "it":
+                        var it = _context.InergenTankDetails.Find(detailid);
+                        if (!string.IsNullOrEmpty(it.ImageUrl))
+                        {
+                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + it.ImageUrl);
+                            System.IO.File.Delete(filePath);
+                        }
+                        it.ImageUrl = newFileName;
+                        _context.Entry(it).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        break;
+                    case "fh":
+                        var fh = _context.FireHydrantDetails.Find(detailid);
+                        if (!string.IsNullOrEmpty(fh.ImageUrl))
+                        {
+                            filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fh.ImageUrl);
+                            System.IO.File.Delete(filePath);
+                        }
+                        fh.ImageUrl = newFileName;
+                        _context.Entry(fh).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        break;
+                    default:
+                        break;
+                }
+                status = "success";
+            }
+            catch (Exception e)
+            {
+
+                status = "fail";
+                message = e.Message;
+            }
+            
+
+            return Json(null);
+        }
+
+        
 
         public LocationDashboardCount GetLocationCount()
         {
