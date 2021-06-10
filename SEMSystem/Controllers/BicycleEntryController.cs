@@ -202,12 +202,12 @@ namespace SEMSystem.Controllers
             {
                 hasValue = false;
             }
+           
 
 
 
 
-
-
+          
 
             var model = new
             {
@@ -246,7 +246,7 @@ namespace SEMSystem.Controllers
                 if (_header == null)
                 {
                     var comp = _context.Bicycles.Include(a => a.Departments.Companies)
-                        .Where(a => a.ID == item.BicycleHeaders.BicycleId).FirstOrDefault().Departments.Companies.Code;
+                        .Where(a => a.ID == BicycleId).FirstOrDefault().Departments.Companies.Code;
                         
 
                     if (comp == "SCPC")
