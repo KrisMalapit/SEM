@@ -108,6 +108,17 @@ namespace SEMSystem.Controllers
                         _context.Entry(fh).State = EntityState.Modified;
                         _context.SaveChanges();
                         break;
+                    case "bc":
+                        var bc = _context.BicycleEntryDetails.Find(detailid);
+                        //if (!string.IsNullOrEmpty(fh.ImageUrl))
+                        //{
+                        //    filePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\snapshots\" + fh.ImageUrl);
+                        //    System.IO.File.Delete(filePath);
+                        //}
+                        bc.ImageUrl = newFileName;
+                        _context.Entry(bc).State = EntityState.Modified;
+                        _context.SaveChanges();
+                        break;
                     default:
                         break;
                 }

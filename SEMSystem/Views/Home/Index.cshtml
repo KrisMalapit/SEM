@@ -57,7 +57,9 @@
     #divSnapshotControllers {
         text-align: center;
     }
-    
+    #tblBicycleInfo td {
+        border-top:#ffffff;
+    }
 </style>
 
 
@@ -267,11 +269,8 @@
                                             <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
                                         </div>
                                     </div>
+
                                     <div class="row">
-
-
-
-
                                         <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                                         <div class="col-md-4">
                                             <input id="Plant" name="Plant" class="form-control" disabled="">
@@ -596,31 +595,55 @@
                                     Item Information
                                 </div>
 
-                                <div class="col-md-12" style="padding-top:10px;padding-bottom:10px;">
-                                    <div class="row " style="margin-bottom:5px;">
-
+                                <div class="col-md-12" style="padding-top:10px;">
+                                    @*<div class="row " style="margin-bottom:5px;">
                                         <label class="col-md-2 col-form-label" style="padding-top:5px; "> Identification No</label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <select id="BicycleId" name="BicycleId" class="form-control" asp-items="ViewBag.BicycleId"></select>
 
                                         </div>
 
                                         <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
                                         </div>
-                                    </div>
 
+                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Image</label>
+                                    </div>
                                     <div class="row ">
                                         <label class="col-md-2 col-form-label" style="padding-top:5px;"> Name of Owner</label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <input id="NameOwner" name="NameOwner" class="form-control" disabled />
                                         </div>
                                         <label class="col-md-2 col-form-label" style="padding-top:5px;"> Brand Name</label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
                                             <input id="BrandName" name="BrandName" class="form-control" disabled />
                                         </div>
-                                    </div>
+                                    </div>*@
+                                    <input id="BikeDetailId" name="BikeDetailId" class="form-control" value="0" disabled />
+                                    <table class="table" id="tblBicycleInfo">
+
+                                        <tr>
+                                            <td> Identification No</td>
+                                            <td><select id="BicycleId" name="BicycleId" class="form-control" asp-items="ViewBag.BicycleId"></select></td>
+                                            <td> Date</td>
+                                            <td><input id="Date" name="Date" class="form-control" value="@ViewBag.CreatedAt" disabled /></td>
+                                            <td>Image</td>
+                                            <td rowspan="2" id="tdImg">
+
+                                                @*  <img class="btnSnap" data-equipment='bc' data-id='" + $id + "' style="width:75px;height:75px;" src="~/snapshots/637588374938896190_fe13_webcam.jpg" />*@
+                                                <img id="imgBike"  style="width:75px;height:75px;" src="~/snapshots/no_image.png" />
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name of Owner</td>
+                                            <td> <input id="NameOwner" name="NameOwner" class="form-control" disabled /></td>
+                                            <td> Brand Name</td>
+                                            <td><input id="BrandName" name="BrandName" class="form-control" disabled /></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
                                 </div>
 
 
@@ -1002,6 +1025,30 @@
     $equipmentid = 0;
     $equipmenttype = "";
     $docstatus = "";
+    $(document).on('click', '#imgBike', function () {
+  
+        if ($("#BikeDetailId").val() == 0) {
+            toastr["error"]("Please save data first before uploading image")
+            toastr.options = {
+                "closeButton": true,
+                "showDuration": "3000",
+            }
+            return false;
+        }
+
+        $("#snapheaderequipment").val($(this).attr('data-equipment'));
+        $("#snapheaderid").val($(this).attr('data-id'));
+        $("#modalSnapshot").modal("show");
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    })
+
+
 
     $(document).on('click', '.btnSnap', function () {
         $("#snapheaderequipment").val($(this).attr('data-equipment'));
@@ -1040,6 +1087,10 @@
         if ($equipmenttype == "fh") {
             getDataPerLocation('LocationIDFH', $('#LocationIDFH').val());
         }
+        if ($equipmenttype == "bc") {
+            loadDatatableBicycle($("#BicycleId").val());
+        }
+        
         Webcam.reset();
     })
     function configure() {
@@ -2327,8 +2378,12 @@
                     toastr.options = {
                         "showDuration": "2000",
                     }
-
+                    $("#BikeDetailId").val(responsedata.referenceId);
                     $($obj).siblings("a").attr('onclick', "print(" + responsedata.referenceId + ",'rptBicycle')");
+
+                    loadDatatableBicycle(responsedata.referenceId)
+
+
 
                 } else {
 
@@ -2355,7 +2410,7 @@
           //  $(this).prop('value', '');
         });
 
-
+        $("#BikeDetailId").val(0);
     }
 
     function loadlocations(_area) {
@@ -2402,7 +2457,7 @@
         })
     }
     function loadDatatableBicycle(_Bicycle) {
-
+      
         dataClearBicycleData();
 
 
@@ -2420,8 +2475,30 @@
 
 
                                     if (responsedata.datadetail != null) {
+                                        console.log(responsedata.datadetail.imageUrl);
                                         var $obj = $("#tblBicycle").closest('.tab-pane').find('.aClick');
                                         $($obj).attr('onclick', "print(" + responsedata.datadetail.bicycleEntryHeaderId + ",'rptBicycle')");
+
+                                        $("#BikeDetailId").val(responsedata.datadetail.id);
+
+
+                                        $("#tblBicycleInfo").find("img").remove();
+
+                                      
+                                        $imgsrc = "";
+                                        if (responsedata.datadetail.imageUrl == null) {
+                                          
+                                            $imgsrc = "no_image.png";
+
+                                        } else {
+                                           
+                                            $imgsrc = responsedata.datadetail.imageUrl ;
+                                        }
+
+                                        //$img = '<img id="imgBike" data-equipment="bc" data-id="' + responsedata.datadetail.id + '" style="width:75px;height:75px;" src="/snapshots/' + $imgsrc + '"/>'; TEST
+                                        $img = '<img id="imgBike" data-equipment="bc" data-id="' + responsedata.datadetail.id + '" style="width:75px;height:75px;" src="/SEM/snapshots/' + $imgsrc + '"/>'; //LIVE
+
+                                        $("td#tdImg").html($img);
 
                                         $('#FrameSafe').prop('checked', responsedata.datadetail.frameSafe);
                                         $('#FrameUnSafe').prop('checked', responsedata.datadetail.frameUnSafe);
@@ -2459,8 +2536,15 @@
                                         $('#NotedBy').val(responsedata.datadetail.notedBy);
 
                                     } else {
+
+                                        console.log("noimage");
                                         var $obj = $("#tblBicycle").closest('.tab-pane').find('.aClick');
                                         $($obj).attr('onclick', "print(" + 0 + ",'rptBicycle')");
+
+                                        //$img = '<img id="imgBike" data-equipment="bc" data-id="0" style="width:75px;height:75px;" src="/SEM/snapshots/no_image.png" />'; //TEST
+                                        $img = '<img id="imgBike" data-equipment="bc" data-id="' + responsedata.datadetail.id + '" style="width:75px;height:75px;" src="/SEM/snapshots/no_image.png" />'; //LIVE
+                                        $("td#tdImg").html($img);
+                                        
                                     }
 
 
