@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                   
+
 
 
                 </div>
@@ -44,7 +44,7 @@
 
                     <label class="col-md-2 col-form-label" style="padding-top:5px;">Warranty (Months)</label>
                     <div class="col-md-4">
-                        <input asp-for="Warranty" class="form-control" onkeypress="return isNumberKey(event)" value="0"  onfocus="this.select();"  onmouseup="return false;"/>
+                        <input asp-for="Warranty" class="form-control" onkeypress="return isNumberKey(event)" value="0" onfocus="this.select();" onmouseup="return false;" />
                         <span asp-validation-for="Warranty" class="text-danger"></span>
                     </div>
 
@@ -57,6 +57,8 @@
                             <option value="Good">Good</option>
                             <option value="For Refill">For Refill</option>
                             <option value="For Repair">For Repair</option>
+                            <option value="For Recharge">For Recharge</option>
+                            <option value="For Replacement">For Replacement</option>
                             <option value="Damaged">Damaged</option>
                         </select>
                         <span asp-validation-for="ItemStatus" class="text-danger"></span>
@@ -69,8 +71,29 @@
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             <input id="ExpirationDate" name="ExpirationDate" class="form-control datepickerDate" disabled />
                         </div>
-                     </div>
+                    </div>
                 </div>
+
+                <div class="row form-group">
+
+                    <label class="col-md-2 col-form-label" style="padding-top:5px;">Capacity</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input asp-for="Capacity" class="form-control" />
+                            <span asp-validation-for="Capacity" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <label class="col-md-2 col-form-label" style="padding-top:5px;">Type</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input asp-for="Type" class="form-control" />
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+
                 <div class="row form-group">
 
                     <label class="col-md-2 col-form-label" style="padding-top:5px;" asp-for="EquipmentType"></label>
@@ -83,6 +106,7 @@
                         </select>
                         <span asp-validation-for="EquipmentType" class="text-danger"></span>
                     </div>
+
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-default" />

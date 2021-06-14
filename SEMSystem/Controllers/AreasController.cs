@@ -342,11 +342,11 @@ namespace SEMSystem.Controllers
                             {
                                 var loc = new LocationFireExtinguisher
                                 {
-                                    Capacity = locdetail.capacity[i],
+                                    //Capacity = locdetail.capacity[i],
                                     AreaId = locdetail.AreaId,
                                     Code = locdetail.code[i],
                                     Location = locdetail.location[i],
-                                    Type = locdetail.type[i],
+                                    //Type = locdetail.type[i],
                                     Status = "Active"
                                 };
                                 _context.Add(loc);
@@ -369,22 +369,22 @@ namespace SEMSystem.Controllers
                                         var loc = new LocationFireExtinguisher
                                         {
                                             Id = locdetail.detail_id[i],
-                                            Capacity = locdetail.capacity[i],
+                                            //Capacity = locdetail.capacity[i],
                                             AreaId = locdetail.AreaId,
                                             Code = locdetail.code[i],
                                             Location = locdetail.location[i],
-                                            Type = locdetail.type[i],
+                                            //Type = locdetail.type[i],
                                             Status = "Active"
                                         };
                                         _context.Add(loc);
                                     }
                                     else
                                     {
-                                        _location.Capacity = locdetail.capacity[i];
+                                        //_location.Capacity = locdetail.capacity[i];
                                         _location.AreaId = locdetail.AreaId;
                                         _location.Code = locdetail.code[i];
                                         _location.Location = locdetail.location[i];
-                                        _location.Type = locdetail.type[i];
+                                        //_location.Type = locdetail.type[i];
                                         _location.Status = "Active";
                                         _context.Update(_location);
                                     }
@@ -573,9 +573,9 @@ namespace SEMSystem.Controllers
                                     {
 
                                         AreaId = locdetail.AreaId,
-                                        Serial = locdetail.serial[i],
-                                        Capacity = locdetail.capacity[i],
-                                        //Location = locdetail.location[i],
+                                        //Serial = locdetail.serial[i],
+                                        //Capacity = locdetail.capacity[i],
+                                        Location = locdetail.location[i],
                                         Area = locdetail.area[i],
 
                                         Status = "Active"
@@ -607,11 +607,11 @@ namespace SEMSystem.Controllers
                                         var loc = new LocationInergenTank
                                         {
                                            
-                                            Serial = locdetail.serial[i],
-                                            Capacity = locdetail.capacity[i],
+                                            //Serial = locdetail.serial[i],
+                                            //Capacity = locdetail.capacity[i],
                                             AreaId = locdetail.AreaId,
                                             Area = locdetail.area[i],
-                                            //Location = locdetail.location[i],
+                                            Location = locdetail.location[i],
                                             Status = "Active"
                                         };
                                         _context.Add(loc);
@@ -619,9 +619,9 @@ namespace SEMSystem.Controllers
                                     else
                                     {
                                         _location.AreaId = locdetail.AreaId;
-                                        _location.Serial = locdetail.serial[i];
-                                        _location.Capacity = locdetail.capacity[i];
-                                        //_location.Location = locdetail.location[i];
+                                        //_location.Serial = locdetail.serial[i];
+                                        //_location.Capacity = locdetail.capacity[i];
+                                        _location.Location = locdetail.location[i];
                                         _location.Area = locdetail.area[i];
                                         _location.Status = "Active";
                                         _context.Update(_location);
@@ -709,8 +709,8 @@ namespace SEMSystem.Controllers
                               B.Items.Id,
                               ItemName = B.Items.Name,
                               B.Items.Code,
-                              A.i.Type,
-                              A.i.Capacity,
+                              B.Items.Type,
+                              B.Items.Capacity,
                               CompanyName = A.i.Areas.Companies.Name,
 
                           }
@@ -718,12 +718,12 @@ namespace SEMSystem.Controllers
 
                 var detail = _context.FireExtinguisherDetails
                     .Where(a => a.FireExtinguisherHeaders.Status == "Active")
-                    .Where(a => a.FireExtinguisherHeaders.LocationFireExtinguisherId == LocationId)
-                    .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
+                    .Where(a => a.LocationFireExtinguisherId == LocationId)
+                    .Where(a => a.FireExtinguisherHeaders.DocumentStatus != "Approved") //A
                     .GroupJoin(
                             _context.LocationFireExtinguishers // B
                             .Where(a => a.Status == "Active"),
-                            i => i.FireExtinguisherHeaders.LocationFireExtinguisherId, //A key
+                            i => i.LocationFireExtinguisherId, //A key
                             p => p.Id,//B key
                             (i, g) =>
                                 new
@@ -747,8 +747,8 @@ namespace SEMSystem.Controllers
                                      A.i.Hose,
                                      A.i.Remarks,
                                      A.i.Items.Code,
-                                     B.Type,
-                                     B.Capacity,
+                                     A.i.Items.Type,
+                                     A.i.Items.Capacity,
                                      A.i.InspectedBy,
                                      A.i.ReviewedBy,
                                      A.i.NotedBy,
@@ -807,12 +807,12 @@ namespace SEMSystem.Controllers
 
                 var detail = _context.EmergencyLightDetails
                     .Where(a => a.EmergencyLightHeaders.Status == "Active")
-                    .Where(a => a.EmergencyLightHeaders.LocationEmergencyLightId == LocationId)
-                    .Where(a => a.EmergencyLightHeaders.CreatedAt == dateTime) //A
+                    .Where(a => a.LocationEmergencyLightId == LocationId)
+                    .Where(a => a.EmergencyLightHeaders.DocumentStatus != "Approved") //A
                     .GroupJoin(
                             _context.LocationEmergencyLights // B
                             .Where(a => a.Status == "Active"),
-                            i => i.EmergencyLightHeaders.LocationEmergencyLightId, //A key
+                            i => i.LocationEmergencyLightId, //A key
                             p => p.Id,//B key
                             (i, g) =>
                                 new
@@ -894,12 +894,12 @@ namespace SEMSystem.Controllers
                 
                     var detail = _context.FireHydrantDetails
                         .Where(a => a.FireHydrantHeaders.Status == "Active")
-                        .Where(a => a.FireHydrantHeaders.LocationFireHydrantId == LocationId)
-                        .Where(a => a.FireHydrantHeaders.CreatedAt == dateTime) //A
+                        .Where(a => a.LocationFireHydrantId == LocationId)
+                        .Where(a => a.FireHydrantHeaders.DocumentStatus != "Approved") //A
                         .GroupJoin(
                                 _context.LocationFireHydrants // B
                                 .Where(a => a.Status == "Active"),
-                                i => i.FireHydrantHeaders.LocationFireHydrantId, //A key
+                                i => i.LocationFireHydrantId, //A key
                                 p => p.Id,//B key
                                 (i, g) =>
                                     new
@@ -975,8 +975,8 @@ namespace SEMSystem.Controllers
                               B.Items.Id,
                               ItemName = B.Items.Name,
                               B.Items.Code,
-                              A.i.Serial,
-                              A.i.Capacity,
+                              Serial = B.Items.SerialNo,
+                              B.Items.Capacity,
                               CompanyName = A.i.Areas.Companies.Name,
 
                           }
@@ -986,12 +986,12 @@ namespace SEMSystem.Controllers
 
                 var detail = _context.InergenTankDetails
                     .Where(a => a.InergenTankHeaders.Status == "Active")
-                    .Where(a => a.InergenTankHeaders.LocationInergenTankId == LocationId)
-                    .Where(a => a.InergenTankHeaders.CreatedAt == dateTime) //A
+                   .Where(a => a.LocationInergenTankId == LocationId)
+                        .Where(a => a.InergenTankHeaders.DocumentStatus != "Approved") //A
                     .GroupJoin(
                             _context.LocationInergenTanks // B
                             .Where(a => a.Status == "Active"),
-                            i => i.InergenTankHeaders.LocationInergenTankId, //A key
+                            i => i.LocationInergenTankId, //A key
                             p => p.Id,//B key
                             (i, g) =>
                                 new
@@ -1015,9 +1015,9 @@ namespace SEMSystem.Controllers
                                      A.i.Pressure,
                                      A.i.Hose,
                                      A.i.Remarks,
-                                   
-                                     B.Serial,
-                                     B.Capacity,
+
+                                     Serial = A.i.Items.SerialNo,
+                                     A.i.Items.Capacity,
                                      A.i.InspectedBy,
                                      A.i.ReviewedBy,
                                      A.i.NotedBy,
@@ -1068,10 +1068,10 @@ namespace SEMSystem.Controllers
                 _context.LocationFireExtinguishers.Where(a => a.Status == "Active").Where(a => a.AreaId == AreaId).Select(a => new {
 
 
-                   a.Capacity,
+                   //a.Capacity,
                    a.Code,
                    a.Location,
-                   a.Type,
+                   //a.Type,
                    a.Id
 
 
@@ -1108,9 +1108,10 @@ namespace SEMSystem.Controllers
 
 
 
-                  a.Serial,
-                  a.Capacity,
-                  //a.Location,
+                  //a.Serial,
+                  //a.Capacity,
+
+                  a.Location,
                   a.Area,
 
                   a.Id

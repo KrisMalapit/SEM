@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SEMSystem.Models;
 
 namespace SEMSystem.Migrations
 {
     [DbContext(typeof(SEMSystemContext))]
-    partial class SEMSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20210614101237_31")]
+    partial class _31
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,8 +252,6 @@ namespace SEMSystem.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<int>("LocationEmergencyLightId");
-
                     b.Property<string>("NotedBy");
 
                     b.Property<string>("Remarks");
@@ -270,8 +270,6 @@ namespace SEMSystem.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("LocationEmergencyLightId");
-
                     b.ToTable("EmergencyLightDetails");
                 });
 
@@ -283,13 +281,13 @@ namespace SEMSystem.Migrations
 
                     b.Property<DateTime>("ApprovedDate");
 
-                    b.Property<int>("AreaId");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
 
                     b.Property<string>("DocumentStatus");
+
+                    b.Property<int>("LocationEmergencyLightId");
 
                     b.Property<string>("ReferenceNo");
 
@@ -301,7 +299,7 @@ namespace SEMSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AreaId", "CreatedAt", "Status")
+                    b.HasIndex("LocationEmergencyLightId", "CreatedAt", "Status")
                         .IsUnique()
                         .HasFilter("[Status] IS NOT NULL");
 
@@ -383,10 +381,6 @@ namespace SEMSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AreaId", "CreatedAt", "Status")
-                        .IsUnique()
-                        .HasFilter("[Status] IS NOT NULL");
-
                     b.ToTable("FireExtinguisherHeaders");
                 });
 
@@ -414,8 +408,6 @@ namespace SEMSystem.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<int>("LocationFireHydrantId");
-
                     b.Property<string>("NotedBy");
 
                     b.Property<int>("Nozzle15");
@@ -438,8 +430,6 @@ namespace SEMSystem.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("LocationFireHydrantId");
-
                     b.ToTable("FireHydrantDetails");
                 });
 
@@ -451,13 +441,13 @@ namespace SEMSystem.Migrations
 
                     b.Property<DateTime>("ApprovedDate");
 
-                    b.Property<int>("AreaId");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
 
                     b.Property<string>("DocumentStatus");
+
+                    b.Property<int>("LocationFireHydrantId");
 
                     b.Property<string>("ReferenceNo");
 
@@ -469,7 +459,7 @@ namespace SEMSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AreaId", "CreatedAt", "Status")
+                    b.HasIndex("LocationFireHydrantId", "CreatedAt", "Status")
                         .IsUnique()
                         .HasFilter("[Status] IS NOT NULL");
 
@@ -498,8 +488,6 @@ namespace SEMSystem.Migrations
 
                     b.Property<int>("ItemId");
 
-                    b.Property<int>("LocationInergenTankId");
-
                     b.Property<string>("NotedBy");
 
                     b.Property<int>("Pressure");
@@ -518,8 +506,6 @@ namespace SEMSystem.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("LocationInergenTankId");
-
                     b.ToTable("InergenTankDetails");
                 });
 
@@ -531,13 +517,13 @@ namespace SEMSystem.Migrations
 
                     b.Property<DateTime>("ApprovedDate");
 
-                    b.Property<int>("AreaId");
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("CreatedBy");
 
                     b.Property<string>("DocumentStatus");
+
+                    b.Property<int>("LocationInergenTankId");
 
                     b.Property<string>("ReferenceNo");
 
@@ -549,7 +535,7 @@ namespace SEMSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AreaId", "CreatedAt", "Status")
+                    b.HasIndex("LocationInergenTankId", "CreatedAt", "Status")
                         .IsUnique()
                         .HasFilter("[Status] IS NOT NULL");
 
@@ -893,7 +879,10 @@ namespace SEMSystem.Migrations
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
+            modelBuilder.Entity("SEMSystem.Models.EmergencyLightHeader", b =>
+                {
                     b.HasOne("SEMSystem.Models.LocationEmergencyLight", "Locations")
                         .WithMany()
                         .HasForeignKey("LocationEmergencyLightId")
@@ -929,7 +918,10 @@ namespace SEMSystem.Migrations
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
+            modelBuilder.Entity("SEMSystem.Models.FireHydrantHeader", b =>
+                {
                     b.HasOne("SEMSystem.Models.LocationFireHydrant", "Locations")
                         .WithMany()
                         .HasForeignKey("LocationFireHydrantId")
@@ -947,7 +939,10 @@ namespace SEMSystem.Migrations
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
+            modelBuilder.Entity("SEMSystem.Models.InergenTankHeader", b =>
+                {
                     b.HasOne("SEMSystem.Models.LocationInergenTank", "Locations")
                         .WithMany()
                         .HasForeignKey("LocationInergenTankId")

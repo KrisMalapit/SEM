@@ -438,20 +438,52 @@ namespace SEMSystem.Controllers
             {
                 case "fe":
 
+                    //var fe = _context.FireExtinguisherHeaders
+                    //    .Where(a => a.Status == "Active")
+                    //    .Where(a=>a.DocumentStatus == docstatus)
+                    //    .Select(a => new
+                    //    {
+                    //        a.CreatedAt,
+                    //        CompanyName = a.Areas.Companies.Name,
+                    //        AreaName = a.Areas.Name
+                    //       //,a.Locations.Location
+                    //       ,a.Id
+                    //       ,a.Status
+                    //       ,a.DocumentStatus
+                    //       ,a.ReferenceNo
+                    //    });
                     var fe = _context.FireExtinguisherHeaders
+                        .Where(a => a.DocumentStatus == docstatus)
                         .Where(a => a.Status == "Active")
-                        .Where(a=>a.DocumentStatus == docstatus)
-                        .Select(a => new
-                        {
-                            a.CreatedAt,
-                            CompanyName = a.Locations.Areas.Companies.Name,
-                            AreaName = a.Locations.Areas.Name
-                           ,a.Locations.Location
-                           ,a.Id
-                           ,a.Status
-                           ,a.DocumentStatus
-                           ,a.ReferenceNo
-                        });
+                        .GroupJoin(
+                      _context.Areas // B
+                        ,
+                          i => i.Id, //A key
+                          p => p.ID,//B key
+                          (i, g) =>
+                             new
+                             {
+                                 i, //holds A data
+                                 g  //holds B data
+                             }
+                       )
+                       .SelectMany(
+                          temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                          (A, B) =>
+                             new
+                             {
+                                 A.i.CreatedAt,
+                                 CompanyName = B.Companies.Name,
+                                 AreaName = B.Name
+                                 //,
+                                 //a.Locations.Location
+                                 ,
+                                 A.i.Id,
+                                 A.i.Status,
+                                 A.i.DocumentStatus,
+                                 A.i.ReferenceNo
+                             }
+                       );
 
                     status = "success";
 
@@ -466,25 +498,58 @@ namespace SEMSystem.Controllers
 
                 case "el":
 
-                    var el = _context.EmergencyLightHeaders
-                        .Where(a => a.Status == "Active")
-                       .Where(a => a.DocumentStatus == docstatus)
-                       .Select(a => new
-                       {
-                           a.CreatedAt,
-                           CompanyName = a.Locations.Areas.Companies.Name,
-                           AreaName = a.Locations.Areas.Name
-                           ,
-                           a.Locations.Location
-                           ,
-                           a.Id
-                           ,
-                           a.Status
-                           ,
-                           a.DocumentStatus,
-                           a.ReferenceNo
+                    //var el = _context.EmergencyLightHeaders
+                    //    .Where(a => a.Status == "Active")
+                    //   .Where(a => a.DocumentStatus == docstatus)
+                    //   .Select(a => new
+                    //   {
+                    //       a.CreatedAt,
+                    //       CompanyName = a.Locations.Areas.Companies.Name,
+                    //       AreaName = a.Locations.Areas.Name
+                    //       ,
+                    //       a.Locations.Location
+                    //       ,
+                    //       a.Id
+                    //       ,
+                    //       a.Status
+                    //       ,
+                    //       a.DocumentStatus,
+                    //       a.ReferenceNo
 
-                       });
+                    //   });
+
+                    var el = _context.EmergencyLightHeaders
+                        .Where(a => a.DocumentStatus == docstatus)
+                        .Where(a => a.Status == "Active")
+                        .GroupJoin(
+                      _context.Areas // B
+                        ,
+                          i => i.Id, //A key
+                          p => p.ID,//B key
+                          (i, g) =>
+                             new
+                             {
+                                 i, //holds A data
+                                 g  //holds B data
+                             }
+                       )
+                       .SelectMany(
+                          temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                          (A, B) =>
+                             new
+                             {
+                                 A.i.CreatedAt,
+                                 CompanyName = B.Companies.Name,
+                                 AreaName = B.Name
+                                 //,
+                                 //a.Locations.Location
+                                 ,
+                                 A.i.Id,
+                                 A.i.Status,
+                                 A.i.DocumentStatus,
+                                 A.i.ReferenceNo
+                             }
+                       );
 
                     status = "success";
 
@@ -500,28 +565,60 @@ namespace SEMSystem.Controllers
 
                   
                 case "it":
+                    //var it = _context.InergenTankHeaders
+                    //    .Where(a => a.Status == "Active")
+                    //    .Where(a => a.DocumentStatus == docstatus)
+                    //    .Select(a => new
+                    //    {
+                    //        a.CreatedAt
+                    //       ,
+                    //        CompanyName = a.Locations.Areas.Companies.Name
+                    //       ,
+                    //        AreaName = a.Locations.Areas.Name
+                    //       ,
+                    //        Location = a.Locations.Area
+                    //       ,
+                    //        a.Id
+                    //       ,
+                    //        a.Status
+                    //       ,
+                    //        a.DocumentStatus,
+                    //        a.ReferenceNo
+
+                    //    });
+
                     var it = _context.InergenTankHeaders
-                        .Where(a => a.Status == "Active")
                         .Where(a => a.DocumentStatus == docstatus)
-                        .Select(a => new
-                        {
-                            a.CreatedAt
-                           ,
-                            CompanyName = a.Locations.Areas.Companies.Name
-                           ,
-                            AreaName = a.Locations.Areas.Name
-                           ,
-                            Location = a.Locations.Area
-                           ,
-                            a.Id
-                           ,
-                            a.Status
-                           ,
-                            a.DocumentStatus,
-                            a.ReferenceNo
-
-                        });
-
+                        .Where(a => a.Status == "Active")
+                        .GroupJoin(
+                      _context.Areas // B
+                        ,
+                          i => i.Id, //A key
+                          p => p.ID,//B key
+                          (i, g) =>
+                             new
+                             {
+                                 i, //holds A data
+                                 g  //holds B data
+                             }
+                       )
+                       .SelectMany(
+                          temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                          (A, B) =>
+                             new
+                             {
+                                 A.i.CreatedAt,
+                                 CompanyName = B.Companies.Name,
+                                 AreaName = B.Name
+                                 //,
+                                 //a.Locations.Location
+                                 ,
+                                 A.i.Id,
+                                 A.i.Status,
+                                 A.i.DocumentStatus,
+                                 A.i.ReferenceNo
+                             }
+                             );
                     status = "success";
 
                     var modelit = new
@@ -538,26 +635,57 @@ namespace SEMSystem.Controllers
 
                     
                 case "fh":
+                    //var fh = _context.FireHydrantHeaders
+                    //    .Where(a => a.Status == "Active")
+                    //   .Where(a => a.DocumentStatus == docstatus)
+                    //    .Select(a => new
+                    //    {
+                    //        a.CreatedAt,
+                    //        CompanyName = a.Locations.Areas.Companies.Name,
+                    //        AreaName = a.Locations.Areas.Name
+                    //       ,
+                    //        a.Locations.Location
+                    //       ,
+                    //        a.Id
+                    //       ,
+                    //        a.Status
+                    //       ,
+                    //        a.DocumentStatus,
+                    //        a.ReferenceNo
+
+                    //    });
                     var fh = _context.FireHydrantHeaders
+                        .Where(a => a.DocumentStatus == docstatus)
                         .Where(a => a.Status == "Active")
-                       .Where(a => a.DocumentStatus == docstatus)
-                        .Select(a => new
-                        {
-                            a.CreatedAt,
-                            CompanyName = a.Locations.Areas.Companies.Name,
-                            AreaName = a.Locations.Areas.Name
-                           ,
-                            a.Locations.Location
-                           ,
-                            a.Id
-                           ,
-                            a.Status
-                           ,
-                            a.DocumentStatus,
-                            a.ReferenceNo
-
-                        });
-
+                        .GroupJoin(
+                      _context.Areas // B
+                        ,
+                          i => i.Id, //A key
+                          p => p.ID,//B key
+                          (i, g) =>
+                             new
+                             {
+                                 i, //holds A data
+                                 g  //holds B data
+                             }
+                       )
+                       .SelectMany(
+                          temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                          (A, B) =>
+                             new
+                             {
+                                 A.i.CreatedAt,
+                                 CompanyName = B.Companies.Name,
+                                 AreaName = B.Name
+                                 //,
+                                 //a.Locations.Location
+                                 ,
+                                 A.i.Id,
+                                 A.i.Status,
+                                 A.i.DocumentStatus,
+                                 A.i.ReferenceNo
+                             }
+                       );
                     status = "success";
 
                     var modelfh = new

@@ -31,11 +31,6 @@ namespace SEMSystem
         public void ConfigureServices(IServiceCollection services)
         {
 
-
-
-
-
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -45,7 +40,7 @@ namespace SEMSystem
 
 
             services.AddDbContext<SEMSystemContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("SEMContextTest")
+            options.UseSqlServer(Configuration.GetConnectionString("SEMContextLocal")
             , builder => builder.UseRowNumberForPaging() //add this for Incorrect syntax near 'OFFSET'. Invalid usage of the option NEXT in the FETCH statement
             ));
 
@@ -72,11 +67,6 @@ namespace SEMSystem
             services
                .AddMvc()
                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
-
-
-
 
         }
 

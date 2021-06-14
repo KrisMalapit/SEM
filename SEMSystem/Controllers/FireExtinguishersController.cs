@@ -42,10 +42,10 @@ namespace SEMSystem.Controllers
             return View();
         }
         [BreadCrumb(Title = "Edit", Order = 2, IgnoreAjaxRequests = true)]
-        // GET: FireExtinguisher/Create
+        // GET: FireExtinguisher/Edit
         public IActionResult Edit(int id)
         {
-            var model = _context.FireExtinguisherHeaders.Include(a=>a.Locations).Where(a=>a.Id == id).FirstOrDefault();
+            var model = _context.FireExtinguisherHeaders.Where(a=>a.Id == id).FirstOrDefault();
             
             this.AddBreadCrumb(new BreadCrumb
             {
@@ -56,13 +56,13 @@ namespace SEMSystem.Controllers
 
             ViewData["ID"] = id;
             //ViewData["AreaId"] = new SelectList(_context.Areas, "Id", "Name", model.Locations.AreaId);
-            ViewData["Area"] = _context.Areas.Find(model.Locations.AreaId).Name;
+            ViewData["Area"] = _context.Areas.Find(model.AreaId).Name;
             //ViewData["LocationId"] = new SelectList(_context.LocationFireExtinguishers, "Id", "Name",model.LocationFireExtinguisherId);
-            ViewData["Location"] = _context.LocationFireExtinguishers.Find(model.LocationFireExtinguisherId).Location;
+            //ViewData["Location"] = _context.LocationFireExtinguishers.Find(model.LocationFireExtinguisherId).Location;
 
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
-            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.Locations.AreaId).FirstOrDefault().Companies.Name;
+            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.AreaId).FirstOrDefault().Companies.Name;
             return View("Create", model);
         }
         [HttpPost]
@@ -111,49 +111,105 @@ namespace SEMSystem.Controllers
 
 
 
-                int recCount =
+                //int recCount =
 
-                     _context.FireExtinguisherHeaders
-                     .Select(a => new
-                     {
-                         a.CreatedAt,
-                         CompanyName = a.Locations.Areas.Companies.Name,
-                         AreaName = a.Locations.Areas.Name
-                         ,
-                         a.Locations.Location
-                         ,
-                         a.Status,
-                         a.DocumentStatus,
-                         a.ReferenceNo
-                     })
-                    .Where(a => a.Status == "Active")
+                //     _context.FireExtinguisherHeaders
+                //     .Select(a => new
+                //     {
+                //         a.CreatedAt,
+                //         CompanyName = a.Areas.Companies.Name,
+                //         AreaName = a.Areas.Name
+                //         //,
+                //         //a.Locations.Location
+                //         ,
+                //         a.Status,
+                //         a.DocumentStatus,
+                //         a.ReferenceNo
+                //     })
+                //    .Where(a => a.Status == "Active")
+                //    .Where(strFilter)
+                //    .Count();
+
+
+
+                int recCount =  _context.FireExtinguisherHeaders //A
+                   .GroupJoin(
+                      _context.Areas // B
+                    ,
+                      i => i.Id, //A key
+                      p => p.ID,//B key
+                      (i, g) =>
+                         new
+                         {
+                             i, //holds A data
+                              g  //holds B data
+                          }
+                   )
+                   .SelectMany(
+                      temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                      (A, B) =>
+                         new
+                         {
+                             A.i.CreatedAt,
+                             CompanyName = B.Companies.Name,
+                             AreaName = B.Name
+                                      //,
+                                      //a.Locations.Location
+                                      ,
+                             A.i.Status,
+                             A.i.DocumentStatus,
+                             A.i.ReferenceNo
+                         }
+                   ).Where(a => a.Status == "Active")
                     .Where(strFilter)
                     .Count();
+
+
+
+
+
 
                 recordsTotal = recCount;
                 int recFilter = recCount;
 
 
+
+
+
+
                 var v =
 
               _context.FireExtinguisherHeaders
-               .Select(a => new
-               {
-
-
-
-                   a.CreatedAt,
-                   CompanyName = a.Locations.Areas.Companies.Name,
-                   AreaName = a.Locations.Areas.Name
-                   , a.Locations.Location
-                  ,
-                   a.Id
-                   ,a.Status,
-                   a.DocumentStatus,a.ReferenceNo
-
-               })
+               .GroupJoin(
+                      _context.Areas // B
+                    ,
+                      i => i.Id, //A key
+                      p => p.ID,//B key
+                      (i, g) =>
+                         new
+                         {
+                             i, //holds A data
+                             g  //holds B data
+                         }
+                   )
+                   .SelectMany(
+                      temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                      (A, B) =>
+                         new
+                         {
+                             A.i.CreatedAt,
+                             CompanyName = B.Companies.Name,
+                             AreaName = B.Name
+                                      //,
+                                      //a.Locations.Location
+                                      ,
+                             A.i.Status,
+                             A.i.DocumentStatus,
+                             A.i.ReferenceNo
+                         }
+                   ).Where(a => a.Status == "Active")
               .Where(strFilter)
-              .Where(a => a.Status == "Active")
+            
               .Skip(skip).Take(pageSize)
               ;
 
@@ -209,8 +265,8 @@ namespace SEMSystem.Controllers
                           new
                           {
                               //A.i.Location,
-                              A.i.Type,
-                              A.i.Capacity,
+                              B.Items.Type,
+                              B.Items.Capacity,
                               B.Items.Code,
                               ItemName = B.Items.Name,
                               CompanyName = A.i.Areas.Companies.Name,   
@@ -219,12 +275,12 @@ namespace SEMSystem.Controllers
 
             var detail = _context.FireExtinguisherDetails
                     .Where(a => a.FireExtinguisherHeaders.Status == "Active")
-                    .Where(a => a.FireExtinguisherHeaders.LocationFireExtinguisherId == LocationId)
-                    .Where(a => a.FireExtinguisherHeaders.CreatedAt == dateTime) //A
+                    .Where(a => a.LocationFireExtinguisherId == LocationId)
+                    .Where(a => a.FireExtinguisherHeaders.DocumentStatus != "Approved") //A
                     .GroupJoin(
                             _context.LocationFireExtinguishers // B
                             .Where(a => a.Status == "Active"),
-                            i => i.FireExtinguisherHeaders.LocationFireExtinguisherId, //A key
+                            i => i.LocationFireExtinguisherId, //A key
                             p => p.Id,//B key
                             (i, g) =>
                                 new
@@ -247,14 +303,17 @@ namespace SEMSystem.Controllers
                                       A.i.Hose,
                                       A.i.Remarks,
                                      A.i.Items.Code,
-                                     B.Type,
-                                      B.Capacity,
+                                     A.i.Items.Type,
+                                     A.i.Items.Capacity,
                                       A.i.InspectedBy,
                                       A.i.ReviewedBy,
                                       A.i.NotedBy,
                                       CompanyName = B.Areas.Companies.Name,
-                                      HeaderId = A.i.FireExtinguisherHeaderId,A.i.ImageUrl
-                                  }
+                                      HeaderId = A.i.FireExtinguisherHeaderId
+                                      ,A.i.ImageUrl
+                                      ,
+                                     A.i.Id
+                                 }
 
                             );
             status = "success";
@@ -283,16 +342,16 @@ namespace SEMSystem.Controllers
             string message = "";
             try
             {
-                var _header = _context.FireExtinguisherHeaders
-                    .Where(a => a.Status == "Active")
-                    .Where(a => a.LocationFireExtinguisherId == item[0].LocationFireExtinguisherId)
-                    .Where(a => a.CreatedAt == DateTime.Now.Date);
+                var _header = _context.FireExtinguisherHeaders.Where(a => a.Status == "Active").Where(a => a.DocumentStatus != "Approved");
 
                 if (_header.Count() == 0)
                 {
 
-                    var comp = _context.LocationFireExtinguishers.Include(a=>a.Areas.Companies).Where(a => a.Id == item[0].LocationFireExtinguisherId).FirstOrDefault()
+                    var comp = _context.LocationFireExtinguishers.Include(a=>a.Areas.Companies).Where(a => a.Id == item[0]
+                        .LocationFireExtinguisherId)
+                        .FirstOrDefault()
                         .Areas.Companies.Code;
+
                     if (comp == "SCPC")
                     {
                         comp = "SC";
@@ -310,7 +369,7 @@ namespace SEMSystem.Controllers
                     FireExtinguisherHeader header = new FireExtinguisherHeader
                     {
                         ReferenceNo =  refno,
-                        LocationFireExtinguisherId = item[0].LocationFireExtinguisherId,
+                        AreaId = item[0].AreaId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
                     };
@@ -337,8 +396,8 @@ namespace SEMSystem.Controllers
                             Remarks = detail.Remarks,
                             InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
-                            NotedBy = detail.NotedBy
-
+                            NotedBy = detail.NotedBy,
+                            LocationFireExtinguisherId = detail.LocationFireExtinguisherId
 
                         };
 
@@ -353,6 +412,7 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.FireExtinguisherDetails
                             .Where(a => a.FireExtinguisherHeaderId == headerId)
+                            .Where(a=>a.LocationFireExtinguisherId == item[0].LocationFireExtinguisherId)
                             .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
@@ -373,7 +433,8 @@ namespace SEMSystem.Controllers
                                 Remarks = detail.Remarks,
                                 InspectedBy = detail.InspectedBy,
                                 ReviewedBy = detail.ReviewedBy,
-                                NotedBy = detail.NotedBy
+                                NotedBy = detail.NotedBy,
+                                LocationFireExtinguisherId = detail.LocationFireExtinguisherId
                             };
 
                             _context.Add(_detail);
@@ -394,6 +455,7 @@ namespace SEMSystem.Controllers
                             d.InspectedBy = detail.InspectedBy;
                             d.ReviewedBy = detail.ReviewedBy;
                             d.NotedBy = detail.NotedBy;
+                            d.LocationFireExtinguisherId = detail.LocationFireExtinguisherId;
                             _context.Update(d);
                         }
                         _context.SaveChanges();
@@ -556,7 +618,7 @@ namespace SEMSystem.Controllers
                    .GroupJoin(
                            _context.LocationFireExtinguishers // B
                            .Where(a => a.Status == "Active"),
-                           i => i.FireExtinguisherHeaders.LocationFireExtinguisherId, //A key
+                           i => i.LocationFireExtinguisherId, //A key
                            p => p.Id,//B key
                            (i, g) =>
                                new
@@ -580,8 +642,8 @@ namespace SEMSystem.Controllers
                                     A.i.Hose,
                                     A.i.Remarks,
                                     A.i.Items.Code,
-                                    B.Type,
-                                    B.Capacity,
+                                    A.i.Items.Type,
+                                    A.i.Items.Capacity,
                                     A.i.InspectedBy,
                                     A.i.ReviewedBy,
                                     A.i.NotedBy,
@@ -592,6 +654,7 @@ namespace SEMSystem.Controllers
                                     A.i.Id
                                 }
                            );
+
             status = "success";
 
             var model = new

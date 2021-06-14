@@ -12,10 +12,10 @@ namespace SEMSystem.Models
        
         public int Id { get; set; }
         public string ReferenceNo { get; set; }
-        //public int AreaId { get; set; }
+        public int AreaId { get; set; }
         //public virtual Area Areas { get; set; }
-        public int LocationEmergencyLightId { get; set; }
-        public virtual LocationEmergencyLight Locations { get; set; }
+        //public int LocationEmergencyLightId { get; set; }
+        //public virtual LocationEmergencyLight Locations { get; set; }
         public DateTime CreatedAt { get; set; }
         
         public string CreatedBy { get; set; }

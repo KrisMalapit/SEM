@@ -29,5 +29,8 @@ namespace SEMSystem.Models
         public string ReviewedBy { get; set; }
         public string NotedBy { get; set; }
         public string ImageUrl { get; set; }
+        public int LocationFireExtinguisherId { get; set; }
+        public virtual LocationFireExtinguisher Locations { get; set; }
+
     }
 }

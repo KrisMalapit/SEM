@@ -10,8 +10,7 @@ namespace SEMSystem.Models
         public int Id { get; set; }
         public string Location { get; set; }
         public string Code { get; set; }
-        public string Type { get; set; }
-        public string Capacity { get; set; }
+       
         public int AreaId { get; set; }
         public virtual Area Areas { get; set; }
         public string Status { get; set; }

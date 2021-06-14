@@ -30,7 +30,7 @@
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input asp-for="DatePurchased" class="form-control datepickerDate"  />
+                            <input asp-for="DatePurchased" class="form-control datepickerDate" />
                             <span asp-validation-for="DatePurchased" class="text-danger"></span>
                         </div>
                     </div>
@@ -74,6 +74,23 @@
                 </div>
                 <div class="row form-group">
 
+                    <label class="col-md-2 col-form-label" style="padding-top:5px;">Capacity</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input asp-for="Capacity" class="form-control" />
+                            <span asp-validation-for="Capacity" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <label class="col-md-2 col-form-label" style="padding-top:5px;">Type</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input asp-for="Type" class="form-control" />
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row form-group">
                     <label class="col-md-2 col-form-label" style="padding-top:5px;" asp-for="EquipmentType"></label>
                     <div class="col-md-4">
                         <select id="EquipmentType" name="EquipmentType" class="form-control col-md-12">
@@ -98,7 +115,6 @@
                                 <th>Transaction Date</th>
                                 <th>Description</th>
                                 <th>User</th>
-                            
                             </tr>
                         </thead>
                     </table>
