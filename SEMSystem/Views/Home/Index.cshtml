@@ -162,77 +162,84 @@
     <div class="tab-content">
         <div role="tabpanel" id="tab-main" class="tab-pane active" style="padding:20px;">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Pending for Review</h5>
-                        </div>
-                        <div class="ibox-content">
+                @if (User.Identity.GetRoleName() == "Reviewer" || User.Identity.GetRoleName() == "Admin")
+                {
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Pending for Review</h5>
+                            </div>
+                            <div class="ibox-content">
 
 
-                            <table style="width:100%;">
-                                <tr>
-                                    <td width="80%">
-                                        Fire Extinguisher
-                                        <a href="#" onclick="loadData(1);">(@ViewBag.ReviewFE)</a>
-                                    </td>
-                                    <td rowspan="4" style="text-align:center;">
-                                        <div class="stat-percent font-bold text-success"> <i class="fa fa-search" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Emergency Light <a href="#" onclick="loadData(2);">(@ViewBag.ReviewEL)</a></td>
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td width="80%">
+                                            Fire Extinguisher
+                                            <a href="#" onclick="loadData(1);">(@ViewBag.ReviewFE)</a>
+                                        </td>
+                                        <td rowspan="4" style="text-align:center;">
+                                            <div class="stat-percent font-bold text-success"> <i class="fa fa-search" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emergency Light <a href="#" onclick="loadData(2);">(@ViewBag.ReviewEL)</a></td>
 
-                                </tr>
-                                <tr>
-                                    <td>Inergen Tank <a href="#" onclick="loadData(3);">(@ViewBag.ReviewIT)</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Inergen Tank <a href="#" onclick="loadData(3);">(@ViewBag.ReviewIT)</a></td>
 
-                                </tr>
-                                <tr>
-                                    <td>Fire Hydrant <a href="#" onclick="loadData(4);">(@ViewBag.ReviewFH)</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fire Hydrant <a href="#" onclick="loadData(4);">(@ViewBag.ReviewFH)</a></td>
 
-                                </tr>
+                                    </tr>
 
-                            </table>
+                                </table>
 
 
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Pending For Approval</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <table style="width:100%;">
-                                <tr>
-                                    <td width="80%">
-                                        Fire Extinguisher
-                                        <a href="#" onclick="loadData(5);">(@ViewBag.ApproverFE)</a>
-                                    </td>
-                                    <td rowspan="4" style="text-align:center;">
-                                        <div class="stat-percent font-bold text-success"> <i class="fa fa-check" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Emergency Light <a href="#" onclick="loadData(6);">(@ViewBag.ApproverEL)</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Inergen Tank <a href="#" onclick="loadData(7);">(@ViewBag.ApproverIT)</a></td>
-                                </tr>
-                                <tr>
-                                    <td>Fire Hydrant <a href="#" onclick="loadData(8);">(@ViewBag.ApproverFH)</a></td>
-
-                                </tr>
-
-                            </table>
-
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
 
-            </div>
+
+                @if (User.Identity.GetRoleName() == "Approver" || User.Identity.GetRoleName() == "Admin")
+                {
+                    <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Pending For Approval</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td width="80%">
+                                            Fire Extinguisher
+                                            <a href="#" onclick="loadData(5);">(@ViewBag.ApproverFE)</a>
+                                        </td>
+                                        <td rowspan="4" style="text-align:center;">
+                                            <div class="stat-percent font-bold text-success"> <i class="fa fa-check" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emergency Light <a href="#" onclick="loadData(6);">(@ViewBag.ApproverEL)</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Inergen Tank <a href="#" onclick="loadData(7);">(@ViewBag.ApproverIT)</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fire Hydrant <a href="#" onclick="loadData(8);">(@ViewBag.ApproverFH)</a></td>
+
+                                    </tr>
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
         </div>
         <div role="tabpanel" id="tab-de" class="tab-pane" style="padding:20px;">
             <div class="tabs-container">
@@ -620,7 +627,7 @@
                                             <input id="BrandName" name="BrandName" class="form-control" disabled />
                                         </div>
                                     </div>*@
-                                    <input id="BikeDetailId" name="BikeDetailId" class="form-control" value="0" disabled />
+                                    <input id="BikeDetailId" name="BikeDetailId" class="form-control" value="0" disabled type="hidden" />
                                     <table class="table" id="tblBicycleInfo">
 
                                         <tr>

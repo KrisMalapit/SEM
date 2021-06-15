@@ -454,7 +454,12 @@ namespace SEMSystem.Controllers
         public IActionResult CheckList()
         {
             ViewBag.Title = "Item CheckList";
-            var area = _context.Areas.Where(a => a.Status == "Active")
+            string companyAccess = User.Identity.GetCompanyAccess();
+            int[] compId = companyAccess.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+
+            var area = _context.Areas
+                .Where(a => a.Status == "Active")
+                .Where(a => compId.Contains(a.CompanyId))
                 .Select(a => new
                 {
                     a.ID,
@@ -476,14 +481,9 @@ namespace SEMSystem.Controllers
             var customArea = new AreaViewModel();
             customArea.ID = -1;
             customArea.Text = "ALL";
-            //var customArea2 = new AreaViewModel
-            //{
-            //    ID = 0,
-            //    Text = "SAFEKEEP"
-            //};
-
+            
             lstarea.Add(customArea);
-            //lstarea.Add(customArea2);
+            
 
             ViewData["AreaId"] = new SelectList(lstarea.OrderBy(a => a.Text), "ID", "Text");
 
