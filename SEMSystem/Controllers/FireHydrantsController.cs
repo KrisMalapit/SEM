@@ -165,7 +165,8 @@ namespace SEMSystem.Controllers
                                       ,
                              A.i.Status,
                              A.i.DocumentStatus,
-                             A.i.ReferenceNo
+                             A.i.ReferenceNo,
+                             A.i.Id
                          }
                    ).Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -227,7 +228,8 @@ namespace SEMSystem.Controllers
                                         ,
                                A.i.Status,
                                A.i.DocumentStatus,
-                               A.i.ReferenceNo
+                               A.i.ReferenceNo,
+                               A.i.Id
                            }
                      ).Where(strFilter)
                 .Where(a => a.Status == "Active")
@@ -804,7 +806,8 @@ namespace SEMSystem.Controllers
                                     HeaderId = A.i.FireHydrantHeaderId,
                                     A.i.FireHydrantHeaders.DocumentStatus,
                                     A.i.ImageUrl,
-                                    A.i.Id
+                                    A.i.Id,
+                                    A.i.Locations.Location
                                 }
                            );
             status = "success";

@@ -135,7 +135,7 @@
 
                                     <th>Company</th>
                                     <th>Area</th>
-                                    <th>Location</th>
+                                    @*<th>Location</th>*@
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -1207,7 +1207,7 @@
 
                             , responsedata.data[i].companyName
                             , responsedata.data[i].areaName
-                            , responsedata.data[i].location
+                            //, responsedata.data[i].location
                             , responsedata.data[i].documentStatus
                             , $actions]
                         );
@@ -1339,8 +1339,8 @@
                             } else {
                                 toastr["error"](responsedata.message)
                                 toastr.options = {
-                                    "closeButton": true,
-                                    "showDuration": "3000",
+                                    "closeButton": true
+                                   
                                 }
                             }
                             }

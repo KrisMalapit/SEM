@@ -106,14 +106,7 @@
             </div>
             <br />
             <div class="row">
-                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Location</label>
-                <div class="col-md-4">
-
-
-                    @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
-                    <input id="LocationId" name="LocationId" class="form-control" disabled value="@ViewBag.Location" />
-
-                </div>
+                
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                 <div class="col-md-4">
                     <input id="Plant" name="Plant" class="form-control" disabled value="@ViewBag.Company" />
@@ -127,6 +120,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th width="10%">Location</th>
                         <th width="20%">Item</th>
                         <th width="15%">Code</th>
 
@@ -441,6 +435,7 @@
 
                                         data.push([
                                             responsedata.data[i].itemId
+                                            , responsedata.data[i].location
                                             , responsedata.data[i].itemName
                                             , responsedata.data[i].code
 
@@ -458,6 +453,7 @@
                                     }
                                     $('#tbl').DataTable({
                                         "data": data,
+                                        "order": ([1, 'asc']),
                                         "responsive": true,
                                         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
                                         //"columnDefs": [

@@ -31,12 +31,12 @@ namespace SEMSystem.Controllers
             switch (equipmenttype)
             {
                 case "fe":
-                    var _fe = _context.FireExtinguisherHeaders.Where(a=>a.Id == id).FirstOrDefault();
+                    var _fe = _context.FireExtinguisherHeaders.Where(a => a.Id == id).FirstOrDefault();
                     notify.Area = area.Name;
                     notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Fire Extinguisher";
-                    //notify.Location = _fe.Locations.Location;
+
                     notify.ReferenceNo = _fe.ReferenceNo;
                     break;
                 case "el":
@@ -45,7 +45,7 @@ namespace SEMSystem.Controllers
                     notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Emergency Light";
-                    //notify.Location = _el.Locations.Location;
+
                     notify.ReferenceNo = _el.ReferenceNo;
                     break;
                 case "it":
@@ -54,7 +54,7 @@ namespace SEMSystem.Controllers
                     notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Inergen Tank";
-                    //notify.Location = _it.Locations.Location;
+
                     notify.ReferenceNo = _it.ReferenceNo;
                     break;
                 case "fh":
@@ -63,7 +63,7 @@ namespace SEMSystem.Controllers
                     notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Fire Hydrant";
-                    //notify.Location = _fh.Locations.Location;
+
                     notify.ReferenceNo = _fh.ReferenceNo;
                     break;
 
@@ -71,7 +71,7 @@ namespace SEMSystem.Controllers
 
 
             string status = "";
-            
+
             string message = "";
             if (docstatus != "Approved")
             {

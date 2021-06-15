@@ -200,7 +200,8 @@ namespace SEMSystem.Controllers
                                       ,
                              A.i.Status,
                              A.i.DocumentStatus,
-                             A.i.ReferenceNo
+                             A.i.ReferenceNo,
+                             A.i.Id
                          }
                    )
               .Where(strFilter)

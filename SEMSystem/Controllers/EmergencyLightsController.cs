@@ -753,7 +753,8 @@ namespace SEMSystem.Controllers
                                    HeaderId = A.i.EmergencyLightHeaderId,
                                    A.i.EmergencyLightHeaders.DocumentStatus,
                                    A.i.ImageUrl,
-                                   A.i.Id
+                                   A.i.Id,
+                                   A.i.Locations.Location
                                }
                           );
             status = "success";

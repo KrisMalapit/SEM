@@ -791,43 +791,99 @@ namespace SEMSystem.Controllers
                 {
                     case "FE":
                         var modelFE = _context.FireExtinguisherHeaders.Find(id);
-                        modelFE.DocumentStatus = "For Review";
-                        _context.Update(modelFE);
+
+                        int FELocationCnt = _context.LocationFireExtinguishers.Where(a => a.AreaId == modelFE.AreaId).Where(a => a.Status == "Active").Count();
+                        int FEDetails = _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaders.AreaId == modelFE.AreaId).GroupBy(a => a.LocationFireExtinguisherId).Count();
+                        if (FELocationCnt == FEDetails)
+                        {
+                            modelFE.DocumentStatus = "For Review";
+                            _context.Update(modelFE);
+                            status = "success";
+                        }
+                        else
+                        {
+                            message = "Submit not allowed. Not all locations has been checked";
+                            status = "fail";
+                        }
+                       
                         break;
                     case "EL":
                         var modelEL = _context.EmergencyLightHeaders.Find(id);
-                        modelEL.DocumentStatus = "For Review";
-                        _context.Update(modelEL);
+
+                        int ELLocationCnt = _context.LocationEmergencyLights.Where(a => a.AreaId == modelEL.AreaId).Where(a => a.Status == "Active").Count();
+                        int ELDetails = _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaders.AreaId == modelEL.AreaId).GroupBy(a => a.LocationEmergencyLightId).Count();
+                        if (ELLocationCnt == ELDetails)
+                        {
+                            modelEL.DocumentStatus = "For Review";
+                            _context.Update(modelEL);
+                            status = "success";
+                        }
+                        else
+                        {
+                            message = "Submit not allowed. Not all locations has been checked";
+                            status = "fail";
+                        }
+                     
                         break;
                     case "IT":
+                       
                         var modelIT = _context.InergenTankHeaders.Find(id);
-                        modelIT.DocumentStatus = "For Review";
-                        _context.Update(modelIT);
+
+                        int ITLocationCnt = _context.LocationInergenTanks.Where(a => a.AreaId == modelIT.AreaId).Where(a => a.Status == "Active").Count();
+                        int ITDetails = _context.InergenTankDetails.Where(a => a.InergenTankHeaders.AreaId == modelIT.AreaId).GroupBy(a => a.LocationInergenTankId).Count();
+                        if (ITLocationCnt == ITDetails)
+                        {
+                            modelIT.DocumentStatus = "For Review";
+                            _context.Update(modelIT);
+                            status = "success";
+                        }
+                        else
+                        {
+                            message = "Submit not allowed. Not all locations has been checked";
+                            status = "fail";
+                        }
+
+                      
                         break;
                     case "FH":
                         var modelFH = _context.FireHydrantHeaders.Find(id);
-                        modelFH.DocumentStatus = "For Review";
-                        _context.Update(modelFH);
+
+                        int FHLocationCnt = _context.LocationFireHydrants.Where(a => a.AreaId == modelFH.AreaId).Where(a => a.Status == "Active").Count();
+                        int FHDetails = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaders.AreaId == modelFH.AreaId).GroupBy(a => a.LocationFireHydrantId).Count();
+                        if (FHLocationCnt == FHDetails)
+                        {
+                          
+                            modelFH.DocumentStatus = "For Review";
+                            _context.Update(modelFH);
+                            status = "success";
+                        }
+                        else
+                        {
+                            message = "Submit not allowed. Not all locations has been checked";
+                            status = "fail";
+                        }
+
+                       
                         break;
                     default:
                         break;
                 }
                 string equipmenttype = module.ToLower();
                 string stat = new NotifyController(_context).SendNotification("For Review", equipmenttype, id); // send email
-                                                                                                               // _context.SaveChanges();
+                                                                                                              
 
 
                 Log log = new Log
                 {
                     Descriptions = "SubmitDocument ID " + id + " MODULE " + module,
                     Action = "Add",
-                    Status = "success",
+                    Status = status,
                     UserId = User.Identity.GetUserName()
                 };
                 _context.Add(log);
                 _context.SaveChanges();
 
-                status = "success";
+               
             }
             catch (Exception e)
             {
@@ -839,6 +895,7 @@ namespace SEMSystem.Controllers
             {
                 status, message
             };
+
             return Json(model);
 
         }

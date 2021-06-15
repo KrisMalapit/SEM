@@ -158,7 +158,8 @@ namespace SEMSystem.Controllers
                                       ,
                              A.i.Status,
                              A.i.DocumentStatus,
-                             A.i.ReferenceNo
+                             A.i.ReferenceNo,
+                             A.i.Id
                          }
                    ).Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -205,7 +206,8 @@ namespace SEMSystem.Controllers
                                       ,
                              A.i.Status,
                              A.i.DocumentStatus,
-                             A.i.ReferenceNo
+                             A.i.ReferenceNo,
+                             A.i.Id
                          }
                    ).Where(a => a.Status == "Active")
               .Where(strFilter)
@@ -270,6 +272,7 @@ namespace SEMSystem.Controllers
                               B.Items.Code,
                               ItemName = B.Items.Name,
                               CompanyName = A.i.Areas.Companies.Name,   
+                              A.i.Id
                           }
                     );
 
@@ -651,7 +654,8 @@ namespace SEMSystem.Controllers
                                     HeaderId = A.i.FireExtinguisherHeaderId,
                                     A.i.FireExtinguisherHeaders.DocumentStatus,
                                     A.i.ImageUrl,
-                                    A.i.Id
+                                    A.i.Id,
+                                    A.i.Locations.Location
                                 }
                            );
 
