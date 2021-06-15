@@ -174,8 +174,8 @@
                                         <input class="form-control" type="text" placeholder="Location" name="location[]" required />
                                     </td>
                                     <td><input class="total form-control" type="text" placeholder="Code" name="code[]" required /></td>
-                                    <td><input class="quantity form-control" type="text" placeholder="Type" name="type[]" required /></td>
-                                    <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>
+                                    @*<td><input class="quantity form-control" type="text" placeholder="Type" name="type[]" required /></td>
+                                    <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>*@
                                     <td>
                                         <a class="remFE btn btn-danger "><span title="Delete" class="glyphicon glyphicon-remove"></span></a>
 
@@ -187,8 +187,8 @@
                                             <th width="5%">#</th>
                                             <th>Location</th>
                                             <th width="10%">Code</th>
-                                            <th width="15%">Type</th>
-                                            <th width="10%">Capacity </th>
+                                            @*<th width="15%">Type</th>
+                                            <th width="10%">Capacity </th>*@
                                             <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
@@ -200,8 +200,8 @@
                                                 <input class="form-control" type="text" placeholder="Location" name="location[]" required />
                                             </td>
                                             <td><input class="total form-control" type="text" placeholder="Code" name="code[]" required /></td>
-                                            <td><input class="quantity form-control" type="text" placeholder="Type" name="type[]" required /></td>
-                                            <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>
+                                            @*<td><input class="quantity form-control" type="text" placeholder="Type" name="type[]" required /></td>
+                                            <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>*@
                                             <td>
                                                 <button class="addFE btn btn-default" type="button"><i class="fa fa-plus"></i> </button>
                                             </td>
@@ -358,15 +358,17 @@
                         <div class="ibox-content" style="display:none;">
                             <div class="form-group">
                                 <script id="ITtemplate" type="text/template">
-                                    <td>
-                                        <input value="0" type="hidden" name="detail_id[]" />
+                                    @*<td> 
                                         <input class="total form-control" type="text" placeholder="Serial" name="serial[]" required />
-                                    </td>
-                                    <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>
+                                    </td>*@
                                     @*<td>
+                                        <input value="0" type="hidden" name="detail_id[]" />
+                                        <input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required />
+                                    </td>*@
+                                    <td>
                                 <input value="0" type="hidden" name="detail_id[]" />
                                 <input class="form-control" type="text" placeholder="Location" name="location[]" required />
-                            </td>*@
+                            </td>
 
                                     <td><input class="quantity form-control" type="text" placeholder="Area" name="area[]" required /></td>
 
@@ -378,11 +380,11 @@
                                     <thead>
                                         <tr>
                                             <th width="5%">#</th>
-                                            <th width="15%">Serial No</th>
+                                            @*<th width="15%">Serial No</th>
 
-                                            <th width="20%">Capacity </th>
-                                            @*<th width="20%">Location</th>*@
-                                            <th>Area</th>
+                                            <th width="20%">Capacity </th>*@
+                                            <th width="20%">Location of Cylinder</th>
+                                            <th>Area of Extinguishing System</th>
 
                                             <th width="7%">Actions</th>
                                         </tr>
@@ -390,16 +392,16 @@
                                     <tbody id="p_IT">
                                         <tr>
                                             <td>1</td>
-                                            <td>
+                                            @*<td>
                                                 <input type="hidden" name="detail_id[]" />
                                                 <input class="serial form-control" type="text" placeholder="Serial" name="serial[]" required />
                                             </td>
 
-                                            <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>
-                                            @*<td>
+                                            <td><input class="cost form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>*@
+                                            <td>
                                         <input type="hidden" name="detail_id[]" />
                                         <input class="form-control" type="text" placeholder="Location" name="location[]" required />
-                                    </td>*@
+                                    </td>
                                             <td><input class="area form-control" type="text" placeholder="Area" name="area[]" required /></td>
 
                                             <td><button class="addIT btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>
@@ -615,8 +617,8 @@
                              '<input class="form-control" type="text" placeholder="Location" name="location[]" required />' +
                              '</td >' +
                              '<td><input class="form-control" type="text" placeholder="Code" name="code[]" required /></td>' +
-                             '<td><input class="form-control" type="text" placeholder="Type" name="type[]" required /></td>' +
-                             '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>' +
+                             //'<td><input class="form-control" type="text" placeholder="Type" name="type[]" required /></td>' +
+                             //'<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>' +
                              '<td><button class="addFE btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>' +
                              '</tr>'
                          var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);
@@ -638,8 +640,8 @@
                                  '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationfe[j].location + '" required />'+
                                  '</td >'+
                                  '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationfe[j].code + '"required /></td>'+
-                                 '<td><input class="form-control" type="text" placeholder="Type" name="type[]" value="' + responsedata.locationfe[j].type + '"required /></td>'+
-                                 '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationfe[j].capacity + '" required /></td>'+
+                                 //'<td><input class="form-control" type="text" placeholder="Type" name="type[]" value="' + responsedata.locationfe[j].type + '"required /></td>'+
+                                 //'<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationfe[j].capacity + '" required /></td>'+
                                  '<td>' +
                                      '<div class="row">' +
                                          '<div class="col-md-12">' +
@@ -662,8 +664,8 @@
                                  '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationfe[j].location + '" required />' +
                                  '</td >' +
                                  '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationfe[j].code + '"required /></td>' +
-                                 '<td><input class="form-control" type="text" placeholder="Type" name="type[]" value="' + responsedata.locationfe[j].type + '"required /></td>' +
-                                 '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationfe[j].capacity + '" required /></td>' +
+                                 //'<td><input class="form-control" type="text" placeholder="Type" name="type[]" value="' + responsedata.locationfe[j].type + '"required /></td>' +
+                                 //'<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationfe[j].capacity + '" required /></td>' +
                              '<td>' +
                              '<a class="remFE btn btn-danger"><span title="Delete" class="glyphicon glyphicon-remove"></span></a>&nbsp;' +
                              '<button class="detailFE btn btn-info " type="button" data-location="' + responsedata.locationfe[j].location +'" data-id=' + responsedata.locationfe[j].id +'><i class="fa fa-list"></i></button>' +
@@ -804,7 +806,7 @@
                                  '<td><input class="form-control" type="text" placeholder="Code" name="code[]" value="' + responsedata.locationfh[j].code + '"required /></td>' +
                                  '<td>' +
                                  '<a class="remFH btn btn-danger"><span title="Delete" class="glyphicon glyphicon-remove"></span></a>&nbsp;' +
-                             '<button class="detailFH btn btn-info " type="button"  data-location="' + responsedata.locationfh[j].location +'" data-id=' + responsedata.locationfh[j].id + '><i class="fa fa-list"></i></button>' +
+                                 '<button class="detailFH btn btn-info " type="button"  data-location="' + responsedata.locationfh[j].location +'" data-id=' + responsedata.locationfh[j].id + '><i class="fa fa-list"></i></button>' +
                                  '</td>'
                          }
                          
@@ -827,15 +829,13 @@
                          $trr =
                              '<tr>' +
                              '<td>1</td>' +
-                         
                              '<td>' +
                                  '<input value = "0"  type = "hidden" name = "detail_id[]" />' +
-                                 '<input class="form-control" type="text" placeholder="Serial" name="serial[]" required /></td > ' +
-                             '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" required /></td>' +
-                            
-
-                             '<td><input class="form-control" type="text" placeholder="Area" name="area[]" required /></td>' +
-
+                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="location[]" required />' +
+                            '</td> ' +
+                             '<td>' + 
+                                 '<input class="form-control" type="text" placeholder="Area of Extinguishing System" name="area[]" required />' +
+                             '</td>' +
                              '<td><button class="addIT btn btn-default" type="button"><i class="fa fa-plus"></i> </button></td>' +
                              '</tr>'
                          var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);
@@ -851,47 +851,42 @@
                              $trr =
                                  '<tr>' +
                                  '<td>1</td>' +
-                                 '<td>' + 
-                                    '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
-                                    '<input class="form-control" type = "text" placeholder = "Serial" name = "serial[]" value = "' + responsedata.locationit[j].serial + '" required /></td > ' +
-                                 '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationit[j].capacity + '" required /></td>' +
-                                 //'<td>' +
-                                 //'<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
-                                 //'<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
-                                 //'</td >' +
-                                 '<td><input class="form-control" type="text" placeholder="Area" name="area[]" value="' + responsedata.locationit[j].area + '" required /></td>' +
-
-                             '<td>' +
-                             '<div class="row">' +
-                             '<div class="col-md-12">' +
-                             '<button class="addIT btn btn-default " type="button"><i class="fa fa-plus"></i></button>&nbsp;' +
-                             '<button class="detailIT btn btn-info " type="button"  data-location="' + responsedata.locationit[j].area +'" data-id=' + responsedata.locationit[j].id + ' ><i class="fa fa-list"></i></button>' +
-                             '</div>' +
-                             '</div>' +
-                             '</td > ' +
+                                 '<td>' +
+                                 '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
+                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
+                                 '</td >' +
+                                 '<td>' +
+                                    '<input class="form-control" type="text" placeholder="Area of Extinguishing System" name="area[]" value="' + responsedata.locationit[j].area + '" required />'+
+                                 '</td> ' +
+                                 '<td>' +
+                                     '<div class="row">' +
+                                         '<div class="col-md-12">' +
+                                         '<button class="addIT btn btn-default " type="button"><i class="fa fa-plus"></i></button>&nbsp;' +
+                                         '<button class="detailIT btn btn-info " type="button"  data-location="' + responsedata.locationit[j].area +'" data-id=' + responsedata.locationit[j].id + ' ><i class="fa fa-list"></i></button>' +
+                                         '</div>' +
+                                     '</div>' +
+                                 '</td > ' +
                                  '</tr>'
 
 
                          } else {
+                             console.log("hh");
                              var i = $('#p_IT tr').length + 1;
 
                              $trr =
 
+                               
                                  '<td>' +
-                                     '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
-                                     '<input class="form-control" type="text" placeholder="Serial" name="serial[]" value="' + responsedata.locationit[j].serial + '" required />' +
-                                 '</td>' +
-                                 '<td><input class="form-control" type="text" placeholder="Capacity" name="capacity[]" value="' + responsedata.locationit[j].capacity + '" required /></td>' +
-                                 //'<td>' +
-                                 //'<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
-                                 //'<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
-                                 //'</td >' +
-                                 '<td><input class="form-control" type="text" placeholder="Area" name="area[]" value="' + responsedata.locationit[j].area + '"required /></td>' +
-
+                                 '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
+                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
+                                 '</td >' +
+                                 '<td>' +
+                                 '<input class="form-control" type="text" placeholder="Area of Extinguishing System" name="area[]" value="' + responsedata.locationit[j].area + '" required />'+
+                             '</td> ' +
                              '<td>' +
-                             '<a class="remIT btn btn-danger"><span title="Delete" class="glyphicon glyphicon-remove"></span></a>&nbsp;' +
-                             '<button class="detailIT btn btn-info " type="button"  data-location="' + responsedata.locationit[j].area +'" data-id=' + responsedata.locationit[j].id + '><i class="fa fa-list"></i></button>' +
-                             '</td>'
+                                 '<a class="remIT btn btn-danger"><span title="Delete" class="glyphicon glyphicon-remove"></span></a>&nbsp;' +
+                                 '<button class="detailIT btn btn-info " type="button"  data-location="' + responsedata.locationit[j].area +'" data-id=' + responsedata.locationit[j].id + '><i class="fa fa-list"></i></button>' +
+                                 '</td>'
 
                          }
                          var $tr = $('<tr>').append('<td>' + i + '</td>' + $trr);

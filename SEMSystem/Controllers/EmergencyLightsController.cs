@@ -45,7 +45,7 @@ namespace SEMSystem.Controllers
         // GET: EmergencyLight/Create
         public IActionResult Edit(int id)
         {
-            var model = _context.EmergencyLightHeaders.Include(a => a.Locations).Where(a => a.Id == id).FirstOrDefault();
+            var model = _context.EmergencyLightHeaders.Where(a => a.Id == id).FirstOrDefault();
 
             this.AddBreadCrumb(new BreadCrumb
             {
@@ -57,14 +57,14 @@ namespace SEMSystem.Controllers
 
             ViewData["ID"] = id;
 
-            ViewData["Area"] = _context.Areas.Find(model.Locations.AreaId).Name;
+           ViewData["Area"] = _context.Areas.Find(model.AreaId).Name;
            
-            ViewData["Location"] = _context.LocationEmergencyLights.Find(model.LocationEmergencyLightId).Location;
+            //ViewData["Location"] = _context.LocationEmergencyLights.Find(model.LocationEmergencyLightId).Location;
 
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
 
-            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.Locations.AreaId).FirstOrDefault().Companies.Name;
+            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.AreaId).FirstOrDefault().Companies.Name;
             return View("Create", model);
         }
         [HttpPost]
@@ -117,56 +117,116 @@ namespace SEMSystem.Controllers
 
 
 
-                int recCount =
+                //int recCount =
 
-                     _context.EmergencyLightHeaders
-                     .Select(a => new
-                     {
-                         a.CreatedAt,
-                         CompanyName = a.Locations.Areas.Companies.Name,
-                         AreaName = a.Locations.Areas.Name
-                           ,
-                         a.Locations.Location
-                         ,
-                         a.Status,
-                         a.DocumentStatus,
-                         a.ReferenceNo
-                     })
-                    .Where(a => a.Status == "Active")
+                //     _context.EmergencyLightHeaders
+                //     .Select(a => new
+                //     {
+                //         a.CreatedAt,
+                //         CompanyName = a.Locations.Areas.Companies.Name,
+                //         AreaName = a.Locations.Areas.Name
+                //           ,
+                //         a.Locations.Location
+                //         ,
+                //         a.Status,
+                //         a.DocumentStatus,
+                //         a.ReferenceNo
+                //     })
+                //    .Where(a => a.Status == "Active")
+                //    .Where(strFilter)
+                //    .Count();
+
+                int recCount = _context.EmergencyLightHeaders //A
+                   .GroupJoin(
+                      _context.Areas // B
+                    ,
+                      i => i.Id, //A key
+                      p => p.ID,//B key
+                      (i, g) =>
+                         new
+                         {
+                             i, //holds A data
+                             g  //holds B data
+                         }
+                   )
+                   .SelectMany(
+                      temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                      (A, B) =>
+                         new
+                         {
+                             A.i.CreatedAt,
+                             CompanyName = B.Companies.Name,
+                             AreaName = B.Name
+                                      //,
+                                      //a.Locations.Location
+                                      ,
+                             A.i.Status,
+                             A.i.DocumentStatus,
+                             A.i.ReferenceNo
+                         }
+                   ).Where(a => a.Status == "Active")
                     .Where(strFilter)
                     .Count();
-
                 recordsTotal = recCount;
                 int recFilter = recCount;
 
 
-                var v =
+                //  var v =
 
-              _context.EmergencyLightHeaders
-               .Select(a => new
-               {
+                //_context.EmergencyLightHeaders
+                // .Select(a => new
+                // {
+                //     a.CreatedAt,
+                //     CompanyName = a.Locations.Areas.Companies.Name,
+                //     AreaName = a.Locations.Areas.Name
+                //       ,
+                //     a.Locations.Location
+                //    ,
+                //     a.Id
+                //     ,
+                //     a.Status,
+                //     a.DocumentStatus,
+                //     a.ReferenceNo
+
+                // })
+                //.Where(strFilter)
+                //.Where(a => a.Status == "Active")
+                //.Skip(skip).Take(pageSize);
+
+                var v = _context.EmergencyLightHeaders //A
+                   .GroupJoin(
+                      _context.Areas // B
+                    ,
+                      i => i.Id, //A key
+                      p => p.ID,//B key
+                      (i, g) =>
+                         new
+                         {
+                             i, //holds A data
+                             g  //holds B data
+                         }
+                   )
+                   .SelectMany(
+                      temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                      (A, B) =>
+                         new
+                         {
+                             A.i.CreatedAt,
+                             CompanyName = B.Companies.Name,
+                             AreaName = B.Name
+                                      //,
+                                      //a.Locations.Location
+                                      ,
+                             A.i.Status,
+                             A.i.DocumentStatus,
+                             A.i.ReferenceNo
+                             ,A.i.Id
+                         }
+                   ).Where(a => a.Status == "Active")
+                    .Where(strFilter)
+                   .Skip(skip).Take(pageSize);
 
 
-
-                   a.CreatedAt,
-                   CompanyName = a.Locations.Areas.Companies.Name,
-                   AreaName = a.Locations.Areas.Name
-                     ,
-                   a.Locations.Location
-                  ,
-                   a.Id
-                   ,
-                   a.Status,
-                   a.DocumentStatus,
-                   a.ReferenceNo
-
-               })
-              .Where(strFilter)
-              .Where(a => a.Status == "Active")
-              .Skip(skip).Take(pageSize)
-              ;
-
-                //string strSql = v.ToSql();
                 bool desc = false;
                 if (sortColumnDirection == "desc")
                 {
@@ -279,12 +339,12 @@ namespace SEMSystem.Controllers
 
             var detail = _context.EmergencyLightDetails
                     .Where(a => a.EmergencyLightHeaders.Status == "Active")
-                    .Where(a => a.EmergencyLightHeaders.LocationEmergencyLightId == LocationId)
-                    .Where(a => a.EmergencyLightHeaders.CreatedAt == dateTime) //A
+                    .Where(a => a.LocationEmergencyLightId == LocationId)
+                    .Where(a => a.EmergencyLightHeaders.DocumentStatus != "Approved") //A
                     .GroupJoin(
                             _context.LocationEmergencyLights // B
                             .Where(a => a.Status == "Active"),
-                            i => i.EmergencyLightHeaders.LocationEmergencyLightId, //A key
+                            i => i.LocationEmergencyLightId, //A key
                             p => p.Id,//B key
                             (i, g) =>
                                 new
@@ -347,10 +407,12 @@ namespace SEMSystem.Controllers
 
             try
             {
-                var _header = _context.EmergencyLightHeaders
-                    .Where(a => a.Status == "Active")
-                    .Where(a => a.LocationEmergencyLightId == item[0].LocationEmergencyLightId)
-                    .Where(a => a.CreatedAt == DateTime.Now.Date);
+                //var _header = _context.EmergencyLightHeaders
+                //    .Where(a => a.Status == "Active")
+                //    .Where(a => a.LocationEmergencyLightId == item[0].LocationEmergencyLightId)
+                //    .Where(a => a.CreatedAt == DateTime.Now.Date);
+
+                var _header = _context.EmergencyLightHeaders.Where(a => a.Status == "Active").Where(a => a.DocumentStatus != "Approved");
 
                 if (_header.Count() == 0)
                 {
@@ -375,7 +437,7 @@ namespace SEMSystem.Controllers
                     {
                         //header.AreaId = item[0].AreaId;
                         ReferenceNo = refno,
-                        LocationEmergencyLightId = item[0].LocationEmergencyLightId,
+                        AreaId = item[0].AreaId,
                         CreatedAt = DateTime.Now.Date,
                         CreatedBy = User.Identity.GetUserName()
                     };
@@ -400,7 +462,8 @@ namespace SEMSystem.Controllers
 
                             InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
-                            NotedBy = detail.NotedBy
+                            NotedBy = detail.NotedBy,
+                            LocationEmergencyLightId = detail.LocationEmergencyLightId
 
 
                         };
@@ -416,7 +479,7 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.EmergencyLightDetails
                             .Where(a => a.EmergencyLightHeaderId == headerId)
-                            //.Where(a => a.LocationEmergencyLightId == detail.LocationEmergencyLightId)
+                            .Where(a => a.LocationEmergencyLightId == detail.LocationEmergencyLightId)
                             .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
@@ -425,7 +488,7 @@ namespace SEMSystem.Controllers
 
                             var _detail = new EmergencyLightDetail
                             {
-                                //LocationEmergencyLightId = detail.LocationEmergencyLightId,
+                                
                                 ItemId = detail.ItemId,
                                 Battery = detail.Battery == "true" ? 1 : 0,
                                 Bulb = detail.Bulb == "true" ? 1 : 0,
@@ -438,7 +501,8 @@ namespace SEMSystem.Controllers
 
                                 InspectedBy = detail.InspectedBy,
                                 ReviewedBy = detail.ReviewedBy,
-                                NotedBy = detail.NotedBy
+                                NotedBy = detail.NotedBy,
+                                LocationEmergencyLightId = detail.LocationEmergencyLightId,
 
                             };
 
@@ -459,6 +523,7 @@ namespace SEMSystem.Controllers
                             d.InspectedBy = detail.InspectedBy;
                             d.ReviewedBy = detail.ReviewedBy;
                             d.NotedBy = detail.NotedBy;
+                            d.LocationEmergencyLightId = detail.LocationEmergencyLightId;
                             _context.Update(d);
                         }
                         _context.SaveChanges();
@@ -659,7 +724,7 @@ namespace SEMSystem.Controllers
                   .GroupJoin(
                           _context.LocationEmergencyLights // B
                           .Where(a => a.Status == "Active"),
-                          i => i.EmergencyLightHeaders.LocationEmergencyLightId, //A key
+                          i => i.LocationEmergencyLightId, //A key
                           p => p.Id,//B key
                           (i, g) =>
                               new
@@ -688,7 +753,8 @@ namespace SEMSystem.Controllers
                                    HeaderId = A.i.EmergencyLightHeaderId,
                                    A.i.EmergencyLightHeaders.DocumentStatus,
                                    A.i.ImageUrl,
-                                   A.i.Id
+                                   A.i.Id,
+                                   A.i.Locations.Location
                                }
                           );
             status = "success";

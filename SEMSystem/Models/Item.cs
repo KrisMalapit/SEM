@@ -23,5 +23,9 @@ namespace SEMSystem.Models
         [Display(Name = "Equipment Type")]
         public string EquipmentType { get; set; }
         public int IsIn { get; set; } = 1;
+       
+        public string Type { get; set; }
+       
+        public string Capacity { get; set; }
     }
 }

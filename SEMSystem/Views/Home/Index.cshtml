@@ -135,7 +135,7 @@
 
                                     <th>Company</th>
                                     <th>Area</th>
-                                    <th>Location</th>
+                                    @*<th>Location</th>*@
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -1207,7 +1207,7 @@
 
                             , responsedata.data[i].companyName
                             , responsedata.data[i].areaName
-                            , responsedata.data[i].location
+                            //, responsedata.data[i].location
                             , responsedata.data[i].documentStatus
                             , $actions]
                         );
@@ -1339,8 +1339,8 @@
                             } else {
                                 toastr["error"](responsedata.message)
                                 toastr.options = {
-                                    "closeButton": true,
-                                    "showDuration": "3000",
+                                    "closeButton": true
+                                   
                                 }
                             }
                             }
@@ -2822,7 +2822,7 @@
                     SafetySeal: $(this).find('input:checkbox')[3].checked,
                     Hose: $(this).find('input:checkbox')[4].checked,
                     Remarks: $(this).find("td:eq(10)").find("input").val().trim(),
-                    //AreaId: $("#AreaId").val(),
+                    AreaId: $("#AreaId").val(),
                     LocationFireExtinguisherId: $("#LocationIDFE").val(),
                     ID: @ViewBag.ID,
                     InspectedBy: $inspectedBy,
@@ -2856,7 +2856,7 @@
                             toastr["error"](responsedata.message)
                             toastr.options = {
                                 "closeButton": true,
-                                "showDuration": "3000",
+                                
                             }
                         }
                     }
@@ -3087,7 +3087,7 @@
                          Usable: $(this).find('input:checkbox')[2].checked,
 
                          Remarks: $(this).find("td:eq(6)").find("input").val(),
-                         //AreaId: $("#AreaId").val(),
+                         AreaId: $("#AreaId").val(),
                          LocationEmergencyLightId: $("#LocationIDEL").val(),
                          ID: @ViewBag.ID,
                          InspectedBy: $inspectedBy,
@@ -3127,7 +3127,7 @@
                             toastr["error"](responsedata.message)
                             toastr.options = {
                                 "closeButton": true,
-                                "showDuration": "3000",
+                               
                             }
                         }
                     }
@@ -3380,7 +3380,7 @@
 
 
                          Remarks: $(this).find("td:eq(7)").find("input").val(),
-                         //AreaId: $("#AreaId").val(),
+                         AreaId: $("#AreaId").val(),
                          LocationInergenTankId: $("#LocationIDIT").val(),
                          ID: @ViewBag.ID,
                          InspectedBy: $inspectedBy,
@@ -3745,7 +3745,7 @@
 
 
                          Remarks: $(this).find("td:eq(10)").find("input").val().trim(),
-                         //AreaId: $("#AreaId").val(),
+                         AreaId: $("#AreaId").val(),
                          LocationFireHydrantId: $("#LocationIDFH").val(),
                          ID: @ViewBag.ID,
                          InspectedBy: $inspectedBy,

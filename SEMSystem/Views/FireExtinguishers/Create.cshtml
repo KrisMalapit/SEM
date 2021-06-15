@@ -107,14 +107,7 @@
             </div>
             <br />
             <div class="row">
-                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Location</label>
-                <div class="col-md-4">
-
-
-                    @*<select id="LocationId" name="LocationId" class="form-control" asp-items="ViewBag.LocationId" disabled></select>*@
-                    <input id="LocationId" name="LocationId" class="form-control" disabled value="@ViewBag.Location" />
-
-                </div>
+               
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                 <div class="col-md-4">
                     <input id="Plant" name="Plant" class="form-control" disabled value="@ViewBag.Company" />
@@ -128,8 +121,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th width="10%">Location</th>
                         <th width="20%">Item</th>
-                        <th width="15%">Code</th>
+                        <th width="5%">Code</th>
                         <th width="15%">Type</th>
                         <th>Capacity</th>
                         <th>Cylinder</th>
@@ -487,7 +481,9 @@
                                             _but += "<button class='btnView btn' type='button' class='btn btn-primary' data-id='" + $imageurl + "'><span class='glyphicon glyphicon-search' ></span ></button>"
                                         }
                                         data.push([
-                                            responsedata.data[i].itemId
+                                             responsedata.data[i].itemId
+                                            , responsedata.data[i].location
+                                            
                                             , responsedata.data[i].itemName
                                             , responsedata.data[i].code
                                             , responsedata.data[i].type
@@ -508,6 +504,7 @@
                                     $('#tbl').DataTable({
                                         "data": data,
                                         "responsive": true,
+                                        "order": ([1, 'asc']),
                                         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
                                         //"columnDefs": [
                                         //    {
@@ -527,6 +524,7 @@
                                             "data": data,
                                             "responsive": true,
                                             "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
+                                           
                                             //"columnDefs": [
                                             //    {
                                             //        visible: false,

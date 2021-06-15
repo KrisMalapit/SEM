@@ -27,42 +27,43 @@ namespace SEMSystem.Controllers
         {
             int compid = 0;
             var notify = new NotifyViewModel();
-
+            var area = _context.Areas.Find(id);
             switch (equipmenttype)
             {
                 case "fe":
-                    var _fe = _context.FireExtinguisherHeaders.Include(a=>a.Locations.Areas).Where(a=>a.Id == id).FirstOrDefault();
-                    notify.Area = _fe.Locations.Areas.Name;
-                    notify.CompanyId = _fe.Locations.Areas.CompanyId;
+                    var _fe = _context.FireExtinguisherHeaders.Where(a => a.Id == id).FirstOrDefault();
+                    notify.Area = area.Name;
+                    notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Fire Extinguisher";
-                    notify.Location = _fe.Locations.Location;
+
                     notify.ReferenceNo = _fe.ReferenceNo;
                     break;
                 case "el":
-                    var _el = _context.EmergencyLightHeaders.Include(a => a.Locations.Areas).Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = _el.Locations.Areas.Name;
-                    notify.CompanyId = _el.Locations.Areas.CompanyId;
+                    var _el = _context.EmergencyLightHeaders.Where(a => a.Id == id).FirstOrDefault();
+                    notify.Area = area.Name;
+                    notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Emergency Light";
-                    notify.Location = _el.Locations.Location;
+
                     notify.ReferenceNo = _el.ReferenceNo;
                     break;
                 case "it":
-                    var _it = _context.FireExtinguisherHeaders.Include(a => a.Locations.Areas).Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = _it.Locations.Areas.Name;
-                    notify.CompanyId = _it.Locations.Areas.CompanyId;
+                    var _it = _context.InergenTankHeaders.Where(a => a.Id == id).FirstOrDefault();
+                    notify.Area = area.Name;
+                    notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Inergen Tank";
-                    notify.Location = _it.Locations.Location;
+
+                    notify.ReferenceNo = _it.ReferenceNo;
                     break;
                 case "fh":
-                    var _fh = _context.FireExtinguisherHeaders.Include(a => a.Locations.Areas).Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = _fh.Locations.Areas.Name;
-                    notify.CompanyId = _fh.Locations.Areas.CompanyId;
+                    var _fh = _context.FireHydrantHeaders.Where(a => a.Id == id).FirstOrDefault();
+                    notify.Area = area.Name;
+                    notify.CompanyId = area.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Fire Hydrant";
-                    notify.Location = _fh.Locations.Location;
+
                     notify.ReferenceNo = _fh.ReferenceNo;
                     break;
 
@@ -70,7 +71,7 @@ namespace SEMSystem.Controllers
 
 
             string status = "";
-            
+
             string message = "";
             if (docstatus != "Approved")
             {

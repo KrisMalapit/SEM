@@ -45,7 +45,7 @@ namespace SEMSystem.Controllers
         // GET: InergenTank/Create
         public IActionResult Edit(int id)
         {
-            var model = _context.InergenTankHeaders.Include(a => a.Locations).Where(a => a.Id == id).FirstOrDefault();
+            var model = _context.InergenTankHeaders.Where(a => a.Id == id).FirstOrDefault();
 
             this.AddBreadCrumb(new BreadCrumb
             {
@@ -57,14 +57,14 @@ namespace SEMSystem.Controllers
 
             ViewData["ID"] = id;
             //ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name", model.AreaId);
-            ViewData["Area"] = _context.Areas.Find(model.Locations.AreaId).Name;
+            ViewData["Area"] = _context.Areas.Find(model.AreaId).Name;
 
             // ViewData["LocationId"] = new SelectList(_context.LocationInergenTanks, "Id", "Name", model.LocationInergenTankId);
-            ViewData["Location"] = _context.LocationInergenTanks.Find(model.LocationInergenTankId).Area;
+            //ViewData["Location"] = _context.LocationInergenTanks.Find(model.LocationInergenTankId).Area;
 
             ViewData["Title"] = "Edit";
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
-            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.Locations.AreaId).FirstOrDefault().Companies.Name;
+            ViewData["Company"] = _context.Areas.Include(a => a.Companies).Where(a => a.ID == model.AreaId).FirstOrDefault().Companies.Name;
             return View("Create", model);
         }
         [HttpPost]
@@ -117,23 +117,56 @@ namespace SEMSystem.Controllers
 
 
 
-                int recCount =
+                //int recCount =
 
-                     _context.InergenTankHeaders
-                     .Select(a => new
-                     {
-                         a.CreatedAt,
-                         CompanyName = a.Locations.Areas.Companies.Name,
-                         AreaName = a.Locations.Areas.Name
-                          ,
-                         Location = a.Locations.Area
-                         , a.Status,
-                         a.DocumentStatus,
-                         a.ReferenceNo
-                     })
-                    .Where(a => a.Status == "Active")
+                //     _context.InergenTankHeaders
+                //     .Select(a => new
+                //     {
+                //         a.CreatedAt,
+                //         CompanyName = a.Locations.Areas.Companies.Name,
+                //         AreaName = a.Locations.Areas.Name
+                //          ,
+                //         Location = a.Locations.Area
+                //         , a.Status,
+                //         a.DocumentStatus,
+                //         a.ReferenceNo
+                //     })
+                //    .Where(a => a.Status == "Active")
+                //    .Where(strFilter)
+                //    .Count();
+
+                int recCount = _context.InergenTankHeaders //A
+                   .GroupJoin(
+                      _context.Areas // B
+                    ,
+                      i => i.Id, //A key
+                      p => p.ID,//B key
+                      (i, g) =>
+                         new
+                         {
+                             i, //holds A data
+                             g  //holds B data
+                         }
+                   )
+                   .SelectMany(
+                      temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                      (A, B) =>
+                         new
+                         {
+                             A.i.CreatedAt,
+                             CompanyName = B.Companies.Name,
+                             AreaName = B.Name
+                                      //,
+                                      //a.Locations.Location
+                                      ,
+                             A.i.Status,
+                             A.i.DocumentStatus,
+                             A.i.ReferenceNo
+                         }
+                   ).Where(a => a.Status == "Active")
                     .Where(strFilter)
                     .Count();
+
 
                 recordsTotal = recCount;
                 int recFilter = recCount;
@@ -141,25 +174,36 @@ namespace SEMSystem.Controllers
 
                 var v =
 
-              _context.InergenTankHeaders
-               .Select(a => new
-               {
-
-
-
-                   a.CreatedAt,
-                   CompanyName = a.Locations.Areas.Companies.Name,
-                   AreaName = a.Locations.Areas.Name
+             _context.InergenTankHeaders //A
+                   .GroupJoin(
+                      _context.Areas // B
                     ,
-                   Location = a.Locations.Area
-                  ,
-                   a.Id
-                   ,
-                   a.Status,
-                   a.DocumentStatus,
-                   a.ReferenceNo
-
-               })
+                      i => i.Id, //A key
+                      p => p.ID,//B key
+                      (i, g) =>
+                         new
+                         {
+                             i, //holds A data
+                             g  //holds B data
+                         }
+                   )
+                   .SelectMany(
+                      temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                      (A, B) =>
+                         new
+                         {
+                             A.i.CreatedAt,
+                             CompanyName = B.Companies.Name,
+                             AreaName = B.Name
+                                      //,
+                                      //a.Locations.Location
+                                      ,
+                             A.i.Status,
+                             A.i.DocumentStatus,
+                             A.i.ReferenceNo,
+                             A.i.Id
+                         }
+                   )
               .Where(strFilter)
               .Where(a => a.Status == "Active")
               .Skip(skip).Take(pageSize)
@@ -270,9 +314,9 @@ namespace SEMSystem.Controllers
                           new
                           {
                               //A.i.Location,
-                            
-                              A.i.Capacity,
-                              A.i.Serial,
+
+                              B.Items.Capacity,
+                              Serial = B.Items.SerialNo,
                               B.Items.Code,
                               ItemName = B.Items.Name,
                               CompanyName = A.i.Areas.Companies.Name,
@@ -281,12 +325,12 @@ namespace SEMSystem.Controllers
 
             var detail = _context.InergenTankDetails
                     .Where(a => a.InergenTankHeaders.Status == "Active")
-                    .Where(a => a.InergenTankHeaders.LocationInergenTankId == LocationId)
+                    .Where(a => a.LocationInergenTankId == LocationId)
                     .Where(a => a.InergenTankHeaders.CreatedAt == dateTime) //A
                     .GroupJoin(
                             _context.LocationInergenTanks // B
                             .Where(a => a.Status == "Active"),
-                            i => i.InergenTankHeaders.LocationInergenTankId, //A key
+                            i => i.LocationInergenTankId, //A key
                             p => p.Id,//B key
                             (i, g) =>
                                 new
@@ -310,8 +354,8 @@ namespace SEMSystem.Controllers
 
                                      A.i.Remarks,
 
-                                     B.Serial,
-                                     B.Capacity,
+                                     Serial = A.i.Items.SerialNo,
+                                     A.i.Items.Capacity,
                                      A.i.Items.Code,
                                      A.i.InspectedBy,
                                      A.i.ReviewedBy,
@@ -352,11 +396,11 @@ namespace SEMSystem.Controllers
 
             try
             {
-                var _header = _context.InergenTankHeaders.Where(a => a.Status == "Active")
-                      //.Where(a => a.AreaId == item[0].AreaId)
-                    .Where(a => a.LocationInergenTankId == item[0].LocationInergenTankId)
-                    .Where(a => a.CreatedAt == DateTime.Now.Date);
-
+                //var _header = _context.InergenTankHeaders.Where(a => a.Status == "Active")
+                //      //.Where(a => a.AreaId == item[0].AreaId)
+                //    .Where(a => a.LocationInergenTankId == item[0].LocationInergenTankId)
+                //    .Where(a => a.CreatedAt == DateTime.Now.Date);
+                var _header = _context.InergenTankHeaders.Where(a => a.Status == "Active").Where(a => a.DocumentStatus != "Approved");
                 if (_header.Count() == 0)
                 {
                     var comp = _context.LocationInergenTanks.Include(a => a.Areas.Companies).Where(a => a.Id == item[0].LocationInergenTankId)
@@ -375,12 +419,13 @@ namespace SEMSystem.Controllers
                     refno = comp + "IT" + series;
 
 
-                    InergenTankHeader header = new InergenTankHeader();
-                    //header.AreaId = item[0].AreaId;
-                    header.ReferenceNo = refno;
-                    header.LocationInergenTankId = item[0].LocationInergenTankId;
-                    header.CreatedAt = DateTime.Now.Date;
-                    header.CreatedBy = User.Identity.GetUserName();
+                    InergenTankHeader header = new InergenTankHeader
+                    {
+                        ReferenceNo = refno,
+                        AreaId = item[0].AreaId,
+                        CreatedAt = DateTime.Now.Date,
+                        CreatedBy = User.Identity.GetUserName()
+                    };
                     _context.Add(header);
                     _context.SaveChanges();
                     headerId = header.Id;
@@ -393,7 +438,7 @@ namespace SEMSystem.Controllers
                     {
                         var _detail = new InergenTankDetail
                         {
-                            //LocationInergenTankId = detail.LocationInergenTankId,
+                           
                             ItemId = detail.ItemId,
 
                             Cylinder = detail.Cylinder == "true" ? 1 : 0,
@@ -407,8 +452,8 @@ namespace SEMSystem.Controllers
                             Remarks = detail.Remarks,
                             InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
-                            NotedBy = detail.NotedBy
-
+                            NotedBy = detail.NotedBy,
+                            LocationInergenTankId = detail.LocationInergenTankId,
                         };
 
                         _context.Add(_detail);
@@ -422,7 +467,7 @@ namespace SEMSystem.Controllers
                     {
                         var d = _context.InergenTankDetails
                             .Where(a => a.InergenTankHeaderId == headerId)
-                            //.Where(a => a.LocationInergenTankId == detail.LocationInergenTankId)
+                            .Where(a => a.LocationInergenTankId == detail.LocationInergenTankId)
                             .Where(a => a.ItemId == detail.ItemId)
                             .FirstOrDefault();
 
@@ -431,7 +476,7 @@ namespace SEMSystem.Controllers
 
                             var _detail = new InergenTankDetail
                             {
-                                //LocationInergenTankId = detail.LocationInergenTankId,
+                               
                                 ItemId = detail.ItemId,
                                 Cylinder = detail.Cylinder == "true" ? 1 : 0,
                                 Gauge = detail.Gauge == "true" ? 1 : 0,
@@ -444,7 +489,8 @@ namespace SEMSystem.Controllers
                                 Remarks = detail.Remarks,
                                 InspectedBy = detail.InspectedBy,
                                 ReviewedBy = detail.ReviewedBy,
-                                NotedBy = detail.NotedBy
+                                NotedBy = detail.NotedBy,
+                                LocationInergenTankId = detail.LocationInergenTankId,
                             };
 
                             _context.Add(_detail);
@@ -465,6 +511,7 @@ namespace SEMSystem.Controllers
                             d.InspectedBy = detail.InspectedBy;
                             d.ReviewedBy = detail.ReviewedBy;
                             d.NotedBy = detail.NotedBy;
+                            d.LocationInergenTankId = detail.LocationInergenTankId;
                             _context.Update(d);
                         }
                         _context.SaveChanges();
@@ -666,7 +713,7 @@ namespace SEMSystem.Controllers
                   .GroupJoin(
                           _context.LocationInergenTanks // B
                           .Where(a => a.Status == "Active"),
-                          i => i.InergenTankHeaders.LocationInergenTankId, //A key
+                          i => i.LocationInergenTankId, //A key
                           p => p.Id,//B key
                           (i, g) =>
                               new
@@ -689,9 +736,9 @@ namespace SEMSystem.Controllers
                                    A.i.Pressure,
                                    A.i.Hose,
                                    A.i.Remarks,
-                                   B.Serial,
-                                  
-                                   B.Capacity,
+                                   Serial = A.i.Items.SerialNo,
+
+                                   A.i.Items.Capacity,
                                    A.i.InspectedBy,
                                    A.i.ReviewedBy,
                                    A.i.NotedBy,
