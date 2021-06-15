@@ -30,10 +30,12 @@ namespace SEMSystem.Controllers
         }
         public JsonResult SearchArea(string q)
         {
-            
+            string companyAccess = User.Identity.GetCompanyAccess();
+            int[] compId = companyAccess.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
 
             var model = _context
                 .Areas.Where(a => a.Status == "Active")
+                .Where(a => compId.Contains(a.CompanyId))
                 .Where( a=>a.Name.ToUpper().Contains(q.ToUpper()))
                 .Select(b => new
             {

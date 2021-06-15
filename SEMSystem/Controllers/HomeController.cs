@@ -141,10 +141,99 @@ namespace SEMSystem.Controllers
 
         public LocationDashboardCount GetLocationCount()
         {
-            var fe = _context.FireExtinguisherHeaders.Where(a => a.Status == "Active");
-            var el = _context.EmergencyLightHeaders.Where(a => a.Status == "Active");
-            var it = _context.InergenTankHeaders.Where(a => a.Status == "Active");
-            var fh = _context.FireHydrantHeaders.Where(a => a.Status == "Active");
+            string companyAccess = User.Identity.GetCompanyAccess();
+            int[] compId = companyAccess.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+
+            var fe = _context.FireExtinguisherHeaders
+                .Where(a => a.Status == "Active")
+                .GroupJoin(
+                       _context.Areas // B
+                       .Where(a => a.Status == "Active"),
+                       i => i.AreaId, //A key
+                       p => p.ID,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    ).SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              B.CompanyId,
+                              A.i.DocumentStatus
+                          }
+                    ).Where(a => compId.Contains(a.CompanyId));
+
+
+
+            var el = _context.EmergencyLightHeaders
+                .Where(a => a.Status == "Active").GroupJoin(
+                       _context.Areas // B
+                       .Where(a => a.Status == "Active"),
+                       i => i.AreaId, //A key
+                       p => p.ID,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    ).SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              B.CompanyId,
+                              A.i.DocumentStatus
+                          }
+                    ).Where(a => compId.Contains(a.CompanyId));
+
+            var it = _context.InergenTankHeaders
+                .Where(a => a.Status == "Active").GroupJoin(
+                       _context.Areas // B
+                       .Where(a => a.Status == "Active"),
+                       i => i.AreaId, //A key
+                       p => p.ID,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    ).SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              B.CompanyId,
+                              A.i.DocumentStatus
+                          }
+                    ).Where(a => compId.Contains(a.CompanyId));
+
+            var fh = _context.FireHydrantHeaders
+                .Where(a => a.Status == "Active").GroupJoin(
+                       _context.Areas // B
+                       .Where(a => a.Status == "Active"),
+                       i => i.AreaId, //A key
+                       p => p.ID,//B key
+                       (i, g) =>
+                          new
+                          {
+                              i, //holds A data
+                              g  //holds B data
+                          }
+                    ).SelectMany(
+                       temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                       (A, B) =>
+                          new
+                          {
+                              B.CompanyId,
+                              A.i.DocumentStatus
+                          }
+                    ).Where(a => compId.Contains(a.CompanyId));
 
             var ldc = new LocationDashboardCount
             {
@@ -430,33 +519,20 @@ namespace SEMSystem.Controllers
         }
         public IActionResult GetLocationData(string equipmenttype, string docstatus)
         {
-           
+            string companyAccess = User.Identity.GetCompanyAccess();
+            int[] compId = companyAccess.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+
             string status = "";
             string message = "";
            
             switch (equipmenttype)
             {
                 case "fe":
-
-                    //var fe = _context.FireExtinguisherHeaders
-                    //    .Where(a => a.Status == "Active")
-                    //    .Where(a=>a.DocumentStatus == docstatus)
-                    //    .Select(a => new
-                    //    {
-                    //        a.CreatedAt,
-                    //        CompanyName = a.Areas.Companies.Name,
-                    //        AreaName = a.Areas.Name
-                    //       //,a.Locations.Location
-                    //       ,a.Id
-                    //       ,a.Status
-                    //       ,a.DocumentStatus
-                    //       ,a.ReferenceNo
-                    //    });
                     var fe = _context.FireExtinguisherHeaders
                         .Where(a => a.DocumentStatus == docstatus)
                         .Where(a => a.Status == "Active")
                         .GroupJoin(
-                      _context.Areas // B
+                         _context.Areas // B
                         ,
                           i => i.Id, //A key
                           p => p.ID,//B key
@@ -481,9 +557,10 @@ namespace SEMSystem.Controllers
                                  A.i.Id,
                                  A.i.Status,
                                  A.i.DocumentStatus,
-                                 A.i.ReferenceNo
+                                 A.i.ReferenceNo,
+                                 B.CompanyId
                              }
-                       );
+                       ).Where(a => compId.Contains(a.CompanyId));
 
                     status = "success";
 
@@ -547,9 +624,10 @@ namespace SEMSystem.Controllers
                                  A.i.Id,
                                  A.i.Status,
                                  A.i.DocumentStatus,
-                                 A.i.ReferenceNo
+                                 A.i.ReferenceNo,
+                                 B.CompanyId
                              }
-                       );
+                       ).Where(a => compId.Contains(a.CompanyId));
 
                     status = "success";
 
@@ -616,9 +694,10 @@ namespace SEMSystem.Controllers
                                  A.i.Id,
                                  A.i.Status,
                                  A.i.DocumentStatus,
-                                 A.i.ReferenceNo
+                                 A.i.ReferenceNo,
+                                 B.CompanyId
                              }
-                             );
+                             ).Where(a => compId.Contains(a.CompanyId));
                     status = "success";
 
                     var modelit = new
@@ -683,9 +762,10 @@ namespace SEMSystem.Controllers
                                  A.i.Id,
                                  A.i.Status,
                                  A.i.DocumentStatus,
-                                 A.i.ReferenceNo
+                                 A.i.ReferenceNo,
+                                 B.CompanyId
                              }
-                       );
+                       ).Where(a => compId.Contains(a.CompanyId));
                     status = "success";
 
                     var modelfh = new
