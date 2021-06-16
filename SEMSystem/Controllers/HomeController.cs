@@ -561,7 +561,7 @@ namespace SEMSystem.Controllers
                                  B.CompanyId
                              }
                        );
-                       //.Where(a => compId.Contains(a.CompanyId));
+                       .Where(a => compId.Contains(a.CompanyId));
 
                     status = "success";
 
