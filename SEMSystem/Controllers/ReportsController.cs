@@ -580,7 +580,7 @@ namespace SEMSystem.Controllers
                 string uridev = "http://sodium2/semapi/api/printreport?rvm=";
                 string urilocal = "http://localhost:57903/api/printreport?rvm=";
 
-                response = client.GetAsync(uridev + xstring).Result;
+                response = client.GetAsync(urilocal + xstring).Result;
                 string byteToString = response.Content.ReadAsStringAsync().Result.Replace("\"", string.Empty);
                 bytes = Convert.FromBase64String(byteToString);
 

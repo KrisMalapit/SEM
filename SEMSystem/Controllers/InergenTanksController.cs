@@ -751,7 +751,7 @@ namespace SEMSystem.Controllers
                                }
                           );
             status = "success";
-
+            var xxx = v.ToList();
             var model = new
             {
                 status
