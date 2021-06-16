@@ -112,7 +112,7 @@ namespace SEMSystem.Controllers
 
                 _context.LocationInergenTanks.Where(a => a.Status == "Active").Where(a => a.AreaId == areaid).Select(a => new {
                     a.Id,
-                    a.Area
+                    a.Location
                 });
             status = "success";
 
