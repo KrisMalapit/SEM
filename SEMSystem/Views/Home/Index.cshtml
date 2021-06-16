@@ -2454,7 +2454,7 @@
 
                 if ($.trim(responsedata.datait)) {
                     $.each(responsedata.datait, function (value, index) {
-                        $('#LocationIDIT').append('<option value="' + index.id + '">' + index.area + '</option>');
+                        $('#LocationIDIT').append('<option value="' + index.id + '">' + index.location + '</option>');
                     });
                 }
                 getDataPerLocation('LocationIDIT', $('#LocationIDIT').val());
