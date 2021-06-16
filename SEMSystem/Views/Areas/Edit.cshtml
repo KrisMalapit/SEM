@@ -380,9 +380,9 @@
                                     <thead>
                                         <tr>
                                             <th width="5%">#</th>
-                                            @*<th width="15%">Serial No</th>
+                                            @*<th width="15%">Serial No</th>*@
 
-                                            <th width="20%">Capacity </th>*@
+                                            <th width="15%">Location </th>
                                             <th width="20%">Location of Cylinder</th>
                                             <th>Area of Extinguishing System</th>
 
@@ -828,10 +828,14 @@
                         
                          $trr =
                              '<tr>' +
-                             '<td>1</td>' +
+                         '<td>1</td>' +
+                         '<td>' +
+                         '<input value = "0"  type = "hidden" name = "detail_id[]" />' +
+                         '<input class="form-control" type="text" placeholder="Location" name="location[]" required />' +
+                         '</td> ' +
                              '<td>' +
-                                 '<input value = "0"  type = "hidden" name = "detail_id[]" />' +
-                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="location[]" required />' +
+                                
+                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="locationcylinder[]" required />' +
                             '</td> ' +
                              '<td>' + 
                                  '<input class="form-control" type="text" placeholder="Area of Extinguishing System" name="area[]" required />' +
@@ -850,10 +854,14 @@
 
                              $trr =
                                  '<tr>' +
-                                 '<td>1</td>' +
+                             '<td>1</td>' +
+                             '<td>' +
+                             '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
+                             '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
+                             '</td >' +
                                  '<td>' +
-                                 '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
-                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
+                                
+                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="locationcylinder[]" value="' + responsedata.locationit[j].locationCylinder + '" required />' +
                                  '</td >' +
                                  '<td>' +
                                     '<input class="form-control" type="text" placeholder="Area of Extinguishing System" name="area[]" value="' + responsedata.locationit[j].area + '" required />'+
@@ -870,15 +878,18 @@
 
 
                          } else {
-                             console.log("hh");
+                           
                              var i = $('#p_IT tr').length + 1;
 
                              $trr =
 
-                               
                                  '<td>' +
                                  '<input value="' + responsedata.locationit[j].id + '"  type="hidden" name="detail_id[]" />' +
-                                 '<input class="form-control" type="text" placeholder="Location of Cylinder" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
+                                 '<input class="form-control" type="text" placeholder="Location" name="location[]" value="' + responsedata.locationit[j].location + '" required />' +
+                                 '</td >' +
+                                 '<td>' +
+                                 
+                             '<input class="form-control" type="text" placeholder="Location of Cylinder" name="locationcylinder[]" value="' + responsedata.locationit[j].locationCylinder + '" required />' +
                                  '</td >' +
                                  '<td>' +
                                  '<input class="form-control" type="text" placeholder="Area of Extinguishing System" name="area[]" value="' + responsedata.locationit[j].area + '" required />'+
