@@ -560,8 +560,8 @@ namespace SEMSystem.Controllers
                                  A.i.ReferenceNo,
                                  B.CompanyId
                              }
-                       );
-                       //.Where(a => compId.Contains(a.CompanyId));
+                       )
+                       .Where(a => compId.Contains(a.CompanyId));
 
                     status = "success";
 
