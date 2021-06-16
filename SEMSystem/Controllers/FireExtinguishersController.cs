@@ -136,7 +136,7 @@ namespace SEMSystem.Controllers
                    .GroupJoin(
                       _context.Areas // B
                     ,
-                      i => i.Id, //A key
+                      i => i.AreaId, //A key
                       p => p.ID,//B key
                       (i, g) =>
                          new
@@ -184,7 +184,7 @@ namespace SEMSystem.Controllers
                .GroupJoin(
                       _context.Areas // B
                     ,
-                      i => i.Id, //A key
+                      i => i.AreaId, //A key
                       p => p.ID,//B key
                       (i, g) =>
                          new
