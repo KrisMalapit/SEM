@@ -534,7 +534,7 @@ namespace SEMSystem.Controllers
                         .GroupJoin(
                          _context.Areas // B
                         ,
-                          i => i.Id, //A key
+                          i => i.AreaId, //A key
                           p => p.ID,//B key
                           (i, g) =>
                              new
@@ -560,7 +560,8 @@ namespace SEMSystem.Controllers
                                  A.i.ReferenceNo,
                                  B.CompanyId
                              }
-                       ).Where(a => compId.Contains(a.CompanyId));
+                       );
+                       //.Where(a => compId.Contains(a.CompanyId));
 
                     status = "success";
 
@@ -601,7 +602,7 @@ namespace SEMSystem.Controllers
                         .GroupJoin(
                       _context.Areas // B
                         ,
-                          i => i.Id, //A key
+                          i => i.AreaId, //A key
                           p => p.ID,//B key
                           (i, g) =>
                              new
@@ -671,7 +672,7 @@ namespace SEMSystem.Controllers
                         .GroupJoin(
                       _context.Areas // B
                         ,
-                          i => i.Id, //A key
+                          i => i.AreaId, //A key
                           p => p.ID,//B key
                           (i, g) =>
                              new
@@ -739,7 +740,7 @@ namespace SEMSystem.Controllers
                         .GroupJoin(
                       _context.Areas // B
                         ,
-                          i => i.Id, //A key
+                          i => i.AreaId, //A key
                           p => p.ID,//B key
                           (i, g) =>
                              new
