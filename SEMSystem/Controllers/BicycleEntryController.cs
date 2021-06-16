@@ -120,6 +120,8 @@ namespace SEMSystem.Controllers
                          a.Bicycles.IdentificationNo,
                          a.ReferenceNo,
                          a.Status
+                         ,DepartmentName = a.Bicycles.Departments.Name,
+                         CompanyName = a.Bicycles.Departments.Companies.Name
                      })
                     .Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -144,7 +146,9 @@ namespace SEMSystem.Controllers
                    a.Id
                    ,
                    a.Status,
-                   a.ReferenceNo
+                   a.ReferenceNo,
+                   DepartmentName = a.Bicycles.Departments.Name,
+                   CompanyName = a.Bicycles.Departments.Companies.Name
 
                })
               .Where(strFilter)
