@@ -746,7 +746,8 @@ namespace SEMSystem.Controllers
                                    HeaderId = A.i.InergenTankHeaderId,
                                    A.i.InergenTankHeaders.DocumentStatus,
                                    A.i.ImageUrl,
-                                   A.i.Id
+                                   A.i.Id,
+                                   B.Location
                                }
                           );
             status = "success";
