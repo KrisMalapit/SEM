@@ -11,6 +11,7 @@ namespace SEMSystem.Models.View_Model
         public int AreaId { get; set; }
         public int[] detail_id { get; set; }
         public string[] location { get; set; }
+        public string[] locationcylinder { get; set; }
         public string[] code { get; set; }
         public string[] type { get; set; }
         public string[] capacity { get; set; }

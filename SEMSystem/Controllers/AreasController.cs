@@ -348,7 +348,7 @@ namespace SEMSystem.Controllers
                                     AreaId = locdetail.AreaId,
                                     Code = locdetail.code[i],
                                     Location = locdetail.location[i],
-                                    //Type = locdetail.type[i],
+                                    
                                     Status = "Active"
                                 };
                                 _context.Add(loc);
@@ -579,7 +579,7 @@ namespace SEMSystem.Controllers
                                         //Capacity = locdetail.capacity[i],
                                         Location = locdetail.location[i],
                                         Area = locdetail.area[i],
-
+                                        LocationCylinder = locdetail.locationcylinder[i],
                                         Status = "Active"
                                     };
                                     _context.Add(loc);
@@ -614,6 +614,7 @@ namespace SEMSystem.Controllers
                                             AreaId = locdetail.AreaId,
                                             Area = locdetail.area[i],
                                             Location = locdetail.location[i],
+                                            LocationCylinder = locdetail.locationcylinder[i],
                                             Status = "Active"
                                         };
                                         _context.Add(loc);
@@ -624,6 +625,7 @@ namespace SEMSystem.Controllers
                                         //_location.Serial = locdetail.serial[i];
                                         //_location.Capacity = locdetail.capacity[i];
                                         _location.Location = locdetail.location[i];
+                                        _location.LocationCylinder = locdetail.locationcylinder[i];
                                         _location.Area = locdetail.area[i];
                                         _location.Status = "Active";
                                         _context.Update(_location);
@@ -1115,6 +1117,7 @@ namespace SEMSystem.Controllers
 
                   a.Location,
                   a.Area,
+                  a.LocationCylinder,
 
                   a.Id
 
