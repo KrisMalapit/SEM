@@ -156,95 +156,122 @@
 
 <div class="tabs-container">
     <ul class="nav nav-tabs" role="tablist">
-        <li><a class="nav-link active" data-toggle="tab" href="#tab-main"> <i class="fa fa-gavel"></i>Main</a></li>
-        <li><a class="nav-link" data-toggle="tab" href="#tab-de"> <i class="fa fa-bicycle"></i>Data Entry</a></li>
+        @if (User.Identity.GetRoleName() != "User")
+        {
+            <li><a class="nav-link active" data-toggle="tab" href="#tab-main"> <i class="fa fa-bicycle"></i>Main</a></li>
+
+            <li><a class="nav-link " data-toggle="tab" href="#tab-de"> <i class="fa fa-bicycle"></i>Data Entry</a></li>
+        }
+        else
+        {
+            @*<li><a class="nav-link " data-toggle="tab" href="#tab-main"> <i class="fa fa-bicycle"></i>Main</a></li>*@
+
+            <li><a class="nav-link active" data-toggle="tab" href="#tab-de"> <i class="fa fa-bicycle"></i>Data Entry</a></li>
+        }
+
     </ul>
     <div class="tab-content">
-        <div role="tabpanel" id="tab-main" class="tab-pane active" style="padding:20px;">
-            <div class="row">
-                @if (User.Identity.GetRoleName() == "Reviewer" || User.Identity.GetRoleName() == "Admin")
-                {
-                    <div class="col-lg-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Pending for Review</h5>
-                            </div>
-                            <div class="ibox-content">
+
+        @if (User.Identity.GetRoleName() != "User")
+        {
+            <div role="tabpanel" id="tab-main" class="tab-pane active" style="padding:20px;">
+                <div class="row">
+                    @if (User.Identity.GetRoleName() == "Reviewer" || User.Identity.GetRoleName() == "Admin")
+                    {
+                        <div class="col-lg-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Pending for Review</h5>
+                                </div>
+                                <div class="ibox-content">
 
 
-                                <table style="width:100%;">
-                                    <tr>
-                                        <td width="80%">
-                                            Fire Extinguisher
-                                            <a href="#" onclick="loadData(1);">(@ViewBag.ReviewFE)</a>
-                                        </td>
-                                        <td rowspan="4" style="text-align:center;">
-                                            <div class="stat-percent font-bold text-success"> <i class="fa fa-search" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Emergency Light <a href="#" onclick="loadData(2);">(@ViewBag.ReviewEL)</a></td>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td width="80%">
+                                                Fire Extinguisher
+                                                <a href="#" onclick="loadData(1);">(@ViewBag.ReviewFE)</a>
+                                            </td>
+                                            <td rowspan="4" style="text-align:center;">
+                                                <div class="stat-percent font-bold text-success"> <i class="fa fa-search" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Emergency Light <a href="#" onclick="loadData(2);">(@ViewBag.ReviewEL)</a></td>
 
-                                    </tr>
-                                    <tr>
-                                        <td>Inergen Tank <a href="#" onclick="loadData(3);">(@ViewBag.ReviewIT)</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inergen Tank <a href="#" onclick="loadData(3);">(@ViewBag.ReviewIT)</a></td>
 
-                                    </tr>
-                                    <tr>
-                                        <td>Fire Hydrant <a href="#" onclick="loadData(4);">(@ViewBag.ReviewFH)</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fire Hydrant <a href="#" onclick="loadData(4);">(@ViewBag.ReviewFH)</a></td>
 
-                                    </tr>
+                                        </tr>
 
-                                </table>
-
-
-                            </div>
-                        </div>
-                    </div>
-                }
+                                    </table>
 
 
-                @if (User.Identity.GetRoleName() == "Approver" || User.Identity.GetRoleName() == "Admin")
-                {
-                    <div class="col-lg-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Pending For Approval</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <table style="width:100%;">
-                                    <tr>
-                                        <td width="80%">
-                                            Fire Extinguisher
-                                            <a href="#" onclick="loadData(5);">(@ViewBag.ApproverFE)</a>
-                                        </td>
-                                        <td rowspan="4" style="text-align:center;">
-                                            <div class="stat-percent font-bold text-success"> <i class="fa fa-check" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Emergency Light <a href="#" onclick="loadData(6);">(@ViewBag.ApproverEL)</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Inergen Tank <a href="#" onclick="loadData(7);">(@ViewBag.ApproverIT)</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Fire Hydrant <a href="#" onclick="loadData(8);">(@ViewBag.ApproverFH)</a></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>Bicycle <a href="#" onclick="loadData(9);">(@ViewBag.ApproverBC)</a></td>
-
-                                    </tr>
-                                </table>
-
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+
+
+                    @if (User.Identity.GetRoleName() == "Approver" || User.Identity.GetRoleName() == "Admin")
+                    {
+                        <div class="col-lg-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Pending For Approval</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td width="80%">
+                                                Fire Extinguisher
+                                                <a href="#" onclick="loadData(5);">(@ViewBag.ApproverFE)</a>
+                                            </td>
+                                            <td rowspan="4" style="text-align:center;">
+                                                <div class="stat-percent font-bold text-success"> <i class="fa fa-check" style="font-size: 3.4em; line-height: 0px; letter-spacing: 0.002em; font-weight: 500;"></i></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Emergency Light <a href="#" onclick="loadData(6);">(@ViewBag.ApproverEL)</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inergen Tank <a href="#" onclick="loadData(7);">(@ViewBag.ApproverIT)</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fire Hydrant <a href="#" onclick="loadData(8);">(@ViewBag.ApproverFH)</a></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>Bicycle <a href="#" onclick="loadData(9);">(@ViewBag.ApproverBC)</a></td>
+
+                                        </tr>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-        </div>
-        <div role="tabpanel" id="tab-de" class="tab-pane" style="padding:20px;">
+            </div>
+        }
+
+        @{
+            string divstat = "active";
+        }
+        @if (User.Identity.GetRoleName() != "User")
+        {
+            divstat = "";
+
+        }
+
+ 
+
+        <div role="tabpanel" id="tab-de" class="tab-pane @divstat" style="padding:20px;">
             <div class="tabs-container">
                 <ul class="nav nav-tabs" role="tablist">
                     <li><a class="nav-link active" data-toggle="tab" href="#tab-1"> <i class="fa fa-gavel"></i>Equipment</a></li>
@@ -642,7 +669,7 @@
                                             <td rowspan="2" id="tdImg">
 
                                                 @*  <img class="btnSnap" data-equipment='bc' data-id='" + $id + "' style="width:75px;height:75px;" src="~/snapshots/637588374938896190_fe13_webcam.jpg" />*@
-                                                <img id="imgBike"  style="width:75px;height:75px;" src="~/snapshots/no_image.png" />
+                                                <img id="imgBike" style="width:75px;height:75px;" src="~/snapshots/no_image.png" />
 
                                             </td>
                                         </tr>
@@ -691,18 +718,18 @@
                                             <td style="text-align:center;vertical-align:middle;">
 
                                                 @*<input class="form-check-input" type="checkbox" id="FrameSafe" name="FrameSafe" value="">
-                                                    <span class="form-check-sign">
-                                                        <span class="check"></span>
-                                                    </span>*@
+                                                <span class="form-check-sign">
+                                                    <span class="check"></span>
+                                                </span>*@
                                                 <input type="radio" id="FrameSafe" name="Frame" value="FrameSafe">
 
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
 
                                                 @*<input class="form-check-input" type="checkbox" id="FrameUnSafe" name="FrameUnSafe" value="">
-                                                    <span class="form-check-sign">
-                                                        <span class="check"></span>
-                                                    </span>*@
+                                                <span class="form-check-sign">
+                                                    <span class="check"></span>
+                                                </span>*@
                                                 <input type="radio" id="FrameUnSafe" name="Frame" value="FrameUnSafe">
 
                                             </td>
@@ -721,24 +748,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="FrontForkSafe" name="FrontForkSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="FrontForkSafe" name="FrontForkSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="FrontForkSafe" name="FrontFork" value="FrontForkSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="FrontForkUnSafe" name="FrontForkUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="FrontForkUnSafe" name="FrontForkUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="FrontForkUnSafe" name="FrontFork" value="FrontForkUnSafe">
                                             </td>
                                             <td contenteditable="true" id="FrontForkRemarks"></td>
@@ -759,24 +786,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="HandlebarSafe" name="HandlebarSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="HandlebarSafe" name="HandlebarSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="HandlebarSafe" name="Handlebar" value="HandlebarSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="HandlebarUnSafe" name="HandlebarUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="HandlebarUnSafe" name="HandlebarUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="HandlebarUnSafe" name="Handlebar" value="HandlebarUnSafe">
                                             </td>
                                             <td contenteditable="true" id="HandlebarRemarks"></td>
@@ -794,24 +821,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="SeatSafe" name="SeatSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="SeatSafe" name="SeatSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="SeatSafe" name="Seat" value="SeatSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="SeatUnSafe" name="SeatUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="SeatUnSafe" name="SeatUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="SeatUnSafe" name="Seat" value="SeatUnSafe">
                                             </td>
                                             <td contenteditable="true" id="SeatRemarks"></td>
@@ -837,24 +864,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="FrontRearSafe" name="FrontRearSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="FrontRearSafe" name="FrontRearSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="FrontRearSafe" name="FrontRear" value="FrontRearSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="FrontRearUnSafe" name="FrontRearUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="FrontRearUnSafe" name="FrontRearUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="FrontRearUnSafe" name="FrontRear" value="FrontRearUnSafe">
                                             </td>
                                             <td contenteditable="true" id="FrontRearRemarks"></td>
@@ -879,24 +906,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="BrakeSafe" name="BrakeSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="BrakeSafe" name="BrakeSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="BrakeSafe" name="Brake" value="BrakeSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="BrakeUnSafe" name="BrakeUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="BrakeUnSafe" name="BrakeUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="BrakeUnSafe" name="Brake" value="BrakeUnSafe">
                                             </td>
                                             <td contenteditable="true" id="BrakeRemarks"></td>
@@ -919,24 +946,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="CrankChainSafe" name="CrankChainSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="CrankChainSafe" name="CrankChainSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="CrankChainSafe" name="CrankChain" value="CrankChainSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="CrankChainUnSafe" name="CrankChainUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="CrankChainUnSafe" name="CrankChainUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="CrankChainUnSafe" name="CrankChain" value="CrankChainUnSafe">
                                             </td>
                                             <td contenteditable="true" id="CrankChainRemarks"></td>
@@ -955,24 +982,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="ChainSafe" name="ChainSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="ChainSafe" name="ChainSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="ChainSafe" name="Chain" value="ChainSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" id="ChainUnSafe" name="ChainUnSafe" value="">
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>*@
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="ChainUnSafe" name="ChainUnSafe" value="">
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>*@
                                                 <input type="radio" id="ChainUnSafe" name="Chain" value="ChainUnSafe">
                                             </td>
                                             <td contenteditable="true" id="ChainRemarks"></td>
@@ -991,12 +1018,12 @@
                                     <div class="row" id="divApproversB">
                                         <div class="form-group col-md-6">
                                             <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-4" id="InspectedBy" name="InspectedBy" disabled/>
+                                            <input class="form-control col-md-4" id="InspectedBy" name="InspectedBy" disabled />
                                             <label>Safety Inspector</label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label style="font-weight:bold;">Noted By</label>
-                                            <input class="form-control col-md-4" id="NotedBy" name="NotedBy" disabled/>
+                                            <input class="form-control col-md-4" id="NotedBy" name="NotedBy" disabled />
                                             <label>Safety Supervisor</label>
                                         </div>
                                     </div>
