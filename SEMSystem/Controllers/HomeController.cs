@@ -235,6 +235,7 @@ namespace SEMSystem.Controllers
                           }
                     ).Where(a => compId.Contains(a.CompanyId));
 
+          
             var ldc = new LocationDashboardCount
             {
                 ReviewFE = fe.Where(a => a.DocumentStatus == "For Review").Count(),
@@ -244,7 +245,8 @@ namespace SEMSystem.Controllers
                 ReviewIT = it.Where(a => a.DocumentStatus == "For Review").Count(),
                 ApproverIT = it.Where(a => a.DocumentStatus == "For Approval").Count(),
                 ReviewFH = fh.Where(a => a.DocumentStatus == "For Review").Count(),
-                ApproverFH = fh.Where(a => a.DocumentStatus == "For Approval").Count()
+                ApproverFH = fh.Where(a => a.DocumentStatus == "For Approval").Count(),
+                ApproverBC = _context.BicycleEntryHeaders.Where(a=>a.Status == "Active").Where(a => a.DocumentStatus == "For Approval").Count()
             };
 
             return ldc;
@@ -444,7 +446,51 @@ namespace SEMSystem.Controllers
 
                     return Json(modelit);
 
+                case "bc":
 
+                    foreach (var item in id)
+                    {
+                        var wdif = _context.BicycleEntryHeaders.Find(item);
+                        wdif.DocumentStatus = docstatus;
+
+                        
+                        wdif.ApprovedDate = DateTime.Now.Date;
+                        _context.BicycleEntryDetails.Where(a => a.BicycleEntryHeaderId == item).ToList()
+                        .ForEach(a =>
+                            a.NotedBy = User.Identity.GetFullName()
+                        );
+                 
+                        _context.Entry(wdif).State = EntityState.Modified;
+
+                        Log log = new Log
+                        {
+                            Descriptions = "Modified BCHeader, Id = " + item,
+                            Action = "Modify",
+                            Status = "Success",
+                            UserId = User.Identity.GetUserName(),
+                            CreatedDate = DateTime.Now
+                        };
+                        _context.Add(log);
+
+                        _context.SaveChanges();
+
+                        //string stat = new NotifyController(_context).SendNotification(docstatus, equipmenttype, item); // send email
+
+                    }
+
+
+                    status = "success";
+
+                    var modelbc = new
+                    {
+                        status,
+                        message,
+
+                    };
+
+
+
+                    return Json(modelbc);
 
 
                 case "fh":
@@ -711,9 +757,49 @@ namespace SEMSystem.Controllers
 
                     return Json(modelit);
 
-                  
+                case "bc":
 
-                    
+                    var bc = _context.BicycleEntryHeaders
+                       .Where(a => a.DocumentStatus == docstatus)
+                       .Where(a => a.Status == "Active")
+                       .GroupJoin(
+                     _context.Bicycles // B
+                       ,
+                         i => i.BicycleId, //A key
+                         p => p.ID,//B key
+                         (i, g) =>
+                            new
+                            {
+                                i, //holds A data
+                                 g  //holds B data
+                             }
+                      )
+                      .SelectMany(
+                         temp => temp.g.DefaultIfEmpty(), //gets data and transfer to B
+                         (A, B) =>
+                            new
+                            {
+                                A.i.CreatedAt,
+                                CompanyName = B.Departments.Companies.Name,
+                                AreaName = "",
+                                A.i.Id,
+                                A.i.Status,
+                                A.i.DocumentStatus,
+                                A.i.ReferenceNo,
+                                B.Departments.CompanyId
+                            }
+                            ).Where(a => compId.Contains(a.CompanyId));
+                    status = "success";
+
+                    var modelbc = new
+                    {
+                        status,
+                        message,
+                        data = bc
+                    };
+
+
+                    return Json(modelbc);
                 case "fh":
                     //var fh = _context.FireHydrantHeaders
                     //    .Where(a => a.Status == "Active")
@@ -820,7 +906,7 @@ namespace SEMSystem.Controllers
             ViewData["ApproverEL"] = locationdashboard.ApproverEL;
             ViewData["ApproverIT"] = locationdashboard.ApproverIT;
             ViewData["ApproverFH"] = locationdashboard.ApproverFH;
-
+            ViewData["ApproverBC"] = locationdashboard.ApproverBC;
             return View();
         }
         
@@ -946,11 +1032,42 @@ namespace SEMSystem.Controllers
 
                        
                         break;
+
+                    case "BC":
+                        var modelBC = _context.BicycleEntryHeaders.Find(id);
+
+                        //int BCLocationCnt = _context.LocationFireHydrants.Where(a => a.AreaId == modelBC.AreaId).Where(a => a.Status == "Active").Count();
+                        //int BCDetails = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaders.AreaId == modelBC.AreaId).GroupBy(a => a.LocationFireHydrantId).Count();
+                        //if (BCLocationCnt == BCDetails)
+                        //{
+
+                            modelBC.DocumentStatus = "For Approval";
+                            _context.Update(modelBC);
+                            status = "success";
+                        //}
+                        //else
+                        //{
+                        //    message = "Submit not allowed. Not all locations has been checked";
+                        //    status = "fail";
+                        //}
+
+
+                        break;
                     default:
                         break;
                 }
                 string equipmenttype = module.ToLower();
-                string stat = new NotifyController(_context).SendNotification("For Review", equipmenttype, id); // send email
+
+                if (equipmenttype != "bc")
+                {
+                    string stat = new NotifyController(_context).SendNotification("For Review", equipmenttype, id); // send email
+                }
+                else
+                {
+                    string xxx = "for"; // delete
+                    //string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, 0); // send email
+                }
+                
                                                                                                               
 
 

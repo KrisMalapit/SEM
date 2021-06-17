@@ -28,6 +28,7 @@ namespace SEMSystem.Controllers
             int compid = 0;
             var notify = new NotifyViewModel();
             var area = _context.Areas.Find(id);
+
             switch (equipmenttype)
             {
                 case "fe":
@@ -65,6 +66,14 @@ namespace SEMSystem.Controllers
                     notify.Equipment = "Fire Hydrant";
 
                     notify.ReferenceNo = _fh.ReferenceNo;
+                    break;
+
+                case "bc":
+                    var _bc = _context.BicycleEntryHeaders.Where(a => a.Id == id).FirstOrDefault();
+                  
+                    notify.Equipment = "Bicycle";
+
+                    notify.ReferenceNo = _bc.ReferenceNo;
                     break;
 
             };

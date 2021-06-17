@@ -232,7 +232,10 @@
                                         <td>Fire Hydrant <a href="#" onclick="loadData(8);">(@ViewBag.ApproverFH)</a></td>
 
                                     </tr>
+                                    <tr>
+                                        <td>Bicycle <a href="#" onclick="loadData(9);">(@ViewBag.ApproverBC)</a></td>
 
+                                    </tr>
                                 </table>
 
                             </div>
@@ -988,12 +991,12 @@
                                     <div class="row" id="divApproversB">
                                         <div class="form-group col-md-6">
                                             <label style="font-weight:bold;">Inspected By</label>
-                                            <input class="form-control col-md-4" id="InspectedBy" name="InspectedBy" />
+                                            <input class="form-control col-md-4" id="InspectedBy" name="InspectedBy" disabled/>
                                             <label>Safety Inspector</label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label style="font-weight:bold;">Noted By</label>
-                                            <input class="form-control col-md-4" id="NotedBy" name="NotedBy" />
+                                            <input class="form-control col-md-4" id="NotedBy" name="NotedBy" disabled/>
                                             <label>Safety Supervisor</label>
                                         </div>
                                     </div>
@@ -1008,6 +1011,11 @@
                                     <a class="aClick" href="#" onclick='print("@ViewBag.ReferenceIdB","rptBicycle");'>
                                         <i class="fa fa-print"></i>
                                         <span class="print">&nbsp;Print</span>
+                                    </a>
+                                    <text> |&nbsp; </text>
+                                    <a class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdB","BC");'>
+                                        <i class="fa fa-check-square"></i>
+                                        <span class="save">&nbsp;Submit For Approval</span>
                                     </a>
                                 </p>
 
@@ -1095,6 +1103,7 @@
             getDataPerLocation('LocationIDFH', $('#LocationIDFH').val());
         }
         if ($equipmenttype == "bc") {
+            dataClearBicycleData();
             loadDatatableBicycle($("#BicycleId").val());
         }
         
@@ -1151,6 +1160,11 @@
             $equipmenttype = "it";
 
         }
+        else if (id == 9) {
+            $("#modalTitle").html("Bicycles");
+            $equipmenttype = "bc";
+
+        }
         else {
             $("#modalTitle").html("Fire Hydrant");
             $equipmenttype = "fh";
@@ -1190,9 +1204,12 @@
                             linkDetails = "@Url.Action("Edit", "InergenTanks")?id=" + $id;
 
                         }
+                            else if (id ==9) {
+                            linkDetails = "@Url.Action("Edit", "BicycleEntry")?id=" + $id;
+
+                        }
                         else {
                            linkDetails = "@Url.Action("Edit", "FireHydrants")?id=" + $id;
-
                         }
 
                         if (id < 5) {
@@ -1376,7 +1393,7 @@
 
 
         $("#InspectedBy").val("@User.Identity.GetFullName()");
-        $("#NotedBy").val("HBLUCY");
+        //$("#NotedBy").val("HBLUCY");
 
 
         $("#AreaId").select2({
@@ -2386,9 +2403,16 @@
                         "showDuration": "2000",
                     }
                     $("#BikeDetailId").val(responsedata.referenceId);
-                    $($obj).siblings("a").attr('onclick', "print(" + responsedata.referenceId + ",'rptBicycle')");
+                    $($obj).siblings("a.aClick").attr('onclick', "print(" + responsedata.referenceId + ",'rptBicycle')");
+                    $($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'BC')");
 
-                    loadDatatableBicycle(responsedata.referenceId)
+                    @*<text> |&nbsp; </text>
+                    <a class="aApprove" href="#" onclick='submitApproval("@ViewBag.ReferenceIdB","BC");'>
+                        <i class="fa fa-check-square"></i>
+                        <span class="save">&nbsp;Submit For Approval</span>
+                    </a>*@
+
+                    //loadDatatableBicycle($("BicycleId").val());
 
 
 
@@ -2465,14 +2489,14 @@
     }
     function loadDatatableBicycle(_Bicycle) {
       
-        dataClearBicycleData();
+       
 
 
          $.ajax({
                         url: "@Url.Action("getDataPerIdentificationNo", "BicycleEntry")"
                             , method: "POST"
                             , dataType: 'json'
-                            , data: { BicycleId: _Bicycle, dateTime: $("#Date").val()}
+                            , data: { BicycleId: _Bicycle}
                             , success: function (responsedata) {
 
                                 if (responsedata.status == "success") {
@@ -2484,7 +2508,11 @@
                                     if (responsedata.datadetail != null) {
                                         console.log(responsedata.datadetail.imageUrl);
                                         var $obj = $("#tblBicycle").closest('.tab-pane').find('.aClick');
+                                        var $obj2 = $("#tblBicycle").closest('.tab-pane').find('.aApprove');
                                         $($obj).attr('onclick', "print(" + responsedata.datadetail.bicycleEntryHeaderId + ",'rptBicycle')");
+                                        $($obj2).attr('onclick', "submitApproval(" + responsedata.datadetail.bicycleEntryHeaderId + ",'BC')");
+                                        //$($obj).siblings("a.aApprove").attr('onclick', "submitApproval(" + responsedata.referenceId + ",'BC')");
+
 
                                         $("#BikeDetailId").val(responsedata.datadetail.id);
 

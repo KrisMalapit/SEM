@@ -345,7 +345,10 @@ namespace SEMSystem.Controllers
             string message = "";
             try
             {
-                var _header = _context.FireExtinguisherHeaders.Where(a => a.Status == "Active").Where(a => a.DocumentStatus != "Approved");
+                var _header = _context.FireExtinguisherHeaders
+                     .Where(a => a.AreaId == item[0].AreaId)
+                    .Where(a => a.Status == "Active")
+                    .Where(a => a.DocumentStatus != "Approved");
 
                 if (_header.Count() == 0)
                 {

@@ -178,28 +178,31 @@ namespace SEMSystem.Controllers
                 return NotFound(ex.Message);
             }
         }
-        public IActionResult getDataPerIdentificationNo(int BicycleId, DateTime dateTime)
+        public IActionResult getDataPerIdentificationNo(int BicycleId)
         {
             string status = "";
             bool hasValue = true;
+
             var v =
 
                 _context.Bicycles
                 .Where(a => a.Status == "Active")
-                .Where(a=>a.ID == BicycleId)
-                .Select(a => new {
+                .Where(a => a.ID == BicycleId)
+                .Select(a => new
+                {
                     a.NameOwner,
                     a.BrandName,
                     a.ContactNo,
-                   
+
                 });
 
-            status = "success";
-
+            //var v =  _context.BicycleEntryHeaders
+            //      .Where(a => a.Status == "Active")
+            //      .Select(a => new { a.Bicycles.NameOwner, a.Bicycles.BrandName, a.Bicycles.ContactNo, a.DocumentStatus });
 
             var detail = _context.BicycleEntryDetails
                 .Where(a => a.BicycleHeaders.BicycleId == BicycleId)
-                .Where(a => a.BicycleHeaders.CreatedAt == dateTime)
+                .Where(a => a.BicycleHeaders.DocumentStatus != "Approved")
                 .FirstOrDefault();
 
             if (detail ==  null)
@@ -209,9 +212,10 @@ namespace SEMSystem.Controllers
 
 
 
+            status = "success";
 
 
-           
+
 
             var model = new
             {
@@ -219,6 +223,52 @@ namespace SEMSystem.Controllers
                 ,
                 data = v
                 ,datadetail = detail
+                ,
+                hasValue
+
+            };
+            return Json(model);
+        }
+        public IActionResult getDataPerIdentificationNoEdit(int HeaderId)
+        {
+            string status = "";
+            bool hasValue = true;
+
+            var v = _context.BicycleEntryHeaders
+                  .Where(a => a.Id == HeaderId)
+                  .Select(a => new { a.Bicycles.NameOwner, a.Bicycles.BrandName
+                  , a.Bicycles.ContactNo
+                  , a.DocumentStatus
+                  , Company = a.Bicycles.Departments.Companies.Name
+                  , Department = a.Bicycles.Departments.Name
+
+
+                  });
+
+            var detail = _context.BicycleEntryDetails
+                .Where(a => a.BicycleHeaders.BicycleId == HeaderId)
+                
+                .FirstOrDefault();
+
+            if (detail == null)
+            {
+                hasValue = false;
+            }
+
+
+
+            status = "success";
+
+
+
+
+            var model = new
+            {
+                status
+                ,
+                data = v
+                ,
+                datadetail = detail
                 ,
                 hasValue
 
@@ -245,7 +295,7 @@ namespace SEMSystem.Controllers
                 var _header = _context.BicycleEntryHeaders
                     .Where(a => a.Status == "Active")
                     .Where(a => a.BicycleId == BicycleId)
-                    .Where(a => a.CreatedAt == DateTime.Now.Date).FirstOrDefault();
+                    .Where(a => a.DocumentStatus != "Approved").FirstOrDefault();
 
                 if (_header == null)
                 {
