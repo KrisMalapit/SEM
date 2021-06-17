@@ -474,7 +474,7 @@ namespace SEMSystem.Controllers
 
                         _context.SaveChanges();
 
-                        //string stat = new NotifyController(_context).SendNotification(docstatus, equipmenttype, item); // send email
+                        string stat = new NotifyController(_context).SendNotification(docstatus, equipmenttype, item); // send email
 
                     }
 
@@ -1064,8 +1064,8 @@ namespace SEMSystem.Controllers
                 }
                 else
                 {
-                    string xxx = "for"; // delete
-                    //string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, 0); // send email
+                    
+                    string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, 0); // send email
                 }
                 
                                                                                                               
