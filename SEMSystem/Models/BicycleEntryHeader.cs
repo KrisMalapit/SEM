@@ -17,5 +17,6 @@ namespace SEMSystem.Models
         public string UpdatedBy { get; set; }
         public string Status { get; set; } = "Active";
         public string DocumentStatus { get; set; } = "Draft";
+        public DateTime ApprovedDate { get; set; }
     }
 }

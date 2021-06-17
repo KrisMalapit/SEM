@@ -412,7 +412,10 @@ namespace SEMSystem.Controllers
                 //    .Where(a => a.LocationEmergencyLightId == item[0].LocationEmergencyLightId)
                 //    .Where(a => a.CreatedAt == DateTime.Now.Date);
 
-                var _header = _context.EmergencyLightHeaders.Where(a => a.Status == "Active").Where(a => a.DocumentStatus != "Approved");
+                var _header = _context.EmergencyLightHeaders
+                     .Where(a => a.AreaId == item[0].AreaId)
+                    .Where(a => a.Status == "Active")
+                    .Where(a => a.DocumentStatus != "Approved");
 
                 if (_header.Count() == 0)
                 {

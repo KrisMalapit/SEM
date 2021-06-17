@@ -15,5 +15,6 @@ namespace SEMSystem.Models.View_Model
         public int ApproverEL { get; set; }
         public int ApproverIT { get; set; }
         public int ApproverFH { get; set; }
+        public int ApproverBC { get; set; }
     }
 }

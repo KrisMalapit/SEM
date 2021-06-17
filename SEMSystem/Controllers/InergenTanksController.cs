@@ -400,7 +400,10 @@ namespace SEMSystem.Controllers
                 //      //.Where(a => a.AreaId == item[0].AreaId)
                 //    .Where(a => a.LocationInergenTankId == item[0].LocationInergenTankId)
                 //    .Where(a => a.CreatedAt == DateTime.Now.Date);
-                var _header = _context.InergenTankHeaders.Where(a => a.Status == "Active").Where(a => a.DocumentStatus != "Approved");
+                var _header = _context.InergenTankHeaders
+                    .Where(a=>a.AreaId == item[0].AreaId)
+                    .Where(a => a.Status == "Active")
+                    .Where(a => a.DocumentStatus != "Approved");
                 if (_header.Count() == 0)
                 {
                     var comp = _context.LocationInergenTanks.Include(a => a.Areas.Companies).Where(a => a.Id == item[0].LocationInergenTankId)

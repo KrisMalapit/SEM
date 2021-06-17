@@ -101,9 +101,7 @@ namespace SEMSystem.Models
 
 
 
-            modelBuilder.Entity<BicycleEntryHeader>()
-             .HasIndex(p => new { p.BicycleId,p.CreatedAt, p.Status })
-             .IsUnique();
+          
 
             modelBuilder.Entity<Company>().HasData(
                new { ID = 1, Code = "SLPGC", Name = "Southwest Luzon Power Gen Corporation", Status = "Active" },
