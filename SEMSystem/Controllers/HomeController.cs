@@ -791,6 +791,8 @@ namespace SEMSystem.Controllers
                             ).Where(a => compId.Contains(a.CompanyId));
                     status = "success";
 
+
+                    var rr = bc.ToList();
                     var modelbc = new
                     {
                         status,
@@ -884,10 +886,13 @@ namespace SEMSystem.Controllers
         [BreadCrumb(Title = "Index", Order = 1, IgnoreAjaxRequests = true)]
         public IActionResult Index()
         {
+            string companyAccess = User.Identity.GetCompanyAccess();
+            int[] compId = companyAccess.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+
 
             ViewData["ID"] = 0;
             //ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name");
-            ViewData["BicycleId"] = new SelectList(_context.Bicycles, "ID", "IdentificationNo");
+            ViewData["BicycleId"] = new SelectList(_context.Bicycles.Include(a=>a.Departments).Where(a=>compId.Contains(a.Departments.CompanyId)), "ID", "IdentificationNo");
             ViewData["CreatedAt"] = DateTime.Now.Date.ToString("MM-dd-yyyy");
 
             ViewData["ReferenceIdFE"] = 0;
@@ -1036,20 +1041,11 @@ namespace SEMSystem.Controllers
                     case "BC":
                         var modelBC = _context.BicycleEntryHeaders.Find(id);
 
-                        //int BCLocationCnt = _context.LocationFireHydrants.Where(a => a.AreaId == modelBC.AreaId).Where(a => a.Status == "Active").Count();
-                        //int BCDetails = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaders.AreaId == modelBC.AreaId).GroupBy(a => a.LocationFireHydrantId).Count();
-                        //if (BCLocationCnt == BCDetails)
-                        //{
 
                             modelBC.DocumentStatus = "For Approval";
                             _context.Update(modelBC);
                             status = "success";
-                        //}
-                        //else
-                        //{
-                        //    message = "Submit not allowed. Not all locations has been checked";
-                        //    status = "fail";
-                        //}
+                       
 
 
                         break;
@@ -1065,7 +1061,7 @@ namespace SEMSystem.Controllers
                 else
                 {
                     
-                    string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, 0); // send email
+                    string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, id); // send email
                 }
                 
                                                                                                               

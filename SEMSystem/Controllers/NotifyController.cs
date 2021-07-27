@@ -27,14 +27,15 @@ namespace SEMSystem.Controllers
         {
             int compid = 0;
             var notify = new NotifyViewModel();
-            var area = _context.Areas.Find(id);
+            var _area = _context.Areas;
 
             switch (equipmenttype)
             {
                 case "fe":
                     var _fe = _context.FireExtinguisherHeaders.Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = area.Name;
-                    notify.CompanyId = area.CompanyId;
+                    var areafe = _area.Find(_fe.AreaId);
+                    notify.Area = areafe.Name;
+                    notify.CompanyId = areafe.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Fire Extinguisher";
 
@@ -42,8 +43,9 @@ namespace SEMSystem.Controllers
                     break;
                 case "el":
                     var _el = _context.EmergencyLightHeaders.Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = area.Name;
-                    notify.CompanyId = area.CompanyId;
+                    var areael = _area.Find(_el.AreaId);
+                    notify.Area = areael.Name;
+                    notify.CompanyId = areael.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Emergency Light";
 
@@ -51,8 +53,9 @@ namespace SEMSystem.Controllers
                     break;
                 case "it":
                     var _it = _context.InergenTankHeaders.Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = area.Name;
-                    notify.CompanyId = area.CompanyId;
+                    var areait = _area.Find(_it.AreaId);
+                    notify.Area = areait.Name;
+                    notify.CompanyId = areait.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Inergen Tank";
 
@@ -60,8 +63,9 @@ namespace SEMSystem.Controllers
                     break;
                 case "fh":
                     var _fh = _context.FireHydrantHeaders.Where(a => a.Id == id).FirstOrDefault();
-                    notify.Area = area.Name;
-                    notify.CompanyId = area.CompanyId;
+                    var areafh = _area.Find(_fh.AreaId);
+                    notify.Area = areafh.Name;
+                    notify.CompanyId = areafh.CompanyId;
                     notify.DocumentStatus = docstatus;
                     notify.Equipment = "Fire Hydrant";
 
@@ -69,8 +73,8 @@ namespace SEMSystem.Controllers
                     break;
 
                 case "bc":
-                    var _bc = _context.BicycleEntryHeaders.Where(a => a.Id == id).FirstOrDefault();
-                  
+                    var _bc = _context.BicycleEntryHeaders.Include(a=>a.Bicycles.Departments).Where(a => a.Id == id).FirstOrDefault();
+                    notify.CompanyId = _bc.Bicycles.Departments.CompanyId;
                     notify.Equipment = "Bicycle";
 
                     notify.ReferenceNo = _bc.ReferenceNo;
@@ -107,8 +111,8 @@ namespace SEMSystem.Controllers
             string message = "";
             string rply = "";
             string revieweremail = "";
-            //string approveremail = "hblucy@semirarampc.com";
-            string approveremail = "rpgustilo@semirarampc.com";
+            string approveremail = "hblucy@semirarampc.com";
+            //string approveremail = "rpgustilo@semirarampc.com";
             string recipient = "";
 
 
@@ -120,19 +124,19 @@ namespace SEMSystem.Controllers
                         if (nvm.CompanyId == 1) //slpgc
                         {
                             ////gbarroyo
-                            //revieweremail = "gbarroyo@slpowergen.com";
-                            revieweremail = "kcmalapit@semirarampc.com";
+                            revieweremail = "gbarroyo@slpowergen.com";
+                            //revieweremail = "kcmalapit@semirarampc.com";
                         }
                         else
                         {
                             ////eccueto
-                            //revieweremail = "eccueto@semcalaca.com";
-                            revieweremail = "rpgustilo@semirarampc.com";
+                            revieweremail = "eccueto@semcalaca.com";
+                            //revieweremail = "rpgustilo@semirarampc.com";
                         }
-                        message = "There a form For Review with Reference No: " + nvm.ReferenceNo + "<br /> Area: " + nvm.Area + "<br /> Location: " + nvm.Location;
+                        message = "There's a form For Review for area " + nvm.Area + " with Reference No: " + nvm.ReferenceNo ;
                         break;
                     case "For Approval":
-                        message = "There a form For Approval with Reference No: " + nvm.ReferenceNo + "<br /> Area: " + nvm.Area + "<br /> Location: " + nvm.Location;
+                        message = "There's a form For Approval for area " + nvm.Area + " with Reference No: " + nvm.ReferenceNo ;
                         break;
                     default:
                         break;
@@ -150,18 +154,20 @@ namespace SEMSystem.Controllers
                 if (nvm.DocumentStatus == "For Review")
                 {
                     mail.To.Add(new MailAddress(revieweremail));
+                    mail.To.Add(new MailAddress("rpgustilo@semirarampc.com"));
                     recipient = revieweremail;
                 }
                 else
                 {
                     mail.To.Add(new MailAddress(approveremail));
+                    mail.To.Add(new MailAddress("rpgustilo@semirarampc.com"));
                     recipient = approveremail;
                 }
 
 
 
                 mail.Subject = "Safety Equipment Monitoring System" + " - " + nvm.DocumentStatus.ToUpper();
-                mail.Body = string.Format(body + " Click on this link to view details. http://192.168.30.182/SEM/");
+                mail.Body = string.Format(body + " Click on this link to view details. https://californium:8443/SEM/");
                 mail.IsBodyHtml = true;
 
                 using (var smtp = new SmtpClient()) //mail server

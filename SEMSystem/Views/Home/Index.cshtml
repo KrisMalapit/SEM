@@ -666,10 +666,10 @@
                                             <td> Date</td>
                                             <td><input id="Date" name="Date" class="form-control" value="@ViewBag.CreatedAt" disabled /></td>
                                             <td>Image</td>
-                                            <td rowspan="2" id="tdImg">
+                                            <td rowspan="3" id="tdImg">
 
                                                 @*  <img class="btnSnap" data-equipment='bc' data-id='" + $id + "' style="width:75px;height:75px;" src="~/snapshots/637588374938896190_fe13_webcam.jpg" />*@
-                                                <img id="imgBike" style="width:75px;height:75px;" src="~/snapshots/no_image.png" />
+                                                <img id="imgBike" style="width:130px;height:130px;" src="~/snapshots/no_image.png" />
 
                                             </td>
                                         </tr>
@@ -678,6 +678,13 @@
                                             <td> <input id="NameOwner" name="NameOwner" class="form-control" disabled /></td>
                                             <td> Brand Name</td>
                                             <td><input id="BrandName" name="BrandName" class="form-control" disabled /></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company</td>
+                                            <td> <input id="CompanyBike" name="Company" class="form-control" disabled /></td>
+                                            <td> Department</td>
+                                            <td><input id="DepartmentBike" name="Department" class="form-control" disabled /></td>
                                             <td></td>
                                         </tr>
                                     </table>
@@ -1061,8 +1068,15 @@
 
 
 <script>
+    $(function () {
+        dataClearBicycleData();
+       
+        if (parseInt($("#BicycleId").val()) > 0) {
+            loadDatatableBicycle($("#BicycleId").val());
+        }
+        
 
-
+    })
 
     $equipmentid = 0;
     $equipmenttype = "";
@@ -2377,6 +2391,7 @@
 
 
     $("#BicycleId").change(function () {
+        dataClearBicycleData();
          loadDatatableBicycle($(this).val());
     });
         $("input[type=text]").keyup(function () {
@@ -2529,7 +2544,8 @@
                                 if (responsedata.status == "success") {
                                     $("#NameOwner").val(responsedata.data[0].nameOwner);
                                     $("#BrandName").val(responsedata.data[0].brandName);
-
+                                    $("#CompanyBike").val(responsedata.data[0].company);
+                                    $("#DepartmentBike").val(responsedata.data[0].department);
 
 
                                     if (responsedata.datadetail != null) {
@@ -2558,7 +2574,7 @@
                                         }
 
                                         //$img = '<img id="imgBike" data-equipment="bc" data-id="' + responsedata.datadetail.id + '" style="width:75px;height:75px;" src="/snapshots/' + $imgsrc + '"/>'; TEST
-                                        $img = '<img id="imgBike" data-equipment="bc" data-id="' + responsedata.datadetail.id + '" style="width:75px;height:75px;" src="/SEM/snapshots/' + $imgsrc + '"/>'; //LIVE
+                                        $img = '<img id="imgBike" data-equipment="bc" data-id="' + responsedata.datadetail.id + '" style="width:130px;height:130px;" src="/SEM/snapshots/' + $imgsrc + '"/>'; //LIVE
 
                                         $("td#tdImg").html($img);
 
@@ -2604,7 +2620,7 @@
                                         $($obj).attr('onclick', "print(" + 0 + ",'rptBicycle')");
 
                                         //$img = '<img id="imgBike" data-equipment="bc" data-id="0" style="width:75px;height:75px;" src="/SEM/snapshots/no_image.png" />'; //TEST
-                                        $img = '<img id="imgBike" data-equipment="bc" data-id="0" style="width:75px;height:75px;" src="/SEM/snapshots/no_image.png" />'; //LIVE
+                                        $img = '<img id="imgBike" data-equipment="bc" data-id="0" style="width:130px;height:130px;" src="/SEM/snapshots/no_image.png" />'; //LIVE
                                         $("td#tdImg").html($img);
                                         
                                     }

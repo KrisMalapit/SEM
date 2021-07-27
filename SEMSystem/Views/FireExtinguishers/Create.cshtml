@@ -155,7 +155,11 @@
                     <i class="fa fa-print"></i>
                     <span class="print">&nbsp;Print</span>
                 </a>
-
+                <text> |&nbsp; </text>
+                <a class="aApprove" href="#" onclick="proceed();">
+                    <i class="fa fa-check-square"></i>
+                    <span class="save">&nbsp;Approve</span>
+                </a>
 
 
 
@@ -169,6 +173,29 @@
 
 
 <script>
+    function proceed() {
+        data = [];
+        data.push('@ViewBag.ID');
+        $.ajax({
+        url: "@Url.Action("Approve","Home")"
+            , method: "POST"
+            , data: { id: data, docstatus: '@ViewBag.DocumentStatus', equipmenttype : "fe" }
+            , dataType: 'json'
+            , success: function (responsedata) {
+                if (responsedata.status == "success") {
+                    toastr["success"]("Data approved!", "<b>Success</b> ")
+                    
+                } else {
+                    toastr["error"](responsedata.message)
+                    toastr.options = {
+                        "closeButton": true,
+                        "showDuration": "3000",
+                    }
+                }
+            }
+        })
+    }
+
 
     $(document).on('click', '.btnSnap', function () {
         $("#snapheaderequipment").val($(this).attr('data-equipment'));

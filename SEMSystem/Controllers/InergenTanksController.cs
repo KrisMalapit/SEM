@@ -56,6 +56,7 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
+            ViewData["DocumentStatus"] = model.DocumentStatus;
             //ViewData["AreaId"] = new SelectList(_context.Areas, "ID", "Name", model.AreaId);
             ViewData["Area"] = _context.Areas.Find(model.AreaId).Name;
 
@@ -161,7 +162,8 @@ namespace SEMSystem.Controllers
                                       ,
                              A.i.Status,
                              A.i.DocumentStatus,
-                             A.i.ReferenceNo
+                             A.i.ReferenceNo,
+                             A.i.CreatedBy
                          }
                    ).Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -201,7 +203,8 @@ namespace SEMSystem.Controllers
                              A.i.Status,
                              A.i.DocumentStatus,
                              A.i.ReferenceNo,
-                             A.i.Id
+                             A.i.Id,
+                             A.i.CreatedBy
                          }
                    )
               .Where(strFilter)
@@ -427,7 +430,7 @@ namespace SEMSystem.Controllers
                         ReferenceNo = refno,
                         AreaId = item[0].AreaId,
                         CreatedAt = DateTime.Now.Date,
-                        CreatedBy = User.Identity.GetUserName()
+                        CreatedBy = User.Identity.GetFullName()
                     };
                     _context.Add(header);
                     _context.SaveChanges();

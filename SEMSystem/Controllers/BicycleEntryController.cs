@@ -148,7 +148,9 @@ namespace SEMSystem.Controllers
                    a.Status,
                    a.ReferenceNo,
                    DepartmentName = a.Bicycles.Departments.Name,
-                   CompanyName = a.Bicycles.Departments.Companies.Name
+                   CompanyName = a.Bicycles.Departments.Companies.Name,
+                   a.DocumentStatus,
+                   a.CreatedBy
 
                })
               .Where(strFilter)
@@ -193,6 +195,8 @@ namespace SEMSystem.Controllers
                     a.NameOwner,
                     a.BrandName,
                     a.ContactNo,
+                    Department = a.Departments.Name,
+                    Company = a.Departments.Companies.Name,
 
                 });
 
@@ -202,6 +206,7 @@ namespace SEMSystem.Controllers
 
             var detail = _context.BicycleEntryDetails
                 .Where(a => a.BicycleHeaders.BicycleId == BicycleId)
+                .Where(a => a.BicycleHeaders.Status ==  "Active")
                 .Where(a => a.BicycleHeaders.DocumentStatus != "Approved")
                 .FirstOrDefault();
 
@@ -236,7 +241,9 @@ namespace SEMSystem.Controllers
 
             var v = _context.BicycleEntryHeaders
                   .Where(a => a.Id == HeaderId)
-                  .Select(a => new { a.Bicycles.NameOwner, a.Bicycles.BrandName
+                  .Select(a => new {
+                      a.Bicycles.NameOwner
+                      , a.Bicycles.BrandName
                   , a.Bicycles.ContactNo
                   , a.DocumentStatus
                   , Company = a.Bicycles.Departments.Companies.Name
@@ -246,7 +253,7 @@ namespace SEMSystem.Controllers
                   });
 
             var detail = _context.BicycleEntryDetails
-                .Where(a => a.BicycleHeaders.BicycleId == HeaderId)
+                .Where(a => a.BicycleEntryHeaderId == HeaderId)
                 
                 .FirstOrDefault();
 
@@ -320,7 +327,7 @@ namespace SEMSystem.Controllers
                         ReferenceNo = refno,
                         BicycleId = BicycleId,
                         CreatedAt = DateTime.Now.Date,
-                        CreatedBy = User.Identity.GetUserName()
+                        CreatedBy = User.Identity.GetFullName()
                     };
                     _context.Add(header);
                     _context.SaveChanges();

@@ -1,5 +1,4 @@
-﻿@*@model SEMSystem.Models.BicycleEntryDetail*@
-
+﻿
 
 <style>
 
@@ -405,7 +404,11 @@
                     <span class="print">&nbsp;Print</span>
                 </a>
 
-
+                <text> |&nbsp; </text>
+                <a class="aApprove" href="#" onclick="proceed();">
+                    <i class="fa fa-check-square"></i>
+                    <span class="save">&nbsp;Approve</span>
+                </a>
 
 
             </p>
@@ -420,6 +423,36 @@
     $(function () {
             loadDatatableEdit();
     })
+    function proceed() {
+        
+        data = [];
+
+        
+        data.push('@ViewBag.ID');
+
+        
+
+        $.ajax({
+        url: "@Url.Action("Approve","Home")"
+            , method: "POST"
+            , data: { id: data, docstatus: "For Approval", equipmenttype : "bc" }
+            , dataType: 'json'
+            , success: function (responsedata) {
+                if (responsedata.status == "success") {
+                    toastr["success"]("Data approved!", "<b>Success</b> ")
+                    
+                } else {
+                    toastr["error"](responsedata.message)
+                    toastr.options = {
+                        "closeButton": true,
+                        "showDuration": "3000",
+                    }
+                }
+            }
+        })
+     
+    }
+
 
         $("input[type=text]").keyup(function () {
             $(this).val($(this).val().toUpperCase());
@@ -467,7 +500,7 @@
                         url: "@Url.Action("getDataPerIdentificationNoEdit", "BicycleEntry")"
                             , method: "POST"
                             , dataType: 'json'
-                            , data: { HeaderId: $("#BicycleId").val(), dateTime: $("#Date").val()}
+             , data: { HeaderId: @ViewBag.ID}
                             , success: function (responsedata) {
                                
                                 if (responsedata.status == "success") {

@@ -56,6 +56,7 @@ namespace SEMSystem.Controllers
 
 
             ViewData["ID"] = id;
+            ViewData["DocumentStatus"] = model.DocumentStatus;
             // ViewData["AreaId"] = new SelectList(_context.LocationFireHydrants, "ID", "Name", model.LocationFireHydrantId);
             ViewData["Area"] = _context.Areas.Find(model.AreaId).Name;
 
@@ -166,7 +167,8 @@ namespace SEMSystem.Controllers
                              A.i.Status,
                              A.i.DocumentStatus,
                              A.i.ReferenceNo,
-                             A.i.Id
+                             A.i.Id,
+                             A.i.CreatedBy
                          }
                    ).Where(a => a.Status == "Active")
                     .Where(strFilter)
@@ -229,7 +231,8 @@ namespace SEMSystem.Controllers
                                A.i.Status,
                                A.i.DocumentStatus,
                                A.i.ReferenceNo,
-                               A.i.Id
+                               A.i.Id,
+                               A.i.CreatedBy
                            }
                      ).Where(strFilter)
                 .Where(a => a.Status == "Active")
@@ -455,7 +458,7 @@ namespace SEMSystem.Controllers
                         //LocationFireHydrantId = item[0].LocationFireHydrantId,
                         AreaId = item[0].AreaId,
                         CreatedAt = DateTime.Now.Date,
-                        CreatedBy = User.Identity.GetUserName()
+                        CreatedBy = User.Identity.GetFullName()
                     };
                     _context.Add(header);
                     _context.SaveChanges();
@@ -539,9 +542,9 @@ namespace SEMSystem.Controllers
                         }
                         else
                         {
-                                d.GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0;
-                                d.Hanger = detail.Hanger == "true" ? 1 : 0;
-                                d.Hose15 = detail.Hose15 == "true" ? 1 : 0;
+                            d.GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0;
+                            d.Hanger = detail.Hanger == "true" ? 1 : 0;
+                            d.Hose15 = detail.Hose15 == "true" ? 1 : 0;
                             d.Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0;
                             d.Hose25 = detail.Hose25 == "true" ? 1 : 0;
                             d.Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0;

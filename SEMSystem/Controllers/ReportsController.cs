@@ -478,11 +478,11 @@ namespace SEMSystem.Controllers
                 lstarea.Add(_area);
             }
 
-            var customArea = new AreaViewModel();
-            customArea.ID = -1;
-            customArea.Text = "ALL";
+            //var customArea = new AreaViewModel();
+            //customArea.ID = -1;
+            //customArea.Text = "ALL";
             
-            lstarea.Add(customArea);
+            //lstarea.Add(customArea);
             
 
             ViewData["AreaId"] = new SelectList(lstarea.OrderBy(a => a.Text), "ID", "Text");
