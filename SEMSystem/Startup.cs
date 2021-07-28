@@ -40,7 +40,7 @@ namespace SEMSystem
 
 
             services.AddDbContext<SEMSystemContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("SEMContextLocal")
+            options.UseSqlServer(Configuration.GetConnectionString("SEMContextTest")
             , builder => builder.UseRowNumberForPaging() //add this for Incorrect syntax near 'OFFSET'. Invalid usage of the option NEXT in the FETCH statement
             ));
 
