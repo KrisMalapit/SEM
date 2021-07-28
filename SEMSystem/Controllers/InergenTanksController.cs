@@ -447,10 +447,10 @@ namespace SEMSystem.Controllers
                            
                             ItemId = detail.ItemId,
 
-                            Cylinder = detail.Cylinder == "true" ? 1 : 0,
-                            Gauge = detail.Gauge == "true" ? 1 : 0,
-                            Hose = detail.Hose == "true" ? 1 : 0,
-                            Pressure = detail.Pressure == "true" ? 1 : 0,
+                            Cylinder = Convert.ToInt32(detail.Cylinder),
+                            Gauge = Convert.ToInt32(detail.Gauge),
+                            Hose = Convert.ToInt32(detail.Hose),
+                            Pressure = Convert.ToInt32(detail.Pressure),
 
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now.Date,
@@ -484,10 +484,10 @@ namespace SEMSystem.Controllers
                             {
                                
                                 ItemId = detail.ItemId,
-                                Cylinder = detail.Cylinder == "true" ? 1 : 0,
-                                Gauge = detail.Gauge == "true" ? 1 : 0,
-                                Hose = detail.Hose == "true" ? 1 : 0,
-                                Pressure = detail.Pressure == "true" ? 1 : 0,
+                                Cylinder = Convert.ToInt32(detail.Cylinder),
+                                Gauge = Convert.ToInt32(detail.Gauge),
+                                Hose = Convert.ToInt32(detail.Hose),
+                                Pressure = Convert.ToInt32(detail.Pressure),
 
                                 CreatedAt = DateTime.Now.Date,
                                 UpdatedAt = DateTime.Now,
@@ -505,10 +505,10 @@ namespace SEMSystem.Controllers
                         }
                         else
                         {
-                            d.Cylinder = detail.Cylinder == "true" ? 1 : 0;
-                            d.Gauge = detail.Gauge == "true" ? 1 : 0;
-                            d.Hose = detail.Hose == "true" ? 1 : 0;
-                            d.Pressure = detail.Pressure == "true" ? 1 : 0;
+                            d.Cylinder = Convert.ToInt32(detail.Cylinder);
+                            d.Gauge = Convert.ToInt32(detail.Gauge);
+                            d.Hose = Convert.ToInt32(detail.Hose);
+                            d.Pressure = Convert.ToInt32(detail.Pressure);
 
                             d.UpdatedAt = DateTime.Now;
                             d.UpdatedBy = User.Identity.GetUserName();
@@ -576,10 +576,10 @@ namespace SEMSystem.Controllers
                         {
                           
                             ItemId = detail.ItemId,
-                            Cylinder = detail.Cylinder == "true" ? 1 : 0,
-                            Gauge = detail.Gauge == "true" ? 1 : 0,
-                            Hose = detail.Hose == "true" ? 1 : 0,
-                            Pressure = detail.Pressure == "true" ? 1 : 0,
+                            Cylinder = Convert.ToInt32(detail.Cylinder),
+                            Gauge = Convert.ToInt32(detail.Gauge),
+                            Hose = Convert.ToInt32(detail.Hose),
+                            Pressure = Convert.ToInt32(detail.Pressure),
 
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now,
@@ -596,10 +596,10 @@ namespace SEMSystem.Controllers
                     }
                     else
                     {
-                        d.Cylinder = detail.Cylinder == "true" ? 1 : 0;
-                        d.Gauge = detail.Gauge == "true" ? 1 : 0;
-                        d.Hose = detail.Hose == "true" ? 1 : 0;
-                        d.Pressure = detail.Pressure == "true" ? 1 : 0;
+                        d.Cylinder = Convert.ToInt32(detail.Cylinder);
+                        d.Gauge = Convert.ToInt32(detail.Gauge);
+                        d.Hose = Convert.ToInt32(detail.Hose);
+                        d.Pressure = Convert.ToInt32(detail.Pressure);
 
                         d.UpdatedAt = DateTime.Now;
                         d.UpdatedBy = User.Identity.GetUserName();

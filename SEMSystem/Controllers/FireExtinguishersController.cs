@@ -395,11 +395,11 @@ namespace SEMSystem.Controllers
                         var _detail = new FireExtinguisherDetail
                         {
                             ItemId = detail.ItemId,
-                            Cylinder = detail.Cylinder == "true" ? 1 : 0,
-                            Lever = detail.Lever == "true" ? 1 : 0,
-                            Gauge = detail.Gauge == "true" ? 1 : 0,
-                            SafetySeal = detail.SafetySeal == "true" ? 1 : 0,
-                            Hose = detail.Hose == "true" ? 1 : 0,
+                            Cylinder = Convert.ToInt32(detail.Cylinder),
+                            Lever = Convert.ToInt32(detail.Lever),
+                            Gauge = Convert.ToInt32(detail.Gauge),
+                            SafetySeal = Convert.ToInt32(detail.SafetySeal),
+                            Hose = Convert.ToInt32(detail.Hose),
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now.Date,
                             FireExtinguisherHeaderId = headerId,
@@ -432,13 +432,13 @@ namespace SEMSystem.Controllers
                             var _detail = new FireExtinguisherDetail
                             {
                                 ItemId = detail.ItemId,
-                                Cylinder = detail.Cylinder == "true" ? 1 : 0,
-                                Lever = detail.Lever == "true" ? 1 : 0,
-                                Gauge = detail.Gauge == "true" ? 1 : 0,
-                                SafetySeal = detail.SafetySeal == "true" ? 1 : 0,
-                                Hose = detail.Hose == "true" ? 1 : 0,
+                                Cylinder = Convert.ToInt32(detail.Cylinder),
+                                Lever = Convert.ToInt32(detail.Lever),
+                                Gauge = Convert.ToInt32(detail.Gauge),
+                                SafetySeal = Convert.ToInt32(detail.SafetySeal),
+                                Hose = Convert.ToInt32(detail.Hose),
                                 CreatedAt = DateTime.Now.Date,
-                                UpdatedAt = DateTime.Now,
+                                UpdatedAt = DateTime.Now.Date,
                                 FireExtinguisherHeaderId = headerId,
                                 Remarks = detail.Remarks,
                                 InspectedBy = detail.InspectedBy,
@@ -453,11 +453,11 @@ namespace SEMSystem.Controllers
                         }
                         else
                         {
-                            d.Cylinder = detail.Cylinder == "true" ? 1 : 0;
-                            d.Lever = detail.Lever == "true" ? 1 : 0;
-                            d.Gauge = detail.Gauge == "true" ? 1 : 0;
-                            d.SafetySeal = detail.SafetySeal == "true" ? 1 : 0;
-                            d.Hose = detail.Hose == "true" ? 1 : 0;
+                            d.Cylinder = Convert.ToInt32(detail.Cylinder);
+                            d.Lever = Convert.ToInt32(detail.Lever);
+                            d.Gauge = Convert.ToInt32(detail.Gauge);
+                            d.SafetySeal = Convert.ToInt32(detail.SafetySeal);
+                            d.Hose = Convert.ToInt32(detail.Hose);
                             d.UpdatedAt = DateTime.Now;
                             d.UpdatedBy = User.Identity.GetUserName();
                             d.FireExtinguisherHeaderId = headerId;
@@ -523,11 +523,11 @@ namespace SEMSystem.Controllers
                         var _detail = new FireExtinguisherDetail
                         {
                             ItemId = detail.ItemId,
-                            Cylinder = detail.Cylinder == "true" ? 1 : 0,
-                            Lever = detail.Lever == "true" ? 1 : 0,
-                            Gauge = detail.Gauge == "true" ? 1 : 0,
-                            SafetySeal = detail.SafetySeal == "true" ? 1 : 0,
-                            Hose = detail.Hose == "true" ? 1 : 0,
+                            Cylinder = Convert.ToInt32(detail.Cylinder),
+                            Lever = Convert.ToInt32(detail.Lever),
+                            Gauge = Convert.ToInt32(detail.Gauge),
+                            SafetySeal = Convert.ToInt32(detail.SafetySeal),
+                            Hose = Convert.ToInt32(detail.Hose),
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now,
                             FireExtinguisherHeaderId = headerId,
@@ -543,11 +543,11 @@ namespace SEMSystem.Controllers
                     }
                     else
                     {
-                        d.Cylinder = detail.Cylinder == "true" ? 1 : 0;
-                        d.Lever = detail.Lever == "true" ? 1 : 0;
-                        d.Gauge = detail.Gauge == "true" ? 1 : 0;
-                        d.SafetySeal = detail.SafetySeal == "true" ? 1 : 0;
-                        d.Hose = detail.Hose == "true" ? 1 : 0;
+                        d.Cylinder = Convert.ToInt32(detail.Cylinder);
+                        d.Lever = Convert.ToInt32(detail.Lever);
+                        d.Gauge = Convert.ToInt32(detail.Gauge);
+                        d.SafetySeal = Convert.ToInt32(detail.SafetySeal);
+                        d.Hose = Convert.ToInt32(detail.Hose);
                         d.UpdatedAt = DateTime.Now;
                         d.UpdatedBy = User.Identity.GetUserName();
                         d.FireExtinguisherHeaderId = headerId;

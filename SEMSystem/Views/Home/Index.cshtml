@@ -112,11 +112,11 @@
 
 
 
-<p>
+@*<p>
     <input type="checkbox" id="cb1" onclick="ts(this)">
     <label for="cb1">1st Checkbox</label>
     <button onclick="checkVal()">Get Value</button>
-</p>
+</p>*@
 
 
 <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet">
@@ -1140,15 +1140,15 @@
     function ts(cb) {
         if (cb.readOnly) {
             cb.checked = cb.readOnly = false;
-            $(cb).attr("val", "0");
+            $(cb).attr("value", "0");
         }else {
             if (!cb.checked) {
                 cb.readOnly = cb.indeterminate = true;
                 if (cb.indeterminate) {
-                    $(cb).attr("val", "2");
+                    $(cb).attr("value", "2");
                 } 
             } else {
-                $(cb).attr("val", "1");
+                $(cb).attr("value", "1");
             }
                 
             
@@ -1574,7 +1574,18 @@
         //console.log(this.value);
         getDataPerLocation($(this).prop('id'), this.value);
     })
+    function setindeterminate(_table) {
+        console.log(_table);
+        //var inputs = document.getElementsByTagName("input");
 
+        var inputs = $('#' + _table).find('input:checkbox').filter(function () { return this.value == '2' });
+
+        console.log(inputs);
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].indeterminate = true;
+        }
+    }
     function getDataPerLocation(_locationtype, _locationid) {
 
         //FIRE EXTINNGUISHER -- LocationIDFE
@@ -1603,35 +1614,35 @@
                                                 var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
                                                 var _cylinder = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Cylinder" >' +
+                                                    '<input class="form-check-input" type="checkbox" value="0" onclick="ts(this)" name="Cylinder" >' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 var _lever = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Lever" >' +
+                                                    '<input class="form-check-input" type="checkbox" value="0" onclick="ts(this)" name="Lever" >' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 var _gauge = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Gauge" >' +
+                                                    '<input class="form-check-input" type="checkbox" value="0" onclick="ts(this)" name="Gauge" >' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 var _safetyseal = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="SafetySeal" >' +
+                                                    '<input class="form-check-input" type="checkbox" value="0" onclick="ts(this)" name="SafetySeal" >' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 var _hose = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" >' +
+                                                    '<input class="form-check-input" type="checkbox" value="0" onclick="ts(this)" name="Hose" >' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
@@ -1672,63 +1683,83 @@
                                                 $id = responsedata.datadetail[i].detailid;
 
                                                 $checkedValue = "";
+                                                $readValue = "0";
 
                                                 if (responsedata.datadetail[i].cylinder == 1) {
                                                     $checkedValue = 'checked';
+                                                    $readValue = "1"
+                                                } else if (responsedata.datadetail[i].cylinder == 2) {
+                                                    $readValue = "2"
                                                 }
-
+                                               
                                                 var _cylinder =
                                                     '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type = "checkbox" value = "" name = "Cylinder" ' + $checkedValue + '>' +
+                                                    '<input class="form-check-input" type = "checkbox" value ="' + $readValue +'" onclick="ts(this)" name = "Cylinder" ' + $checkedValue + '>' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 $checkedValue = "";
+                                                $readValue = "0";
                                                 if (responsedata.datadetail[i].lever == 1) {
                                                     $checkedValue = 'checked';
+                                                    $readValue = "1"
+                                                } else if (responsedata.datadetail[i].lever == 2) {
+                                                    $readValue = "2"
                                                 }
 
                                                 var _lever = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Lever" ' + $checkedValue + '>' +
+                                                    '<input class="form-check-input" type="checkbox" value="' + $readValue +'" onclick="ts(this)" name="Lever" ' + $checkedValue + '>' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 $checkedValue = "";
+                                                $readValue = "0";
                                                 if (responsedata.datadetail[i].gauge == 1) {
                                                     $checkedValue = 'checked';
+                                                    $readValue = "1"
+                                                } else if (responsedata.datadetail[i].gauge == 2) {
+                                                    $readValue = "2"
                                                 }
 
                                                 var _gauge = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Gauge" ' + $checkedValue + '>' +
+                                                    '<input class="form-check-input" type="checkbox" value="' + $readValue +'" onclick="ts(this)" name="Gauge" ' + $checkedValue + '>' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 $checkedValue = "";
+                                                $readValue = "0";
                                                 if (responsedata.datadetail[i].safetySeal == 1) {
                                                     $checkedValue = 'checked';
+                                                    $readValue = "1"
+                                                } else if (responsedata.datadetail[i].safetySeal == 2) {
+                                                    $readValue = "2"
                                                 }
 
                                                 var _safetyseal = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="SafetySeal" ' + $checkedValue + '>' +
+                                                    '<input class="form-check-input" type="checkbox" value="' + $readValue +'" onclick="ts(this)" name="SafetySeal" ' + $checkedValue + '>' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
 
                                                 $checkedValue = "";
+                                                $readValue = "0";
                                                 if (responsedata.datadetail[i].hose == 1) {
                                                     $checkedValue = 'checked';
+                                                    $readValue = "1";
+                                                } else if (responsedata.datadetail[i].hose == 2) {
+                                                    $readValue = "2";
                                                 }
 
                                                 var _hose = '<div class="form-check">' +
                                                     '<label class="form-check-label">' +
-                                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                                    '<input class="form-check-input" type="checkbox" value="' + $readValue +'" onclick="ts(this)" name="Hose" ' + $checkedValue + '>' +
                                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                                     '</label>' +
                                                     '</div>';
@@ -1768,6 +1799,8 @@
                                             "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
 
                                         });
+
+                                        setindeterminate("tblFireExtinguisher")
                                     } else {
                                         if (responsedata.data.length < 1) {
                                             if ($.fn.DataTable.isDataTable('#tblFireExtinguisher')) {
@@ -1810,7 +1843,7 @@
                         , method: "POST"
                         , dataType: 'json'
                         , data: { LocationType: _locationtype, LocationId: _locationid, dateTime: $("#Date").val() }
-                 , success: function (responsedata) {
+                        , success: function (responsedata) {
                      var _but = "";
                                 if (responsedata.status == "success" && responsedata.data.length > 0) {
                                     if (responsedata.datadetail.length == 0) {
@@ -1823,22 +1856,22 @@
 
                                         for (var i = 0; i < responsedata.data.length; i++) {
                                             var $id = responsedata.data[i].id;
-                                            var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
+                                            var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='0' data-id='" + $id + "'>";
                                             var _battery = '<div class="form-check">' +
                                                 '<label class="form-check-label">' +
-                                                '<input class="form-check-input" type="checkbox" value="" name="Battery" >' +
+                                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Battery" >' +
                                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                                 '</label>' +
                                                 '</div>';
                                             var _bulb = '<div class="form-check">' +
                                                 '<label class="form-check-label">' +
-                                                '<input class="form-check-input" type="checkbox" value="" name="Bulb" >' +
+                                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Bulb" >' +
                                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                                 '</label>' +
                                                 '</div>';
                                             var _usable = '<div class="form-check">' +
                                                 '<label class="form-check-label">' +
-                                                '<input class="form-check-input" type="checkbox" value="" name="Usable" >' +
+                                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Usable" >' +
                                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                                 '</label>' +
                                                 '</div>';
@@ -1870,40 +1903,49 @@
                                         for (var i = 0; i < responsedata.datadetail.length; i++) {
                                             var $id = responsedata.datadetail[i].detailid;
 
-                                            $checkedValue = "";
+                                            $checkedValue = "";  $readValue = "0";
 
                                             if (responsedata.datadetail[i].battery == 1) {
                                                 $checkedValue = 'checked';
+                                                $readValue = "1"
+                                            } else if (responsedata.datadetail[i].battery == 2) {
+                                                $readValue = "2"
                                             }
 
                                             var _battery =
                                                 '<div class="form-check">' +
                                                 '<label class="form-check-label">' +
-                                                '<input class="form-check-input" type = "checkbox" value = "" name = "Battery" ' + $checkedValue + '>' +
+                                                '<input class="form-check-input" onclick="ts(this)" type = "checkbox" value ="' + $readValue + '" name = "Battery" ' + $checkedValue + '>' +
                                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                                 '</label>' +
                                                 '</div>';
 
-                                            $checkedValue = "";
+                                            $checkedValue = "";  $readValue = "0";
                                             if (responsedata.datadetail[i].bulb == 1) {
                                                 $checkedValue = 'checked';
+                                                $readValue = "1"
+                                            } else if (responsedata.datadetail[i].bulb == 2) {
+                                                $readValue = "2"
                                             }
 
                                             var _bulb = '<div class="form-check">' +
                                                 '<label class="form-check-label">' +
-                                                '<input class="form-check-input" type="checkbox" value="" name="Bulb" ' + $checkedValue + '>' +
+                                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Bulb" ' + $checkedValue + '>' +
                                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                                 '</label>' +
                                                 '</div>';
 
-                                            $checkedValue = "";
+                                            $checkedValue = "";  $readValue = "0";
                                             if (responsedata.datadetail[i].usable == 1) {
                                                 $checkedValue = 'checked';
+                                                $readValue = "1"
+                                            } else if (responsedata.datadetail[i].usable == 2) {
+                                                $readValue = "2"
                                             }
 
                                             var _usable = '<div class="form-check">' +
                                                 '<label class="form-check-label">' +
-                                                '<input class="form-check-input" type="checkbox" value="" name="Usable" ' + $checkedValue + '>' +
+                                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Usable" ' + $checkedValue + '>' +
                                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                                 '</label>' +
                                                 '</div>';
@@ -1943,6 +1985,7 @@
                                         "lengthMenu": [[50, 100, -1], [50, 100, "All"]],
 
                                     });
+                                    setindeterminate("tblEmergencyLight")
                                 } else {
                                     if (responsedata.data.length < 1) {
 
@@ -2009,28 +2052,28 @@
 
                             var _cylinder = '<div class="form-check">' +
                                 '<label class="form-check-label">' +
-                                '<input class="form-check-input" type="checkbox" value="" name="Cylinder" >' +
+                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Cylinder" >' +
                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                 '</label>' +
                                 '</div>';
 
                             var _gauge = '<div class="form-check">' +
                                 '<label class="form-check-label">' +
-                                '<input class="form-check-input" type="checkbox" value="" name="Gauge" >' +
+                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Gauge" >' +
                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                 '</label>' +
                                 '</div>';
 
                             var _hose = '<div class="form-check">' +
                                 '<label class="form-check-label">' +
-                                '<input class="form-check-input" type="checkbox" value="" name="Hose" >' +
+                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Hose" >' +
                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                 '</label>' +
                                 '</div>';
 
                             var _pressure = '<div class="form-check">' +
                                 '<label class="form-check-label">' +
-                                '<input class="form-check-input" type="checkbox" value="" name="Pressure" >' +
+                                '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Pressure" >' +
                                 '<span class="form-check-sign"><span class="check"></span></span>' +
                                 '</label>' +
                                 '</div>';
@@ -2063,51 +2106,63 @@
                             for (var i = 0; i < responsedata.datadetail.length; i++) {
                                 var $id = responsedata.datadetail[i].detailid;
 
-                                $checkedValue = "";
+                                $checkedValue = "";  $readValue = "0";
 
                                 if (responsedata.datadetail[i].cylinder == 1) {
                                     $checkedValue = 'checked';
+                                    $readValue = "1"
+                                } else if (responsedata.datadetail[i].cylinder == 2) {
+                                    $readValue = "2"
                                 }
 
                                 var _cylinder =
                                     '<div class="form-check">' +
                                     '<label class="form-check-label">' +
-                                    '<input class="form-check-input" type = "checkbox" value = "" name = "Cylinder" ' + $checkedValue + '>' +
+                                    '<input class="form-check-input" onclick="ts(this)" type = "checkbox" value ="' + $readValue + '" name = "Cylinder" ' + $checkedValue + '>' +
                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                     '</label>' +
                                     '</div>';
 
-                                $checkedValue = "";
+                                $checkedValue = "";  $readValue = "0";
                                 if (responsedata.datadetail[i].gauge == 1) {
                                     $checkedValue = 'checked';
+                                    $readValue = "1"
+                                } else if (responsedata.datadetail[i].gauge == 2) {
+                                    $readValue = "2"
                                 }
 
                                 var _gauge = '<div class="form-check">' +
                                     '<label class="form-check-label">' +
-                                    '<input class="form-check-input" type="checkbox" value="" name="Gauge" ' + $checkedValue + '>' +
+                                    '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Gauge" ' + $checkedValue + '>' +
                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                     '</label>' +
                                     '</div>';
 
-                                $checkedValue = "";
+                                $checkedValue = "";  $readValue = "0";
                                 if (responsedata.datadetail[i].hose == 1) {
                                     $checkedValue = 'checked';
+                                    $readValue = "1"
+                                } else if (responsedata.datadetail[i].hose == 2) {
+                                    $readValue = "2"
                                 }
 
                                 var _hose = '<div class="form-check">' +
                                     '<label class="form-check-label">' +
-                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                    '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Hose" ' + $checkedValue + '>' +
                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                     '</label>' +
                                     '</div>';
 
-                                $checkedValue = "";
+                                $checkedValue = "";  $readValue = "0";
                                 if (responsedata.datadetail[i].pressure == 1) {
                                     $checkedValue = 'checked';
+                                    $readValue = "1"
+                                } else if (responsedata.datadetail[i].pressure == 2) {
+                                    $readValue = "2"
                                 }
                                 var _pressure = '<div class="form-check">' +
                                     '<label class="form-check-label">' +
-                                    '<input class="form-check-input" type="checkbox" value="" name="Hose" ' + $checkedValue + '>' +
+                                    '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Hose" ' + $checkedValue + '>' +
                                     '<span class="form-check-sign"><span class="check"></span></span>' +
                                     '</label>' +
                                     '</div>';
@@ -2152,6 +2207,8 @@
                             //    },
                             //],
                         });
+
+                        setindeterminate("tblInergenTank")
                     } else {
                         if (responsedata.data.length < 1) {
 
@@ -2217,48 +2274,48 @@
                                     var _remarks = "<input class='form-control' style='width:100%' onfocus='this.select();'  value='' data-id='" + $id + "'>";
                                     var _glassCabinet = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="GlassCabinet" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="GlassCabinet" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
                                     var _hanger = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Hanger" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Hanger" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
                                     var _hose15 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Hose15" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Hose15" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
                                     var _nozzle15 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Nozzle15" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Nozzle15" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
                                     var _hose25 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Hose25" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Hose25" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
                                     var _nozzle25 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Nozzle25" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Nozzle25" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
                                     var _specialTools = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="SpecialTools" >' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="SpecialTools" >' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
@@ -2297,48 +2354,60 @@
 
 
                                     var $id = responsedata.datadetail[i].detailid;
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
 
                                     if (responsedata.datadetail[i].glassCabinet == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].glassCabinet == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _glassCabinet =
                                         '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type = "checkbox" value = "" name = "GlassCabinet" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type = "checkbox" value ="' + $readValue + '" name = "GlassCabinet" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
                                     if (responsedata.datadetail[i].hanger == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].hanger == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _hanger = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Hanger" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Hanger" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
                                     if (responsedata.datadetail[i].hose15 == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].hose15 == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _hose15 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Hose15" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Hose15" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
 
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
                                     if (responsedata.datadetail[i].nozzle15 == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].nozzle15 == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _nozzle15 =
@@ -2349,38 +2418,47 @@
                                         '</label>' +
                                         '</div>';
 
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
                                     if (responsedata.datadetail[i].hose25 == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].hose25 == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _hose25 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Hose25" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Hose25" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
                                     if (responsedata.datadetail[i].nozzle25 == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].nozzle25 == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _nozzle25 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="Nozzle25" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="Nozzle25" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
 
-                                    $checkedValue = "";
+                                    $checkedValue = "";  $readValue = "0";
                                     if (responsedata.datadetail[i].specialTools == 1) {
                                         $checkedValue = 'checked';
+                                        $readValue = "1"
+                                    } else if (responsedata.datadetail[i].specialTools == 2) {
+                                        $readValue = "2"
                                     }
 
                                     var _specialTools = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type="checkbox" value="" name="SpecialTools" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value ="' + $readValue + '" name="SpecialTools" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
@@ -2433,6 +2511,8 @@
                                 //    },
                                 //],
                             });
+
+                            setindeterminate("tblFireHydrant")
                         } else {
                             if (responsedata.data.length < 1) {
 
@@ -2984,11 +3064,11 @@
 
                 var obj = {
                     ItemID: $(this).find("td:eq(0)").text(),
-                    Cylinder: $(this).find('input:checkbox')[0].checked,
-                    Lever: $(this).find('input:checkbox')[1].checked,
-                    Gauge: $(this).find('input:checkbox')[2].checked,
-                    SafetySeal: $(this).find('input:checkbox')[3].checked,
-                    Hose: $(this).find('input:checkbox')[4].checked,
+                    Cylinder: $(this).find('input:checkbox')[0].value,
+                    Lever: $(this).find('input:checkbox')[1].value,
+                    Gauge: $(this).find('input:checkbox')[2].value,
+                    SafetySeal: $(this).find('input:checkbox')[3].value,
+                    Hose: $(this).find('input:checkbox')[4].value,
                     Remarks: $(this).find("td:eq(10)").find("input").val().trim(),
                     AreaId: $("#AreaId").val(),
                     LocationFireExtinguisherId: $("#LocationIDFE").val(),
@@ -3002,6 +3082,7 @@
 
             });
 
+           
             $.ajax({
                 url: "@Url.Action("SaveData","FireExtinguishers")"
                 , type: "POST"
@@ -3250,9 +3331,9 @@
 
                      var obj = {
                          ItemID: $(this).find("td:eq(0)").text(),
-                         Battery: $(this).find('input:checkbox')[0].checked,
-                         Bulb: $(this).find('input:checkbox')[1].checked,
-                         Usable: $(this).find('input:checkbox')[2].checked,
+                         Battery: $(this).find('input:checkbox')[0].value,
+                         Bulb: $(this).find('input:checkbox')[1].value,
+                         Usable: $(this).find('input:checkbox')[2].value,
 
                          Remarks: $(this).find("td:eq(6)").find("input").val(),
                          AreaId: $("#AreaId").val(),
@@ -3539,21 +3620,21 @@
 
                 var obj = {
 
-                         ItemId: $(this).find("td:eq(0)").text(),
+                        ItemId: $(this).find("td:eq(0)").text(),
 
-                         Cylinder: $(this).find('input:checkbox')[0].checked,
-                         Gauge: $(this).find('input:checkbox')[1].checked,
-                         Hose: $(this).find('input:checkbox')[2].checked,
-                         Pressure: $(this).find('input:checkbox')[3].checked,
+                        Cylinder: $(this).find('input:checkbox')[0].value,
+                        Gauge: $(this).find('input:checkbox')[1].value,
+                        Hose: $(this).find('input:checkbox')[2].value,
+                        Pressure: $(this).find('input:checkbox')[3].value,
 
 
-                         Remarks: $(this).find("td:eq(7)").find("input").val(),
-                         AreaId: $("#AreaId").val(),
-                         LocationInergenTankId: $("#LocationIDIT").val(),
-                         ID: @ViewBag.ID,
-                         InspectedBy: $inspectedBy,
-                         ReviewedBy: $reviewedBy,
-                         NotedBy: $notedBy,
+                        Remarks: $(this).find("td:eq(7)").find("input").val(),
+                        AreaId: $("#AreaId").val(),
+                        LocationInergenTankId: $("#LocationIDIT").val(),
+                        ID: @ViewBag.ID,
+                        InspectedBy: $inspectedBy,
+                        ReviewedBy: $reviewedBy,
+                        NotedBy: $notedBy,
 
                 }
 
@@ -3903,13 +3984,13 @@
 
                          ItemId: $(this).find("td:eq(0)").text(),
 
-                         GlassCabinet: $(this).find('input:checkbox')[0].checked,
-                         Hanger: $(this).find('input:checkbox')[1].checked,
-                         Hose15: $(this).find('input:checkbox')[2].checked,
-                         Nozzle15: $(this).find('input:checkbox')[3].checked,
-                         Hose25: $(this).find('input:checkbox')[4].checked,
-                         Nozzle25: $(this).find('input:checkbox')[5].checked,
-                         SpecialTools: $(this).find('input:checkbox')[6].checked,
+                         GlassCabinet: $(this).find('input:checkbox')[0].value,
+                         Hanger: $(this).find('input:checkbox')[1].value,
+                         Hose15: $(this).find('input:checkbox')[2].value,
+                         Nozzle15: $(this).find('input:checkbox')[3].value,
+                         Hose25: $(this).find('input:checkbox')[4].value,
+                         Nozzle25: $(this).find('input:checkbox')[5].value,
+                         SpecialTools: $(this).find('input:checkbox')[6].value,
 
 
                          Remarks: $(this).find("td:eq(10)").find("input").val().trim(),

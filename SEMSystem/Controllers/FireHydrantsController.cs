@@ -471,13 +471,13 @@ namespace SEMSystem.Controllers
                         {
                            
                             ItemId = detail.ItemId,
-                            GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0,
-                            Hanger = detail.Hanger == "true" ? 1 : 0,
-                            Hose15 = detail.Hose15 == "true" ? 1 : 0,
-                            Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0,
-                            Hose25 = detail.Hose25 == "true" ? 1 : 0,
-                            Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0,
-                            SpecialTools = detail.SpecialTools == "true" ? 1 : 0,
+                            GlassCabinet = Convert.ToInt32(detail.GlassCabinet),
+                            Hanger = Convert.ToInt32(detail.Hanger),
+                            Hose15 = Convert.ToInt32(detail.Hose15),
+                            Nozzle15 = Convert.ToInt32(detail.Nozzle15),
+                            Hose25 = Convert.ToInt32(detail.Hose25),
+                            Nozzle25 = Convert.ToInt32(detail.Nozzle25),
+                            SpecialTools = Convert.ToInt32(detail.SpecialTools),
                             InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
                             NotedBy = detail.NotedBy,
@@ -514,13 +514,13 @@ namespace SEMSystem.Controllers
                                 ItemId = detail.ItemId,
 
 
-                                GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0,
-                                Hanger = detail.Hanger == "true" ? 1 : 0,
-                                Hose15 = detail.Hose15 == "true" ? 1 : 0,
-                                Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0,
-                                Hose25 = detail.Hose25 == "true" ? 1 : 0,
-                                Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0,
-                                SpecialTools = detail.SpecialTools == "true" ? 1 : 0,
+                                GlassCabinet = Convert.ToInt32(detail.GlassCabinet),
+                                Hanger = Convert.ToInt32(detail.Hanger),
+                                Hose15 = Convert.ToInt32(detail.Hose15),
+                                Nozzle15 = Convert.ToInt32(detail.Nozzle15),
+                                Hose25 = Convert.ToInt32(detail.Hose25),
+                                Nozzle25 = Convert.ToInt32(detail.Nozzle25),
+                                SpecialTools = Convert.ToInt32(detail.SpecialTools),
 
 
                                 InspectedBy = detail.InspectedBy,
@@ -542,13 +542,13 @@ namespace SEMSystem.Controllers
                         }
                         else
                         {
-                            d.GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0;
-                            d.Hanger = detail.Hanger == "true" ? 1 : 0;
-                            d.Hose15 = detail.Hose15 == "true" ? 1 : 0;
-                            d.Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0;
-                            d.Hose25 = detail.Hose25 == "true" ? 1 : 0;
-                            d.Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0;
-                            d.SpecialTools = detail.SpecialTools == "true" ? 1 : 0;
+                            d.GlassCabinet = Convert.ToInt32(detail.GlassCabinet);
+                            d.Hanger = Convert.ToInt32(detail.Hanger);
+                            d.Hose15 = Convert.ToInt32(detail.Hose15);
+                            d.Nozzle15 = Convert.ToInt32(detail.Nozzle15);
+                            d.Hose25 = Convert.ToInt32(detail.Hose25);
+                            d.Nozzle25 = Convert.ToInt32(detail.Nozzle25);
+                            d.SpecialTools = Convert.ToInt32(detail.SpecialTools);
 
 
                             d.InspectedBy = detail.InspectedBy;
@@ -624,13 +624,15 @@ namespace SEMSystem.Controllers
                         {
                             
                             ItemId = detail.ItemId,
-                            GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0,
-                            Hanger = detail.Hanger == "true" ? 1 : 0,
-                            Hose15 = detail.Hose15 == "true" ? 1 : 0,
-                            Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0,
-                            Hose25 = detail.Hose25 == "true" ? 1 : 0,
-                            Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0,
-                            SpecialTools = detail.SpecialTools == "true" ? 1 : 0,
+
+                            GlassCabinet = Convert.ToInt32(detail.GlassCabinet),
+                            Hanger = Convert.ToInt32(detail.Hanger),
+                            Hose15 = Convert.ToInt32(detail.Hose15),
+                            Nozzle15 = Convert.ToInt32(detail.Nozzle15),
+                            Hose25 = Convert.ToInt32(detail.Hose25),
+                            Nozzle25 = Convert.ToInt32(detail.Nozzle25),
+                            SpecialTools = Convert.ToInt32(detail.SpecialTools),
+
                             InspectedBy = detail.InspectedBy,
                             ReviewedBy = detail.ReviewedBy,
                             NotedBy = detail.NotedBy,
@@ -646,13 +648,13 @@ namespace SEMSystem.Controllers
                     }
                     else
                     {
-                        d.GlassCabinet = detail.GlassCabinet == "true" ? 1 : 0;
-                        d.Hanger = detail.Hanger == "true" ? 1 : 0;
-                        d.Hose15 = detail.Hose15 == "true" ? 1 : 0;
-                        d.Nozzle15 = detail.Nozzle15 == "true" ? 1 : 0;
-                        d.Hose25 = detail.Hose25 == "true" ? 1 : 0;
-                        d.Nozzle25 = detail.Nozzle25 == "true" ? 1 : 0;
-                        d.SpecialTools = detail.SpecialTools == "true" ? 1 : 0;
+                        d.GlassCabinet = Convert.ToInt32(detail.GlassCabinet);
+                        d.Hanger = Convert.ToInt32(detail.Hanger);
+                        d.Hose15 = Convert.ToInt32(detail.Hose15);
+                        d.Nozzle15 = Convert.ToInt32(detail.Nozzle15);
+                        d.Hose25 = Convert.ToInt32(detail.Hose25);
+                        d.Nozzle25 = Convert.ToInt32(detail.Nozzle25);
+                        d.SpecialTools = Convert.ToInt32(detail.SpecialTools);
 
 
                         d.InspectedBy = detail.InspectedBy;

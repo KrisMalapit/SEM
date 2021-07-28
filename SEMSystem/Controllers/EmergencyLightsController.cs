@@ -456,9 +456,9 @@ namespace SEMSystem.Controllers
                         var _detail = new EmergencyLightDetail
                         {
                             ItemId = detail.ItemId,
-                            Battery = detail.Battery == "true" ? 1 : 0,
-                            Bulb = detail.Bulb == "true" ? 1 : 0,
-                            Usable = detail.Usable == "true" ? 1 : 0,
+                            Battery = Convert.ToInt32(detail.Battery),
+                            Bulb = Convert.ToInt32(detail.Bulb),
+                            Usable = Convert.ToInt32(detail.Usable),
                           
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now.Date,
@@ -494,10 +494,10 @@ namespace SEMSystem.Controllers
                             var _detail = new EmergencyLightDetail
                             {
                                 
-                                ItemId = detail.ItemId,
-                                Battery = detail.Battery == "true" ? 1 : 0,
-                                Bulb = detail.Bulb == "true" ? 1 : 0,
-                                Usable = detail.Usable == "true" ? 1 : 0,
+                                ItemId = Convert.ToInt32(detail.ItemId),
+                                Battery = Convert.ToInt32(detail.Battery),
+                                Bulb = Convert.ToInt32(detail.Bulb),
+                                Usable = Convert.ToInt32(detail.Usable),
                                
                                 CreatedAt = DateTime.Now.Date,
                                 UpdatedAt = DateTime.Now,
@@ -517,9 +517,9 @@ namespace SEMSystem.Controllers
                         }
                         else
                         {
-                            d.Battery = detail.Battery == "true" ? 1 : 0;
-                            d.Bulb = detail.Bulb == "true" ? 1 : 0;
-                            d.Usable = detail.Usable == "true" ? 1 : 0;
+                            d.Battery = Convert.ToInt32(detail.Battery);
+                            d.Bulb = Convert.ToInt32(detail.Bulb);
+                            d.Usable = Convert.ToInt32(detail.Usable);
                             
                             d.UpdatedAt = DateTime.Now;
                             d.UpdatedBy = User.Identity.GetUserName();
@@ -588,9 +588,9 @@ namespace SEMSystem.Controllers
                         {
                           
                             ItemId = detail.ItemId,
-                            Battery = detail.Battery == "true" ? 1 : 0,
-                            Bulb = detail.Bulb == "true" ? 1 : 0,
-                            Usable = detail.Usable == "true" ? 1 : 0,
+                            Battery = Convert.ToInt32(detail.Battery),
+                            Bulb = Convert.ToInt32(detail.Bulb),
+                            Usable = Convert.ToInt32(detail.Usable),
 
                             CreatedAt = DateTime.Now.Date,
                             UpdatedAt = DateTime.Now,
@@ -609,9 +609,9 @@ namespace SEMSystem.Controllers
                     }
                     else
                     {
-                        d.Battery = detail.Battery == "true" ? 1 : 0;
-                        d.Bulb = detail.Bulb == "true" ? 1 : 0;
-                        d.Usable = detail.Usable == "true" ? 1 : 0;
+                        d.Battery = Convert.ToInt32(detail.Battery);
+                        d.Bulb = Convert.ToInt32(detail.Bulb);
+                        d.Usable = Convert.ToInt32(detail.Usable);
 
                         d.UpdatedAt = DateTime.Now;
                         d.UpdatedBy = User.Identity.GetUserName();
