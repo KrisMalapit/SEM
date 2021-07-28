@@ -48,22 +48,75 @@
         margin-right: auto;
         width: 100%;
     }
+
     video {
         display: block;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
     }
+
     #divSnapshotControllers {
         text-align: center;
     }
+
     #tblBicycleInfo td {
-        border-top:#ffffff;
+        border-top: #ffffff;
     }
+
+    /*.checkbox {
+        background-color: #fff;
+        border: solid 1px #d7d7d7;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-block;
+        height: 32px;
+        margin-right: 1rem;
+        text-align: center;
+        width: 32px;
+        vertical-align: middle;
+        svg
+
+    {
+        margin-top: 6px;
+        stroke: #fff;
+    }
+
+    }
+
+    .positive {
+        background-color: #4aca65;
+        border-color: #43b45b;
+    }
+
+    .negative {
+        background-color: #dc4e4e;
+        border-color: #c74545;
+    }
+    input:indeterminate {
+        background: lime;
+    }*/
 </style>
 
 
 
+
+
+@*<div class="content">
+    <div class="row">
+        <span class="checkbox"></span>
+        <span class="label">Neutral</span>
+    </div>
+</div> /.content*@ 
+
+
+
+
+<p>
+    <input type="checkbox" id="cb1" onclick="ts(this)">
+    <label for="cb1">1st Checkbox</label>
+    <button onclick="checkVal()">Get Value</button>
+</p>
 
 
 <link href="~/css/plugins/select2/select2.min.css" rel="stylesheet">
@@ -76,19 +129,19 @@
                 <small class="font-bold">Take snapshot of item</small>
             </div>
             <div class="modal-body">
-                <input id="snapheaderid" type="hidden"/>
-                <input id="snapheaderequipment" type="hidden"/>
+                <input id="snapheaderid" type="hidden" />
+                <input id="snapheaderequipment" type="hidden" />
                 <div class="form-group col-md-12" id="divSnapshotControllers">
                     <input type=button value="Re-Take" onClick="configure()">
                     <input type=button value="Take Snapshot" onClick="take_snapshot()">
                     <input type=button value="Save Snapshot" onClick="saveSnap()">
-                    <input type=button value="Close" data-dismiss="modal" class="btnCloseSnap" >
+                    <input type=button value="Close" data-dismiss="modal" class="btnCloseSnap">
                 </div>
-                <div class="form-group col-md-12"  id="divSnapshotControllers" style="text-align:center;">
+                <div class="form-group col-md-12" id="divSnapshotControllers" style="text-align:center;">
                     <div id="my_camera" style="margin: auto;"></div>
                     <div id="results"></div>
                 </div>
-               
+
             </div>
         </div>
     </div>
@@ -269,7 +322,7 @@
 
         }
 
- 
+
 
         <div role="tabpanel" id="tab-de" class="tab-pane @divstat" style="padding:20px;">
             <div class="tabs-container">
@@ -634,29 +687,29 @@
 
                                 <div class="col-md-12" style="padding-top:10px;">
                                     @*<div class="row " style="margin-bottom:5px;">
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Identification No</label>
-                                        <div class="col-md-2">
-                                            <select id="BicycleId" name="BicycleId" class="form-control" asp-items="ViewBag.BicycleId"></select>
+                                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Identification No</label>
+                                            <div class="col-md-2">
+                                                <select id="BicycleId" name="BicycleId" class="form-control" asp-items="ViewBag.BicycleId"></select>
 
-                                        </div>
+                                            </div>
 
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
-                                        <div class="col-md-2">
-                                            <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
-                                        </div>
+                                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Date</label>
+                                            <div class="col-md-2">
+                                                <input id="Date" name="Date" class="form-control" disabled="" value="@ViewBag.CreatedAt">
+                                            </div>
 
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px; "> Image</label>
-                                    </div>
-                                    <div class="row ">
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px;"> Name of Owner</label>
-                                        <div class="col-md-2">
-                                            <input id="NameOwner" name="NameOwner" class="form-control" disabled />
+                                            <label class="col-md-2 col-form-label" style="padding-top:5px; "> Image</label>
                                         </div>
-                                        <label class="col-md-2 col-form-label" style="padding-top:5px;"> Brand Name</label>
-                                        <div class="col-md-2">
-                                            <input id="BrandName" name="BrandName" class="form-control" disabled />
-                                        </div>
-                                    </div>*@
+                                        <div class="row ">
+                                            <label class="col-md-2 col-form-label" style="padding-top:5px;"> Name of Owner</label>
+                                            <div class="col-md-2">
+                                                <input id="NameOwner" name="NameOwner" class="form-control" disabled />
+                                            </div>
+                                            <label class="col-md-2 col-form-label" style="padding-top:5px;"> Brand Name</label>
+                                            <div class="col-md-2">
+                                                <input id="BrandName" name="BrandName" class="form-control" disabled />
+                                            </div>
+                                        </div>*@
                                     <input id="BikeDetailId" name="BikeDetailId" class="form-control" value="0" disabled type="hidden" />
                                     <table class="table" id="tblBicycleInfo">
 
@@ -725,18 +778,18 @@
                                             <td style="text-align:center;vertical-align:middle;">
 
                                                 @*<input class="form-check-input" type="checkbox" id="FrameSafe" name="FrameSafe" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>*@
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>*@
                                                 <input type="radio" id="FrameSafe" name="Frame" value="FrameSafe">
 
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
 
                                                 @*<input class="form-check-input" type="checkbox" id="FrameUnSafe" name="FrameUnSafe" value="">
-                                                <span class="form-check-sign">
-                                                    <span class="check"></span>
-                                                </span>*@
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>*@
                                                 <input type="radio" id="FrameUnSafe" name="Frame" value="FrameUnSafe">
 
                                             </td>
@@ -755,24 +808,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="FrontForkSafe" name="FrontForkSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontForkSafe" name="FrontForkSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="FrontForkSafe" name="FrontFork" value="FrontForkSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="FrontForkUnSafe" name="FrontForkUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontForkUnSafe" name="FrontForkUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="FrontForkUnSafe" name="FrontFork" value="FrontForkUnSafe">
                                             </td>
                                             <td contenteditable="true" id="FrontForkRemarks"></td>
@@ -793,24 +846,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="HandlebarSafe" name="HandlebarSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="HandlebarSafe" name="HandlebarSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="HandlebarSafe" name="Handlebar" value="HandlebarSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="HandlebarUnSafe" name="HandlebarUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="HandlebarUnSafe" name="HandlebarUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="HandlebarUnSafe" name="Handlebar" value="HandlebarUnSafe">
                                             </td>
                                             <td contenteditable="true" id="HandlebarRemarks"></td>
@@ -828,24 +881,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="SeatSafe" name="SeatSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="SeatSafe" name="SeatSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="SeatSafe" name="Seat" value="SeatSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="SeatUnSafe" name="SeatUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="SeatUnSafe" name="SeatUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="SeatUnSafe" name="Seat" value="SeatUnSafe">
                                             </td>
                                             <td contenteditable="true" id="SeatRemarks"></td>
@@ -871,24 +924,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="FrontRearSafe" name="FrontRearSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontRearSafe" name="FrontRearSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="FrontRearSafe" name="FrontRear" value="FrontRearSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="FrontRearUnSafe" name="FrontRearUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="FrontRearUnSafe" name="FrontRearUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="FrontRearUnSafe" name="FrontRear" value="FrontRearUnSafe">
                                             </td>
                                             <td contenteditable="true" id="FrontRearRemarks"></td>
@@ -913,24 +966,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="BrakeSafe" name="BrakeSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="BrakeSafe" name="BrakeSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="BrakeSafe" name="Brake" value="BrakeSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="BrakeUnSafe" name="BrakeUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="BrakeUnSafe" name="BrakeUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="BrakeUnSafe" name="Brake" value="BrakeUnSafe">
                                             </td>
                                             <td contenteditable="true" id="BrakeRemarks"></td>
@@ -953,24 +1006,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="CrankChainSafe" name="CrankChainSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="CrankChainSafe" name="CrankChainSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="CrankChainSafe" name="CrankChain" value="CrankChainSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="CrankChainUnSafe" name="CrankChainUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="CrankChainUnSafe" name="CrankChainUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="CrankChainUnSafe" name="CrankChain" value="CrankChainUnSafe">
                                             </td>
                                             <td contenteditable="true" id="CrankChainRemarks"></td>
@@ -989,24 +1042,24 @@
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="ChainSafe" name="ChainSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="ChainSafe" name="ChainSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="ChainSafe" name="Chain" value="ChainSafe">
                                             </td>
                                             <td style="text-align:center;vertical-align:middle;">
                                                 @*<div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" id="ChainUnSafe" name="ChainUnSafe" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>*@
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" id="ChainUnSafe" name="ChainUnSafe" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>*@
                                                 <input type="radio" id="ChainUnSafe" name="Chain" value="ChainUnSafe">
                                             </td>
                                             <td contenteditable="true" id="ChainRemarks"></td>
@@ -1068,13 +1121,50 @@
 
 
 <script>
+    //$('.checkbox').click(function () {
+    //    if ($(this).hasClass('positive')) {
+    //        $(this).removeClass('positive');
+    //        $(this).addClass('negative');
+    //        $(this).html('<svg id="i-close" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="10.9375%"><path d="M2 30 L30 2 M30 30 L2 2" /></svg>');
+    //        $(this).next().text('Negative');
+    //    } else if ($(this).hasClass('negative')) {
+    //        $(this).removeClass('negative');
+    //        $(this).html('');
+    //        $(this).next().text('Neutral');
+    //    } else {
+    //        $(this).addClass('positive');
+    //        $(this).html('<svg id="i-checkmark" viewBox="0 0 32 32" width="20" height="20" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="10.9375%"><path d="M2 20 L12 28 30 4" /></svg>');
+    //        $(this).next().text('Positive');
+    //    }
+    //});
+    function ts(cb) {
+        if (cb.readOnly) {
+            cb.checked = cb.readOnly = false;
+            $(cb).attr("val", "0");
+        }else {
+            if (!cb.checked) {
+                cb.readOnly = cb.indeterminate = true;
+                if (cb.indeterminate) {
+                    $(cb).attr("val", "2");
+                } 
+            } else {
+                $(cb).attr("val", "1");
+            }
+                
+            
+        }
+           
+    }
+    function checkVal() {
+        console.log($("#cb1").is(":checked"))
+    }
     $(function () {
         dataClearBicycleData();
-       
+
         if (parseInt($("#BicycleId").val()) > 0) {
             loadDatatableBicycle($("#BicycleId").val());
         }
-        
+
 
     })
 
@@ -1082,7 +1172,7 @@
     $equipmenttype = "";
     $docstatus = "";
     $(document).on('click', '#imgBike', function () {
-  
+
         if ($("#BikeDetailId").val() == 0) {
             toastr["error"]("Please save data first before uploading image")
             toastr.options = {
@@ -1147,7 +1237,7 @@
             dataClearBicycleData();
             loadDatatableBicycle($("#BicycleId").val());
         }
-        
+
         Webcam.reset();
     })
     function configure() {
@@ -1405,7 +1495,7 @@
                                 toastr["error"](responsedata.message)
                                 toastr.options = {
                                     "closeButton": true
-                                   
+
                                 }
                             }
                             }
@@ -2530,8 +2620,8 @@
         })
     }
     function loadDatatableBicycle(_Bicycle) {
-      
-       
+
+
 
 
          $.ajax({
@@ -2562,14 +2652,14 @@
 
                                         $("#tblBicycleInfo").find("img").remove();
 
-                                      
+
                                         $imgsrc = "";
                                         if (responsedata.datadetail.imageUrl == null) {
-                                          
+
                                             $imgsrc = "no_image.png";
 
                                         } else {
-                                           
+
                                             $imgsrc = responsedata.datadetail.imageUrl ;
                                         }
 
@@ -2622,7 +2712,7 @@
                                         //$img = '<img id="imgBike" data-equipment="bc" data-id="0" style="width:75px;height:75px;" src="/SEM/snapshots/no_image.png" />'; //TEST
                                         $img = '<img id="imgBike" data-equipment="bc" data-id="0" style="width:130px;height:130px;" src="/SEM/snapshots/no_image.png" />'; //LIVE
                                         $("td#tdImg").html($img);
-                                        
+
                                     }
 
 
@@ -2934,12 +3024,12 @@
                             toastr["error"](responsedata.message)
                             toastr.options = {
                                 "closeButton": true,
-                                
+
                             }
                         }
                     }
                 })
-            
+
 
     }
 
@@ -3205,14 +3295,14 @@
                             toastr["error"](responsedata.message)
                             toastr.options = {
                                 "closeButton": true,
-                               
+
                             }
                         }
                     }
                 })
 
 
-       
+
 
     }
     function dataClearInergenTankData() {
@@ -3498,7 +3588,7 @@
                         }
                     }
                 })
-        
+
 
     }
 
@@ -3864,6 +3954,6 @@
                     }
                 })
 
-        
+
     }
 </script>
