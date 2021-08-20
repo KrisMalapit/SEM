@@ -166,7 +166,40 @@
 
 
 <script>
-   
+    function ts(cb) {
+        if (cb.readOnly) {
+            cb.checked = cb.readOnly = false;
+            $(cb).attr("value", "0");
+        } else {
+            if (!cb.checked) {
+                cb.readOnly = cb.indeterminate = true;
+                if (cb.indeterminate) {
+                    $(cb).attr("value", "2");
+                }
+            } else {
+                $(cb).attr("value", "1");
+            }
+
+
+        }
+
+    }
+    function checkVal() {
+        console.log($("#cb1").is(":checked"))
+    }
+    function setindeterminate(_table) {
+        console.log(_table);
+        //var inputs = document.getElementsByTagName("input");
+
+        var inputs = $('#' + _table).find('input:checkbox').filter(function () { return this.value == '2' });
+
+        console.log(inputs);
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].indeterminate = true;
+        }
+    }
+
     function proceed() {
         data = [];
         data.push('@ViewBag.ID');
@@ -411,39 +444,50 @@
                                         var $id = responsedata.data[i].id;
 
                                         $checkedValue = "";
-
+                                        $readValue = "0";
                                         if (responsedata.data[i].battery == 1) {
                                             $checkedValue = 'checked';
+                                            $readValue = "1";
+                                        } else if (responsedata.data[i].battery == 2) {
+                                            $readValue = "2"
                                         }
 
                                         var _battery =
                                             '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type = "checkbox" value = "" ' + disableProp +' name = "Battery" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type = "checkbox" value ="' + $readValue +'" onclick="ts(this)" ' + disableProp +' name = "Battery" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
 
                                         $checkedValue = "";
+                                        $readValue = "0";
                                         if (responsedata.data[i].bulb == 1) {
                                             $checkedValue = 'checked';
+                                            $readValue = "1";
+                                        } else if (responsedata.data[i].bulb == 2) {
+                                            $readValue = "2"
                                         }
 
                                         var _bulb = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" ' + disableProp +' name="Bulb" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value ="' + $readValue +'" onclick="ts(this)" ' + disableProp +' name="Bulb" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
 
                                         $checkedValue = "";
+                                        $readValue = "0";
                                         if (responsedata.data[i].usable == 1) {
                                             $checkedValue = 'checked';
+                                            $readValue = "1";
+                                        } else if (responsedata.data[i].usable == 2) {
+                                            $readValue = "2"
                                         }
 
                                         var _usable = '<div class="form-check">' +
                                             '<label class="form-check-label">' +
-                                            '<input class="form-check-input" type="checkbox" value="" ' + disableProp +' name="Usable" ' + $checkedValue + '>' +
+                                            '<input class="form-check-input" type="checkbox" value ="' + $readValue +'" onclick="ts(this)" ' + disableProp +' name="Usable" ' + $checkedValue + '>' +
                                             '<span class="form-check-sign"><span class="check"></span></span>' +
                                             '</label>' +
                                             '</div>';
@@ -491,6 +535,7 @@
                                         //    },
                                         //],
                                     });
+                                    setindeterminate("tbl");
                                 } else {
 
 
@@ -532,9 +577,9 @@
 
                      var obj = {
                          ItemId: $(this).find("td:eq(0)").text(),
-                         Battery: $(this).find('input:checkbox')[0].checked,
-                         Bulb: $(this).find('input:checkbox')[1].checked,
-                         Usable: $(this).find('input:checkbox')[2].checked,
+                         Battery: $(this).find('input:checkbox')[0].value,
+                         Bulb: $(this).find('input:checkbox')[1].value,
+                         Usable: $(this).find('input:checkbox')[2].value,
 
                          Remarks: $(this).find("td:eq(6)").find("input").val(),
                          AreaId: $("#AreaId").val(),
