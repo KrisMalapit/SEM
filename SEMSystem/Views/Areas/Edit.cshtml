@@ -1093,52 +1093,52 @@
 
     });
     function proceed() {
-                var arr = [];
-                table = $('#tblItemsList').DataTable();
-                table.$('input[type="checkbox"]').each(function () {
-                    if (this.checked) {
-                        arr.push({ Equipment: $("#ItemType").val(), HeaderId: $("#ReferenceId").val(),ItemId: this.value });
-                    }
-                })
+        var arr = [];
+        table = $('#tblItemsList').DataTable();
+        table.$('input[type="checkbox"]').each(function () {
+            if (this.checked) {
+                arr.push({ Equipment: $("#ItemType").val(), HeaderId: $("#ReferenceId").val(),ItemId: this.value });
+            }
+        })
                
-                if (arr.length < 1) {
-                    alert("No record found");
+        if (arr.length < 1) {
+            alert("No record found");
                     
-                } else {
+        } else {
 
-                    $str = JSON.stringify(arr);
+            $str = JSON.stringify(arr);
                     
                 
-                    console.log($str);
-                    $.ajax({
-                        url: "@Url.Action("SaveItemLocation", "Items")"
-                        , method: "POST"
-                        , data: { list: arr,LocationName:$("#LocationName").val() }
-                        , dataType: 'json'
-                        , async: false
-                        , success: function (responsedata) {
-                            if (responsedata.status == "success") {
+            console.log($str);
+            $.ajax({
+                url: "@Url.Action("SaveItemLocation", "Items")"
+                , method: "POST"
+                , data: { list: arr,LocationName:$("#LocationName").val() }
+                , dataType: 'json'
+                , async: false
+                , success: function (responsedata) {
+                    if (responsedata.status == "success") {
 
-                                toastr["success"]("Item added", "<b>Success</b> ")
+                        toastr["success"]("Item added", "<b>Success</b> ")
 
                            
-                                $("#modalItemList").modal("hide");
+                        $("#modalItemList").modal("hide");
                                 
-                                reloadtable(EquipmentType, ReferenceId)
-                                $("#modalItem").modal("show");
+                        reloadtable(EquipmentType, ReferenceId)
+                        $("#modalItem").modal("show");
 
 
-                            } else {
+                    } else {
 
-                                toastr["error"](responsedata.message)
-                                toastr.options = {
-                                    "closeButton": true,
-                                    "showDuration": "3000",
-                                }
-                            }
+                        toastr["error"](responsedata.message)
+                        toastr.options = {
+                            "closeButton": true,
+                            "showDuration": "3000",
                         }
-                    })
+                    }
                 }
+            })
+        }
 
     }
     $("#closeItem").click(function () {
