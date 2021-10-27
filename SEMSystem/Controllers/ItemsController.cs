@@ -232,19 +232,34 @@ namespace SEMSystem.Controllers
             }
             if (ModelState.IsValid)
             {
+                int companyAccess = Convert.ToInt32(User.Identity.GetCompanyAccess());
+
                 string series = "";
                 string refno = "";
-                string series_code = "ITEM";
+                string st = "";
+
+                string series_code = "";
+
+                if (companyAccess == 1)
+                {
+                    series_code = "ITEMSLPGC";
+                    st = "SLIT";
+                }
+                if (companyAccess == 2)
+                {
+                    series_code = "ITEMSCPC";
+                    st = "SCIT";
+                }
+
 
                 series =  new NoSeriesController(_context).GetNoSeries(series_code);
-                refno = "IT" + series;
+
+                refno = st + series;
+
                 item.Code = refno;
                 _context.Add(item);
                 await _context.SaveChangesAsync();
 
-                //NoSeries ns = _context.NoSeries.SingleOrDefault(v => v.Code == series_code);
-                //ns.LastNoUsed = series;
-                //_context.SaveChanges();
 
                 string x = new NoSeriesController(_context).UpdateNoSeries(series, series_code);
 

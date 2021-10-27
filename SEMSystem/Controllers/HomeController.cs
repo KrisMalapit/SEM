@@ -975,7 +975,7 @@ namespace SEMSystem.Controllers
                         else
                         {
                             message = "Submit not allowed. Not all locations has been checked";
-                            status = "fail";
+                            status = "fail" + "Submit not allowed. Not all locations has been checked";
                         }
                        
                         break;
@@ -993,7 +993,7 @@ namespace SEMSystem.Controllers
                         else
                         {
                             message = "Submit not allowed. Not all locations has been checked";
-                            status = "fail";
+                            status = "fail" + "Submit not allowed. Not all locations has been checked";
                         }
                      
                         break;
@@ -1012,7 +1012,7 @@ namespace SEMSystem.Controllers
                         else
                         {
                             message = "Submit not allowed. Not all locations has been checked";
-                            status = "fail";
+                            status = "fail" + "Submit not allowed. Not all locations has been checked";
                         }
 
                       
@@ -1032,7 +1032,7 @@ namespace SEMSystem.Controllers
                         else
                         {
                             message = "Submit not allowed. Not all locations has been checked";
-                            status = "fail";
+                            status = "fail" + "Submit not allowed. Not all locations has been checked";
                         }
 
                        
@@ -1054,15 +1054,21 @@ namespace SEMSystem.Controllers
                 }
                 string equipmenttype = module.ToLower();
 
-                if (equipmenttype != "bc")
+
+
+                if (status == "success")
                 {
-                    string stat = new NotifyController(_context).SendNotification("For Review", equipmenttype, id); // send email
+                    if (equipmenttype != "bc")
+                    {
+                        string stat = new NotifyController(_context).SendNotification("For Review", equipmenttype, id); // send email
+                    }
+                    else
+                    {
+
+                        string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, id); // send email
+                    }
                 }
-                else
-                {
-                    
-                    string stat = new NotifyController(_context).SendNotification("For Approval", equipmenttype, id); // send email
-                }
+                
                 
                                                                                                               
 

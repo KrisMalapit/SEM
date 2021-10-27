@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SEMSystem.Models;
-using Microsoft.Extensions.Logging;
+
 using System.IO;
 
 namespace SEMSystem
@@ -40,7 +36,7 @@ namespace SEMSystem
 
 
             services.AddDbContext<SEMSystemContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("SEMContextTest")
+            options.UseSqlServer(Configuration.GetConnectionString("SEMContextLive")
             , builder => builder.UseRowNumberForPaging() //add this for Incorrect syntax near 'OFFSET'. Invalid usage of the option NEXT in the FETCH statement
             ));
 

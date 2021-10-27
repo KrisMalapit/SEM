@@ -576,11 +576,11 @@ namespace SEMSystem.Controllers
 
 
 
-                string urilive = "http://californium/ScreeningToolCPCApi/api/printreport?rvm=";
+                string urilive = "http://192.168.30.182/semapi/api/printreport?rvm=";
                 string uridev = "http://sodium2/semapi/api/printreport?rvm=";
                 string urilocal = "http://localhost:57903/api/printreport?rvm=";
 
-                response = client.GetAsync(uridev + xstring).Result;
+                response = client.GetAsync(urilive + xstring).Result;
                 string byteToString = response.Content.ReadAsStringAsync().Result.Replace("\"", string.Empty);
                 bytes = Convert.FromBase64String(byteToString);
 

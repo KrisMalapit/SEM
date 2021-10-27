@@ -167,7 +167,7 @@ namespace SEMSystem.Controllers
 
 
                 mail.Subject = "Safety Equipment Monitoring System" + " - " + nvm.DocumentStatus.ToUpper();
-                mail.Body = string.Format(body + " Click on this link to view details. https://californium:8443/SEM/");
+                mail.Body = string.Format(body + " Click on this link to view details. http://192.168.30.182/SEM/");
                 mail.IsBodyHtml = true;
 
                 using (var smtp = new SmtpClient()) //mail server
@@ -203,6 +203,7 @@ namespace SEMSystem.Controllers
             log.Action = "Send Email";
             log.Descriptions = "Send EMAIL by Header Referenceno : " + nvm.ReferenceNo + ", Recipient : " + recipient;
             log.Status = rply;
+            log.UserId = User.Identity.GetUserName();
             _context.Logs.Add(log);
             _context.SaveChanges();
 
