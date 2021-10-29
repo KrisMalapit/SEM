@@ -168,8 +168,9 @@
        
     })
     $("#btnExport").click(function () {
-
-       window.open('@Url.Action("DownloadExcelDocument", "Reports")?sqlCommand=' + sqlCommand + '&Report=rptFinalPrice' + '&strStart=' + $from + '&end=' + $to);
+        $refid = $("#cmbType").val();
+         window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid + '&fromDate=' + $from + '&toDate=' + $to + '&rptType=Excel' + '&Report=rptItemInventory');
+       //window.open('@Url.Action("DownloadExcelDocument", "Reports")?sqlCommand=' + sqlCommand + '&Report=rptFinalPrice' + '&strStart=' + $from + '&end=' + $to);
        // window.open('@Url.Action("DownloadExcelDocumentEPP", "Reports")?sqlCommand=' + sqlCommand + '&Report=rptFinalPrice' + '&strStart=' + $from + '&end=' + $to);
 
     })
