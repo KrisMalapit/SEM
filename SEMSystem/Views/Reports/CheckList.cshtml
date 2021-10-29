@@ -123,8 +123,30 @@
 
     })
     $("#btnExport").click(function () {
+        $refid = $("#cmbType").val();
+        $from = sdate.format('MM/DD/YYYY');
+        $to = edate.format('MM/DD/YYYY');
+        $equipment = $("#cmbEquipment").val();
+        console.log('ref ' + $refid);
+        console.log('from ' + $from);
+        console.log('to ' + $to);
+        console.log('equipment ' + $equipment);
+        $rpt = '';
 
-       window.open('@Url.Action("DownloadExcelDocument", "Reports")?sqlCommand=' + sqlCommand + '&Report=rptFinalPrice' + '&strStart=' + $from + '&end=' + $to);
+        if ($equipment == 1) {
+            $rpt = 'rptFireExtinguisher_Consolidated';
+        } else if ($equipment == 2) {
+            $rpt = 'rptEmergencyLight_Consolidated';
+        } else if ($equipment == 3) {
+            $rpt = 'rptFireHydrant_Consolidated';
+        } else if ($equipment == 4) {
+            $rpt = 'rptInergenTank_Consolidated';
+        } else {
+            $rpt = 'rptBicycle_Consolidated';
+        }
+
+        window.open('@Url.Action("printReport", "Reports")?ReferenceId=' + $refid + '&fromDate=' + $from + '&toDate=' + $to + '&rptType=Excel' + '&Report=' + $rpt + '&Equipment=' + $equipment);
+       //window.open('@Url.Action("DownloadExcelDocument", "Reports")?sqlCommand=' + sqlCommand + '&Report=rptFinalPrice' + '&strStart=' + $from + '&end=' + $to);
        // window.open('@Url.Action("DownloadExcelDocumentEPP", "Reports")?sqlCommand=' + sqlCommand + '&Report=rptFinalPrice' + '&strStart=' + $from + '&end=' + $to);
 
     })
