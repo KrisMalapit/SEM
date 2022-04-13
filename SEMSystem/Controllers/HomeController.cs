@@ -964,8 +964,19 @@ namespace SEMSystem.Controllers
                     case "FE":
                         var modelFE = _context.FireExtinguisherHeaders.Find(id);
 
-                        int FELocationCnt = _context.LocationFireExtinguishers.Where(a => a.AreaId == modelFE.AreaId).Where(a => a.Status == "Active").Count();
-                        int FEDetails = _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaders.AreaId == modelFE.AreaId).GroupBy(a => a.LocationFireExtinguisherId).Count();
+                        int FELocationCnt = _context.LocationFireExtinguishers.Where(a => a.AreaId == modelFE.AreaId)
+                            .Where(a => a.Status == "Active")
+                            .Count();
+
+                        int FEDetails = _context.FireExtinguisherDetails.Where(a => a.FireExtinguisherHeaders.AreaId == modelFE.AreaId)
+                            .Where(a => a.FireExtinguisherHeaders.Status == "Active") //02282022
+                            .Where(a=>a.FireExtinguisherHeaders.DocumentStatus != "Approved") //02282022
+                            .GroupBy(a => a.LocationFireExtinguisherId)
+                            .Count();
+
+
+               
+
                         if (FELocationCnt == FEDetails)
                         {
                             modelFE.DocumentStatus = "For Review";
@@ -983,7 +994,11 @@ namespace SEMSystem.Controllers
                         var modelEL = _context.EmergencyLightHeaders.Find(id);
 
                         int ELLocationCnt = _context.LocationEmergencyLights.Where(a => a.AreaId == modelEL.AreaId).Where(a => a.Status == "Active").Count();
-                        int ELDetails = _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaders.AreaId == modelEL.AreaId).GroupBy(a => a.LocationEmergencyLightId).Count();
+                        int ELDetails = _context.EmergencyLightDetails.Where(a => a.EmergencyLightHeaders.AreaId == modelEL.AreaId)
+                            .Where(a => a.EmergencyLightHeaders.Status == "Active") //02282022
+                            .Where(a => a.EmergencyLightHeaders.DocumentStatus != "Approved") //02282022
+                            .GroupBy(a => a.LocationEmergencyLightId)
+                            .Count();
                         if (ELLocationCnt == ELDetails)
                         {
                             modelEL.DocumentStatus = "For Review";
@@ -1002,7 +1017,11 @@ namespace SEMSystem.Controllers
                         var modelIT = _context.InergenTankHeaders.Find(id);
 
                         int ITLocationCnt = _context.LocationInergenTanks.Where(a => a.AreaId == modelIT.AreaId).Where(a => a.Status == "Active").Count();
-                        int ITDetails = _context.InergenTankDetails.Where(a => a.InergenTankHeaders.AreaId == modelIT.AreaId).GroupBy(a => a.LocationInergenTankId).Count();
+                        int ITDetails = _context.InergenTankDetails.Where(a => a.InergenTankHeaders.AreaId == modelIT.AreaId)
+                            .Where(a => a.InergenTankHeaders.Status == "Active") //02282022
+                            .Where(a => a.InergenTankHeaders.DocumentStatus != "Approved") //02282022
+                            .GroupBy(a => a.LocationInergenTankId)
+                            .Count();
                         if (ITLocationCnt == ITDetails)
                         {
                             modelIT.DocumentStatus = "For Review";
@@ -1021,7 +1040,11 @@ namespace SEMSystem.Controllers
                         var modelFH = _context.FireHydrantHeaders.Find(id);
 
                         int FHLocationCnt = _context.LocationFireHydrants.Where(a => a.AreaId == modelFH.AreaId).Where(a => a.Status == "Active").Count();
-                        int FHDetails = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaders.AreaId == modelFH.AreaId).GroupBy(a => a.LocationFireHydrantId).Count();
+                        int FHDetails = _context.FireHydrantDetails.Where(a => a.FireHydrantHeaders.AreaId == modelFH.AreaId)
+                            .Where(a => a.FireHydrantHeaders.Status == "Active") //02282022
+                            .Where(a => a.FireHydrantHeaders.DocumentStatus != "Approved") //02282022
+                            .GroupBy(a => a.LocationFireHydrantId)
+                            .Count();
                         if (FHLocationCnt == FHDetails)
                         {
                           
@@ -1078,7 +1101,7 @@ namespace SEMSystem.Controllers
                     Descriptions = "SubmitDocument ID " + id + " MODULE " + module,
                     Action = "Add",
                     Status = status,
-                    UserId = User.Identity.GetUserName()
+                   
                 };
                 _context.Add(log);
                 _context.SaveChanges();

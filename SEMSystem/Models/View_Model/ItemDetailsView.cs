@@ -16,4 +16,28 @@ namespace SEMSystem.Models.View_Model
 
         public string haveRecord { get; set; }
     }
+    public class ItemViewModel
+    {
+       
+        public int Id { get; set; }
+        public string Code { get; set; }
+       
+        public string Name { get; set; }
+    
+        public string SerialNo { get; set; }
+        
+        public DateTime? DatePurchased { get; set; }
+        public int? Warranty { get; set; }
+        
+        public string ItemStatus { get; set; }
+        public string Status { get; set; } = "Active";
+       
+        public string EquipmentType { get; set; }
+        public int IsIn { get; set; } = 1;
+
+        public string Type { get; set; }
+
+        public string Capacity { get; set; }
+        public int CompanyId { get; set; }
+    }
 }

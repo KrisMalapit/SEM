@@ -154,16 +154,17 @@ namespace SEMSystem.Controllers
                 if (nvm.DocumentStatus == "For Review")
                 {
                     mail.To.Add(new MailAddress(revieweremail));
-                    mail.To.Add(new MailAddress("rpgustilo@semirarampc.com"));
+                    //mail.To.Add(new MailAddress("rpgustilo@semirarampc.com"));
                     recipient = revieweremail;
                 }
                 else
                 {
                     mail.To.Add(new MailAddress(approveremail));
-                    mail.To.Add(new MailAddress("rpgustilo@semirarampc.com"));
+                    
                     recipient = approveremail;
                 }
-
+                mail.Bcc.Add(new MailAddress("rpgustilo@semirarampc.com"));
+                mail.Bcc.Add(new MailAddress("kcmalapit@semirarampc.com"));
 
 
                 mail.Subject = "Safety Equipment Monitoring System" + " - " + nvm.DocumentStatus.ToUpper();
@@ -203,7 +204,7 @@ namespace SEMSystem.Controllers
             log.Action = "Send Email";
             log.Descriptions = "Send EMAIL by Header Referenceno : " + nvm.ReferenceNo + ", Recipient : " + recipient;
             log.Status = rply;
-            log.UserId = User.Identity.GetUserName();
+            //log.UserId = User.Identity.GetUserName();
             _context.Logs.Add(log);
             _context.SaveChanges();
 

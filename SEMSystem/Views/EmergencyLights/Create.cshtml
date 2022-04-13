@@ -91,26 +91,44 @@
 
                 <div class="col-md-4">
 
-                    @*  <select id="AreaId" name="AreaId" class="form-control" asp-items="@ViewBag.AreaId" disabled></select>*@
+
                     <input id="AreaId" name="AreaId" class="form-control" disabled value="@ViewBag.Area" />
 
                 </div>
 
-
-
-
-                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Date</label>
+                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Reviewed By</label>
                 <div class="col-md-4">
-                    <input id="Date" name="Date" class="form-control" disabled value="@ViewBag.CreatedAt" />
+                    <input id="ReviewedBy" name="ReviewedBy" class="form-control" disabled value="@ViewBag.ReviewedBy" />
                 </div>
+
+
+
+                @*<label class="col-md-2 col-form-label" style="padding-top:5px;"> Date</label>
+        <div class="col-md-4">
+            <input id="Date" name="Date" class="form-control" disabled value="@ViewBag.CreatedAt" />
+        </div>*@
             </div>
             <br />
             <div class="row">
-                
+
                 <label class="col-md-2 col-form-label" style="padding-top:5px;"> Plant</label>
                 <div class="col-md-4">
                     <input id="Plant" name="Plant" class="form-control" disabled value="@ViewBag.Company" />
 
+                </div>
+
+                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Approved By</label>
+                <div class="col-md-4">
+                    <input id="ApprovedBy" name="ApprovedBy" class="form-control" disabled value="@ViewBag.ApprovedBy" />
+
+                </div>
+            </div>
+            <br />
+            <div class="row">
+
+                <label class="col-md-2 col-form-label" style="padding-top:5px;"> Date</label>
+                <div class="col-md-4">
+                    <input id="Date" name="Date" class="form-control" disabled value="@ViewBag.CreatedAt" />
                 </div>
             </div>
             <br />
@@ -438,7 +456,8 @@
                                     } else {
                                         disableProp = ""
                                     }
-
+                                    $("#ReviewedBy").val(responsedata.data[0].reviewedBy);
+                                    $("#ApprovedBy").val(responsedata.data[0].notedBy);
                                     //$("#Plant").val(responsedata.data[0].companyName);
                                     for (var i = 0; i < responsedata.data.length; i++) {
                                         var $id = responsedata.data[i].id;

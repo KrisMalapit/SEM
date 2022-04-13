@@ -68,7 +68,8 @@ namespace SEMSystem.Controllers
             ViewData["CreatedAt"] = model.CreatedAt.ToString("MM-dd-yyyy");
             ViewData["Company"] = _context.Areas.Include(a=>a.Companies).Where(a=>a.ID == model.AreaId).FirstOrDefault().Companies.Name;
 
-
+            ViewData["ApprovedBy"] = "";
+            ViewData["ReviewedBy"] = "";
             return View("Create", model);
         }
         [HttpPost]

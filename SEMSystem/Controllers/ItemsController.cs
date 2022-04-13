@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SEMSystem.Models;
+using SEMSystem.Models.View_Model;
 
 namespace SEMSystem.Controllers
 {
@@ -223,7 +224,7 @@ namespace SEMSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Item item)
+        public async Task<IActionResult> Create(ItemViewModel item)
         {
 
             if (item.DatePurchased == null)
@@ -232,8 +233,8 @@ namespace SEMSystem.Controllers
             }
             if (ModelState.IsValid)
             {
-                int companyAccess = Convert.ToInt32(User.Identity.GetCompanyAccess());
-
+                //int companyAccess = Convert.ToInt32(User.Identity.GetCompanyAccess());//disabled 01032022
+                int companyAccess = item.CompanyId;
                 string series = "";
                 string refno = "";
                 string st = "";
@@ -256,8 +257,38 @@ namespace SEMSystem.Controllers
 
                 refno = st + series;
 
+
+
+
+
                 item.Code = refno;
-                _context.Add(item);
+                Item _item = new Item {
+                    Code = item.Code,
+
+                    Name = item.Name,
+
+                    SerialNo = item.SerialNo,
+
+                    DatePurchased  = item.DatePurchased,
+
+                    Warranty = item.Warranty,
+
+                    ItemStatus = item.ItemStatus,
+
+                    Status  = "Active",
+       
+                    EquipmentType = item.EquipmentType,
+
+                    IsIn  = 1,
+
+                    Type = item.Type,
+
+                    Capacity = item.Capacity
+
+
+                };
+
+                _context.Add(_item);
                 await _context.SaveChangesAsync();
 
 
@@ -314,6 +345,9 @@ namespace SEMSystem.Controllers
                 return NotFound();
             }
             ViewData["StatusOldValue"] = Item.ItemStatus;
+
+            string itemComp = Item.Code.Substring(0, 2);
+            ViewData["CompanyId"] = itemComp=="SC" ? 2 : 1;
             return View(Item);
         }
 
@@ -322,8 +356,13 @@ namespace SEMSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Item item, string StatusOldValue)
+        public async Task<IActionResult> Edit(int id, Item item, string StatusOldValue,int CompanyId)
         {
+
+            //int companyAccess = Convert.ToInt32(User.Identity.GetCompanyAccess());//disabled 01032022
+            int companyAccess = CompanyId;
+
+
             if (id != item.Id)
             {
                 return NotFound();

@@ -2292,6 +2292,7 @@
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
+
                                     var _nozzle15 = '<div class="form-check">' +
                                         '<label class="form-check-label">' +
                                         '<input class="form-check-input" onclick="ts(this)" type="checkbox" value="0" name="Nozzle15" >' +
@@ -2413,7 +2414,7 @@
                                     var _nozzle15 =
                                         '<div class="form-check">' +
                                         '<label class="form-check-label">' +
-                                        '<input class="form-check-input" type = "checkbox" value = "" name = "Nozzle15" ' + $checkedValue + '>' +
+                                        '<input class="form-check-input" onclick="ts(this)" type="checkbox" value = "' + $readValue + '" name = "Nozzle15" ' + $checkedValue + '>' +
                                         '<span class="form-check-sign"><span class="check"></span></span>' +
                                         '</label>' +
                                         '</div>';
@@ -3959,6 +3960,9 @@
 
         }
     function saveFireHydrant($obj) {
+
+
+
 
 
             var items = [];

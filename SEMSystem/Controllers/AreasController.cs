@@ -753,7 +753,8 @@ namespace SEMSystem.Controllers
                                      A.i.Items.Code,
                                      A.i.Items.Type,
                                      A.i.Items.Capacity,
-                                     A.i.InspectedBy,
+                                     //A.i.InspectedBy, // disabled 10292021 
+                                     InspectedBy = A.i.FireExtinguisherHeaders.CreatedBy,
                                      A.i.ReviewedBy,
                                      A.i.NotedBy,
                                      CompanyName = B.Areas.Companies.Name,
